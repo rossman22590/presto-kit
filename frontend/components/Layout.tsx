@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Navbar from "./Navbar";
 
 type LayoutProps = React.PropsWithChildren<{
 	title?: string;
@@ -9,20 +10,19 @@ type LayoutProps = React.PropsWithChildren<{
 const Layout: React.FC<LayoutProps> = ({
 	children,
 	title = "PrestoKit",
-	description = "AI generated brand kits",
-	className = "bg-slate-900 min-h-screen"
+	description = "AI generated brand kits"
 }) => {
 	return (
-		<div className={className}>
+		<>
 			<Head>
 				<title>{title}</title>
 				<meta name="description" content={description} />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			{/* <Navbar /> */}
+			<Navbar />
 			<main>{children}</main>
 			{/* <Footer /> */}
-		</div>
+		</>
 	);
 };
 

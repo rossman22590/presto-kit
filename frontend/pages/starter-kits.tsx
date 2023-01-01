@@ -20,7 +20,7 @@ const starterKits = {
 		id: 1,
 		colors: {
 			details: [
-				{ id: 1, name: "Cloudy Sky", hex: "#EBF5FB" },
+				{ id: 1, name: "Cloudy Sky", hex: "#F1F1F1" },
 				{ id: 2, name: "Tranquil Teal", hex: "#00BFFF" },
 				{ id: 3, name: "Sunshine Yellow", hex: "#FFD700" }
 			],
@@ -28,6 +28,10 @@ const starterKits = {
 				"This colour scheme is calming and serene, with a light and airy dominant colour. The tranquil teal adds a pop of colour and the sunshine yellow is used as a highlight to draw attention to important elements of the interface. This would be a good choice for a property website that wants to convey a sense of calm and peacefulness."
 		},
 		typography: {
+			typefaces: {
+				display: { font: "Roboto", weight: "500" },
+				text: { font: "Open Sans", weight: "400" }
+			},
 			description:
 				'For the display font, "Roboto" with a weight of 500 is a good choice. For text, "Open Sans" with a weight of 400 is suitable. Both fonts have a modern appearance and the chosen weights are legible and suitable for interface design. They also both have a friendly feel, which would complement the calming aesthetic of the "Tranquil" color scheme.'
 		}

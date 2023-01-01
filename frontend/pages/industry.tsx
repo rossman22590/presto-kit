@@ -24,8 +24,7 @@ const Industry: NextPage<IndustryProps> = ({ formData, setFormData }) => {
 					formData={formData}
 					setFormData={setFormData}
 					formDataKey="industry"
-					//! update submitRoute to starter-kits page once added
-					submitRoute="industry"
+					submitRoute="starter-kits"
 				/>
 			</Container>
 		</Layout>

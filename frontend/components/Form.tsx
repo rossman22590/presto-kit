@@ -34,7 +34,7 @@ const Form: React.FC<FormProps> = ({
 	}, [formData]);
 
 	return (
-		<form className="mt-4 flex gap-5" onSubmit={(e) => handleSubmit(e)}>
+		<form className="mt-4 flex gap-5" onSubmit={handleSubmit}>
 			<input
 				type="text"
 				value={input}

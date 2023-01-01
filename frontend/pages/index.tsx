@@ -1,6 +1,6 @@
-import DisplayText from "./../components/DisplayText";
 import type { NextPage } from "next";
 import { FormData } from "./_app";
+import DisplayText from "./../components/DisplayText";
 import Layout from "../components/Layout";
 import Container from "./../components/Container";
 import Form from "./../components/Form";

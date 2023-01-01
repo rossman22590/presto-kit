@@ -15,16 +15,16 @@ const Home: NextPage<HomeProps> = ({ formData, setFormData }) => {
 		<Layout>
 			<Container>
 				<DisplayText
-					heading="Effortlessly create your own brand kit in seconds"
-					text="Use our AI-powered tool to start building a unique visual identity for
-				your project"
+					heading="Pick your industry or niche"
+					text="Knowing your industry will help us choose suitable styles for your brand"
 				/>
 				<Form
-					placeholder="Enter your brand name"
+					placeholder="Tech, Restaurant, Finance..."
 					buttonText="Get Started"
 					formData={formData}
 					setFormData={setFormData}
-					formDataKey="name"
+					formDataKey="industry"
+					//! update submitRoute to starter-kits page once added
 					submitRoute="industry"
 				/>
 			</Container>

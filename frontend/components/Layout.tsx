@@ -4,7 +4,6 @@ import Navbar from "./Navbar";
 type LayoutProps = React.PropsWithChildren<{
 	title?: string;
 	description?: string;
-	className?: string;
 }>;
 
 const Layout: React.FC<LayoutProps> = ({

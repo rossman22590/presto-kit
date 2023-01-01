@@ -1,8 +1,8 @@
 import React from "react";
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
 	return (
-		<nav className="flex items-center justify-between flex-wrap bg-background-white p-6 shadow pl-8 pr-8">
+		<nav className="flex flex-wrap items-center justify-between p-6 pl-8 pr-8 shadow">
 			<img src="/logo.png" alt="PrestoKit Logo" className="h-8" />
 			<svg
 				xmlns="http://www.w3.org/2000/svg"

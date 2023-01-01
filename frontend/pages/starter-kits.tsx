@@ -6,6 +6,12 @@ import Layout from "../components/Layout";
 import Container from "./../components/Container";
 import KitHeading from "../components/KitHeading";
 
+// ! Should not add stylesheets using next/head here
+// this pattern is not recommended because it will potentially break when used with Suspense and/or streaming
+// TODO -> try to import via _document.tsx instead
+// https://github.com/vercel/next.js/issues/2752
+import Head from "next/head";
+
 //? refactored form data to be captured through queries to prevent losing data (state) on manual page refresh
 //? is formData state still useful ? - leaving it in place for now
 import { FormData } from "./_app";
@@ -29,8 +35,8 @@ const starterKits = {
 		},
 		typography: {
 			typefaces: {
-				display: { font: "Roboto", weight: "500" },
-				text: { font: "Open Sans", weight: "400" }
+				display: { font: "Public Sans", weight: "700" },
+				text: { font: "Poppins", weight: "300" }
 			},
 			description:
 				'For the display font, "Roboto" with a weight of 500 is a good choice. For text, "Open Sans" with a weight of 400 is suitable. Both fonts have a modern appearance and the chosen weights are legible and suitable for interface design. They also both have a friendly feel, which would complement the calming aesthetic of the "Tranquil" color scheme.'
@@ -45,17 +51,29 @@ const StarterKits: NextPage<StarterKitsProps> = ({ formData }) => {
 	const { name, industry } = router.query;
 
 	return (
-		<Layout>
-			<Container>
-				<h1> {name} </h1>
-				<h2> {industry} </h2>
-				<section className="flex w-full flex-col gap-16">
-					<KitHeading id={kit1.id} title={kit1.title} />
-					<ColorSection kit={kit1} />
-					<TypographySection kit={kit1} />
-				</section>
-			</Container>
-		</Layout>
+		<>
+			<Head>
+				<link
+					href={`https://fonts.googleapis.com/css2?family=${kit1.typography.typefaces.display.font}:wght@${kit1.typography.typefaces.display.weight}&display=swap`}
+					rel="stylesheet"
+				></link>
+				<link
+					href={`https://fonts.googleapis.com/css2?family=${kit1.typography.typefaces.text.font}:wght@${kit1.typography.typefaces.text.weight}&display=swap`}
+					rel="stylesheet"
+				></link>
+			</Head>
+			<Layout>
+				<Container>
+					<h1> {name} </h1>
+					<h2> {industry} </h2>
+					<section className="flex w-full flex-col gap-16">
+						<KitHeading id={kit1.id} title={kit1.title} />
+						<ColorSection kit={kit1} />
+						<TypographySection kit={kit1} />
+					</section>
+				</Container>
+			</Layout>
+		</>
 	);
 };
 

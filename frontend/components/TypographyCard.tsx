@@ -28,7 +28,13 @@ const TypographyCard: React.FC<TypographyCardProps> = ({ kit }) => {
 			}}
 		>
 			<div className="flex flex-col gap-2">
-				<p className="text-sm font-light text-[#48505F] opacity-50">
+				<p
+					className="text-sm font-light text-[#48505F] opacity-50"
+					style={{
+						fontFamily: `${kit.typography.typefaces.text.font}`,
+						fontWeight: `${kit.typography.typefaces.text.weight}`
+					}}
+				>
 					{kit.typography.typefaces.display.font}{" "}
 					{kit.typography.typefaces.display.weight}
 				</p>
@@ -36,18 +42,31 @@ const TypographyCard: React.FC<TypographyCardProps> = ({ kit }) => {
 					className="text-5xl"
 					style={{
 						color: kit.colors.details[1].hex,
-						fontWeight: 500
+						fontWeight: `${kit.typography.typefaces.display.weight}`,
+						fontFamily: `${kit.typography.typefaces.display.font}`
 					}}
 				>
 					{kit.title}
 				</p>
 			</div>
 			<div className="flex flex-col gap-3">
-				<p className="text-sm font-light text-[#48505F] opacity-50">
+				<p
+					className="text-sm font-light text-[#48505F] opacity-50"
+					style={{
+						fontFamily: `${kit.typography.typefaces.text.font}`,
+						fontWeight: `${kit.typography.typefaces.text.weight}`
+					}}
+				>
 					{kit.typography.typefaces.text.font}{" "}
 					{kit.typography.typefaces.text.weight}
 				</p>
-				<p className="text-sm font-light leading-7 text-[#48505F] opacity-80">
+				<p
+					className="text-sm leading-7 text-[#48505F] opacity-80"
+					style={{
+						fontFamily: `${kit.typography.typefaces.text.font}`,
+						fontWeight: `${kit.typography.typefaces.text.weight}`
+					}}
+				>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 					eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
 					minim veniam, quis nostrud exercitation ullamco laboris nisi ut.

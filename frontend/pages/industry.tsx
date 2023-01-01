@@ -5,12 +5,12 @@ import Layout from "../components/Layout";
 import Container from "./../components/Container";
 import Form from "./../components/Form";
 
-export type HomeProps = {
+type IndustryProps = {
 	formData: FormData;
 	setFormData: React.Dispatch<React.SetStateAction<FormData>>;
 };
 
-const Home: NextPage<HomeProps> = ({ formData, setFormData }) => {
+const Industry: NextPage<IndustryProps> = ({ formData, setFormData }) => {
 	return (
 		<Layout>
 			<Container>
@@ -32,4 +32,4 @@ const Home: NextPage<HomeProps> = ({ formData, setFormData }) => {
 	);
 };
 
-export default Home;
+export default Industry;

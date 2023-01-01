@@ -1,8 +1,9 @@
-import ColorSection from "./../components/ColorSection";
-import type { NextPage } from "next";
 import { useRouter } from "next/router";
+import type { NextPage } from "next";
+import ColorSection from "./../components/ColorSection";
 import Layout from "../components/Layout";
 import Container from "./../components/Container";
+import KitHeading from "../components/KitHeading";
 
 //? refactored form data to be captured through queries to prevent losing data (state) on manual page refresh
 //? is formData state still useful ? - leaving it in place for now
@@ -39,8 +40,10 @@ const StarterKits: NextPage<StarterKitsProps> = ({ formData }) => {
 			<Container>
 				<h1> {name} </h1>
 				<h2> {industry} </h2>
-
-				<ColorSection kit={kit1} />
+				<section className="flex w-full flex-col gap-12">
+					<KitHeading id={kit1.id} title={kit1.title} />
+					<ColorSection kit={kit1} />
+				</section>
 			</Container>
 		</Layout>
 	);

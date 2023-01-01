@@ -1,3 +1,4 @@
+import SectionHeading from "./SectionHeading";
 import React from "react";
 
 type ColorSectionProps = {
@@ -14,7 +15,7 @@ type ColorSectionProps = {
 const ColorSection: React.FC<ColorSectionProps> = ({ kit }) => {
 	return (
 		<div id="colors-section-container" className="flex flex-col gap-12">
-			<h3 className="font-Inter text-2xl font-semibold">Color Scheme</h3>
+			<SectionHeading text="Color Scheme" />
 			<div id="color-cards-container" className="flex justify-between ">
 				{kit.colors.details.map((color) => (
 					<div

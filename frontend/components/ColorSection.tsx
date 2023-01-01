@@ -2,6 +2,8 @@ import React from "react";
 
 type ColorSectionProps = {
 	kit: {
+		title: string;
+		id: number;
 		colors: {
 			details: { id: number; name: string; hex: string }[];
 			description: string;
@@ -13,7 +15,7 @@ const ColorSection: React.FC<ColorSectionProps> = ({ kit }) => {
 	return (
 		<section className="flex w-full flex-col gap-12">
 			<h2 className="font-Inter text-4xl font-bold">
-				<span className="text-[#AEB4C1]"> 01 </span> Calm Serenity
+				<span className="text-[#AEB4C1]"> {`0${kit.id}`} </span> {kit.title}
 			</h2>
 			<div id="colors-section-container" className="flex flex-col gap-12">
 				<h3 className="font-Inter text-2xl font-semibold">Color Scheme</h3>

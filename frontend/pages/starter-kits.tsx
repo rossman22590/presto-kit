@@ -14,6 +14,8 @@ export type StarterKitsProps = {
 
 const starterKits = {
 	kit1: {
+		title: "Calm Serenity",
+		id: 1,
 		colors: {
 			details: [
 				{ id: 1, name: "Cloudy Sky", hex: "#EBF5FB" },

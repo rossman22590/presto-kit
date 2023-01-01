@@ -26,7 +26,13 @@ const Form: React.FC<FormProps> = ({
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		setFormData({ ...formData, [formDataKey]: input });
-		router.push("/" + submitRoute);
+		router.push({
+			pathname: "/" + submitRoute,
+			query:
+				formDataKey === "name"
+					? { name: input }
+					: { name: router.query.name, industry: input }
+		});
 	};
 
 	useEffect(() => {

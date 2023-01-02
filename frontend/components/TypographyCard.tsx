@@ -19,62 +19,76 @@ type TypographyCardProps = {
 };
 
 const TypographyCard: React.FC<TypographyCardProps> = ({ kit }) => {
+	const { hex: baseColor } = kit.colors.details[0];
+	const { hex: primaryColor } = kit.colors.details[1];
+	const { hex: accentColor } = kit.colors.details[2];
+	const { font: displayFont } = kit.typography.typefaces.display;
+	const { weight: displayWeight } = kit.typography.typefaces.display;
+	const { font: textFont } = kit.typography.typefaces.text;
+	const { weight: textWeight } = kit.typography.typefaces.text;
+	const { title: kitTitle } = kit;
+
 	const hex2rgb = (hex: string) => {
-		const r = parseInt(hex.slice(1, 3), 16);
-		const g = parseInt(hex.slice(3, 5), 16);
-		const b = parseInt(hex.slice(5, 7), 16);
-
-		return { r, g, b };
+		const red = parseInt(hex.slice(1, 3), 16);
+		const green = parseInt(hex.slice(3, 5), 16);
+		const blue = parseInt(hex.slice(5, 7), 16);
+		return { red, green, blue };
 	};
-
-	const rgb = hex2rgb(kit.colors.details[1].hex);
+	const isColorBright = (rgb: { red: number; green: number; blue: number }) => {
+		return rgb.red * 0.299 + rgb.green * 0.587 + rgb.blue * 0.114 > 140;
+	};
+	const accentColorRGB = hex2rgb(accentColor);
 
 	return (
+		// Background container
 		<div
-			className="flex flex-col gap-8 rounded-lg border-r-[64px] pl-20 pt-12 pr-20 pb-12"
+			className="flex flex-col gap-8 rounded-lg border-r-[64px] pl-16 pt-12 pr-16 pb-12"
 			style={{
-				backgroundColor: kit.colors.details[0].hex,
-				borderColor: kit.colors.details[1].hex
+				backgroundColor: baseColor,
+				borderColor: primaryColor
 			}}
 		>
 			<div className="flex flex-col gap-2">
+				{/* Display font name */}
 				<p
 					className="text-sm font-light text-[#48505F] opacity-50"
 					style={{
-						fontFamily: `${kit.typography.typefaces.text.font}`,
-						fontWeight: `${kit.typography.typefaces.text.weight}`
+						fontFamily: textFont,
+						fontWeight: textWeight
 					}}
 				>
-					{kit.typography.typefaces.display.font}{" "}
-					{kit.typography.typefaces.display.weight}
+					{textFont} {textWeight}
 				</p>
+
+				{/* Example title */}
 				<p
 					className="text-5xl"
 					style={{
-						color: kit.colors.details[1].hex,
-						fontWeight: `${kit.typography.typefaces.display.weight}`,
-						fontFamily: `${kit.typography.typefaces.display.font}`
+						color: primaryColor,
+						fontFamily: displayFont,
+						fontWeight: displayWeight
 					}}
 				>
-					{kit.title}
+					{kitTitle}
 				</p>
 			</div>
 			<div className="flex flex-col gap-3">
+				{/* Text font name */}
 				<p
 					className="text-sm font-light text-[#48505F] opacity-50"
 					style={{
-						fontFamily: `${kit.typography.typefaces.text.font}`,
-						fontWeight: `${kit.typography.typefaces.text.weight}`
+						fontFamily: textFont,
+						fontWeight: textWeight
 					}}
 				>
-					{kit.typography.typefaces.text.font}{" "}
-					{kit.typography.typefaces.text.weight}
+					{textFont} {textWeight}
 				</p>
+				{/* Example text */}
 				<p
 					className="text-base leading-7 text-[#48505F] opacity-80"
 					style={{
-						fontFamily: `${kit.typography.typefaces.text.font}`,
-						fontWeight: `${kit.typography.typefaces.text.weight}`
+						fontFamily: textFont,
+						fontWeight: textWeight
 					}}
 				>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -82,16 +96,19 @@ const TypographyCard: React.FC<TypographyCardProps> = ({ kit }) => {
 					minim veniam, quis nostrud exercitation.
 				</p>
 			</div>
+			{/* Example button */}
 			<div
 				className=" w-[10.5rem] rounded-md pt-3 pb-3 text-center font-Inter text-sm font-normal tracking-wide"
 				style={{
-					backgroundColor: kit.colors.details[2].hex,
+					backgroundColor: accentColor,
 					color:
-						rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114 > 140
+						// If button color is bright, use black text, else use white text
+						isColorBright(accentColorRGB)
 							? "rgba(0, 0, 0, 0.7)"
-							: "#FFFFFF"
+							: "rgba(255, 255, 255, 1)"
 				}}
 			>
+				{/* Button text */}
 				Example Button
 			</div>
 		</div>

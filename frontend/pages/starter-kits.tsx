@@ -119,7 +119,7 @@ const StarterKits: NextPage<StarterKitsProps> = ({ formData }) => {
 				></link>
 			</Head>
 			<Layout>
-				<Container>
+				<Container gap="9rem" maxWidth="720px">
 					<h1></h1>
 					{starterKits.map((kit) => (
 						<section className="flex w-full flex-col gap-16" key={kit.id}>

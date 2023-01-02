@@ -13,7 +13,7 @@ type IndustryProps = {
 const Industry: NextPage<IndustryProps> = ({ formData, setFormData }) => {
 	return (
 		<Layout>
-			<Container>
+			<Container gap="2rem" maxWidth="1080px">
 				<DisplayText
 					heading="Pick your industry or niche"
 					text="Knowing your industry will help us choose suitable styles for your brand"

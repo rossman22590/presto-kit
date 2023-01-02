@@ -2,7 +2,7 @@ import React from "react";
 
 const Navbar: React.FC = () => {
 	return (
-		<nav className="flex flex-wrap items-center justify-between p-6 pl-8 pr-8 shadow">
+		<nav className="sticky top-0 z-50 flex flex-wrap items-center justify-between bg-presto-white bg-opacity-70 p-6 pl-8 pr-8 shadow bg-blur-xl">
 			<img src="/logo.png" alt="PrestoKit Logo" className="h-8" />
 			<svg
 				xmlns="http://www.w3.org/2000/svg"

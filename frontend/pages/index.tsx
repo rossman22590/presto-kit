@@ -13,7 +13,7 @@ export type HomeProps = {
 const Home: NextPage<HomeProps> = ({ formData, setFormData }) => {
 	return (
 		<Layout>
-			<Container>
+			<Container gap="2rem" maxWidth="1080px">
 				<DisplayText
 					heading="Effortlessly create your own brand kit in seconds"
 					text="Use our AI-powered tool to start building a unique visual identity for

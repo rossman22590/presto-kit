@@ -19,6 +19,16 @@ type TypographyCardProps = {
 };
 
 const TypographyCard: React.FC<TypographyCardProps> = ({ kit }) => {
+	const hex2rgb = (hex: string) => {
+		const r = parseInt(hex.slice(1, 3), 16);
+		const g = parseInt(hex.slice(3, 5), 16);
+		const b = parseInt(hex.slice(5, 7), 16);
+
+		return { r, g, b };
+	};
+
+	const rgb = hex2rgb(kit.colors.details[1].hex);
+
 	return (
 		<div
 			className="flex flex-col gap-8 rounded-lg border-r-[64px] pl-20 pt-12 pr-20 pb-12"
@@ -61,7 +71,7 @@ const TypographyCard: React.FC<TypographyCardProps> = ({ kit }) => {
 					{kit.typography.typefaces.text.weight}
 				</p>
 				<p
-					className="text-sm leading-7 text-[#48505F] opacity-80"
+					className="text-base leading-7 text-[#48505F] opacity-80"
 					style={{
 						fontFamily: `${kit.typography.typefaces.text.font}`,
 						fontWeight: `${kit.typography.typefaces.text.weight}`
@@ -69,16 +79,20 @@ const TypographyCard: React.FC<TypographyCardProps> = ({ kit }) => {
 				>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 					eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-					minim veniam, quis nostrud exercitation ullamco laboris nisi ut.
+					minim veniam, quis nostrud exercitation.
 				</p>
 			</div>
 			<div
-				className=" w-[10.5rem] rounded-md pt-3 pb-3 text-center font-Inter text-sm font-light text-black text-opacity-70"
+				className=" w-[10.5rem] rounded-md pt-3 pb-3 text-center font-Inter text-sm font-normal tracking-wide"
 				style={{
-					backgroundColor: kit.colors.details[2].hex
+					backgroundColor: kit.colors.details[2].hex,
+					color:
+						rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114 > 140
+							? "rgba(0, 0, 0, 0.7)"
+							: "#FFFFFF"
 				}}
 			>
-				Lorem ipsum
+				Example Button
 			</div>
 		</div>
 	);

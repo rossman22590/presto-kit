@@ -8,7 +8,7 @@ type ContainerProps = React.PropsWithChildren<{
 const Container: React.FC<ContainerProps> = ({ children, gap, maxWidth }) => {
 	return (
 		<section
-			className="m-auto flex max-w-[720px] flex-col items-center pb-56"
+			className="m-auto flex flex-col items-center pb-56"
 			style={{ gap: gap, maxWidth: maxWidth }}
 		>
 			{children}

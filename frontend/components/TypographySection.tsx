@@ -1,6 +1,7 @@
 import SectionDescription from "./SectionDescription";
 import SectionHeading from "./SectionHeading";
 import TypographyCard from "./TypographyCard";
+import starterKitsType from "../types/starterKitsType";
 import React from "react";
 
 type TypographySectionProps = {

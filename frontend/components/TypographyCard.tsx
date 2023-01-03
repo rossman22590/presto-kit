@@ -35,14 +35,14 @@ const TypographyCard: React.FC<TypographyCardProps> = ({ kit }) => {
 		return { red, green, blue };
 	};
 	const isColorBright = (rgb: { red: number; green: number; blue: number }) => {
-		return rgb.red * 0.299 + rgb.green * 0.587 + rgb.blue * 0.114 > 140;
+		return rgb.red * 0.299 + rgb.green * 0.587 + rgb.blue * 0.114 > 180;
 	};
 	const accentColorRGB = hex2rgb(accentColor);
 
 	return (
 		// Background container
 		<div
-			className="flex flex-col gap-8 rounded-lg border-r-[64px] pl-16 pt-12 pr-16 pb-12"
+			className="flex flex-col gap-8 rounded-lg border-r-[64px] pl-16 pt-12 pr-16 pb-12 shadow"
 			style={{
 				backgroundColor: baseColor,
 				borderColor: primaryColor
@@ -57,7 +57,7 @@ const TypographyCard: React.FC<TypographyCardProps> = ({ kit }) => {
 						fontWeight: textWeight
 					}}
 				>
-					{textFont} {textWeight}
+					{displayFont} {displayWeight}
 				</p>
 
 				{/* Example title */}

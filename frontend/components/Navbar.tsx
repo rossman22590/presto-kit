@@ -1,9 +1,20 @@
 import React from "react";
+import { useRouter } from "next/router";
 
 const Navbar: React.FC = () => {
+	const router = useRouter();
+
+	const handleClick = () => {
+		router.push("/");
+	};
 	return (
-		<nav className="sticky top-0 z-50 flex flex-wrap items-center justify-between bg-presto-white bg-opacity-70 p-6 pl-8 pr-8 shadow bg-blur-xl">
-			<img src="/logo.png" alt="PrestoKit Logo" className="h-8" />
+		<nav className="sticky top-0 z-50 flex cursor-pointer flex-wrap items-center justify-between bg-presto-white bg-opacity-70 p-6 pl-8 pr-8 shadow bg-blur-xl">
+			<img
+				src="/logo.png"
+				alt="PrestoKit Logo"
+				className="h-8"
+				onClick={handleClick}
+			/>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"

@@ -26,15 +26,15 @@ export type StarterKitsProps = {
 const StarterKits: NextPage<StarterKitsProps> = ({ formData }) => {
 	const router = useRouter();
 	const { name, industry } = router.query;
-	const [isLoading, setIsLoading] = useState(true);
 	const [starterKits, setStarterKits] =
 		useState<starterKitsType>(starterKitsShape);
 	const dataFetchedRef = useRef(false);
 
 	useEffect(() => {
-		async function getInitialKit() {
+		const getInitialKit = async () => {
 			if (dataFetchedRef.current) return;
 			dataFetchedRef.current = true;
+
 			let response = await fetch("http://localhost:8000/api/kits", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -42,11 +42,9 @@ const StarterKits: NextPage<StarterKitsProps> = ({ formData }) => {
 			});
 			let data = await response.json();
 			data.payload.id = 1;
-			// console.log(data);
 			setStarterKits(data.payload);
-		}
+		};
 		getInitialKit();
-		console.log("i fire once");
 	}, []);
 
 	return (

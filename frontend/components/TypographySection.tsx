@@ -19,13 +19,17 @@ type TypographySectionProps = {
 			description: string;
 		};
 	};
+	brandName: string | string[] | undefined;
 };
 
-const TypographySection: React.FC<TypographySectionProps> = ({ kit }) => {
+const TypographySection: React.FC<TypographySectionProps> = ({
+	kit,
+	brandName
+}) => {
 	return (
 		<section className="flex flex-col gap-12">
 			<SectionHeading text="Typography" />
-			<TypographyCard kit={kit} />
+			<TypographyCard kit={kit} brandName={brandName} />
 			<SectionDescription text={kit.typography.description} />
 		</section>
 	);

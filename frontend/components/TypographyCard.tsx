@@ -16,9 +16,10 @@ type TypographyCardProps = {
 			description: string;
 		};
 	};
+	brandName: string | string[] | undefined;
 };
 
-const TypographyCard: React.FC<TypographyCardProps> = ({ kit }) => {
+const TypographyCard: React.FC<TypographyCardProps> = ({ kit, brandName }) => {
 	const { hex: baseColor } = kit.colors.details[0];
 	const { hex: primaryColor } = kit.colors.details[1];
 	const { hex: accentColor } = kit.colors.details[2];
@@ -69,7 +70,7 @@ const TypographyCard: React.FC<TypographyCardProps> = ({ kit }) => {
 						fontWeight: displayWeight
 					}}
 				>
-					{kitTitle}
+					{brandName}
 				</p>
 			</div>
 			<div className="flex flex-col gap-3">

@@ -24,11 +24,21 @@ export type StarterKitsProps = {
 };
 
 const StarterKits: NextPage<StarterKitsProps> = ({ formData }) => {
-	const router = useRouter();
-	const { name, industry } = router.query;
 	const [starterKits, setStarterKits] =
 		useState<starterKitsType>(starterKitsShape);
+
 	const dataFetchedRef = useRef(false);
+
+	const router = useRouter();
+
+	let { name, industry } = router.query;
+	name = Array.isArray(name) ? name[0] : name;
+
+	const capitaliseWords = (str: string | undefined) => {
+		return str?.replace(/\b[a-z]/gi, (char) => char.toUpperCase());
+	};
+
+	const brandName = capitaliseWords(name);
 
 	useEffect(() => {
 		const getInitialKit = async () => {
@@ -97,7 +107,7 @@ const StarterKits: NextPage<StarterKitsProps> = ({ formData }) => {
 								<section className="flex w-full flex-col gap-16" key={kit.id}>
 									<KitHeading id={kit.id} title={kit.title} />
 									<ColorSection kit={kit} />
-									<TypographySection kit={kit} />
+									<TypographySection kit={kit} brandName={brandName} />
 								</section>
 							))}
 						</>

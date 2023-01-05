@@ -16,7 +16,7 @@ type TypographyCardProps = {
 			description: string;
 		};
 	};
-	brandName: string | string[] | undefined;
+	brandName: string | undefined;
 };
 
 const TypographyCard: React.FC<TypographyCardProps> = ({ kit, brandName }) => {

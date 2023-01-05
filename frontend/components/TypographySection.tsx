@@ -19,7 +19,7 @@ type TypographySectionProps = {
 			description: string;
 		};
 	};
-	brandName: string | string[] | undefined;
+	brandName: string | undefined;
 };
 
 const TypographySection: React.FC<TypographySectionProps> = ({

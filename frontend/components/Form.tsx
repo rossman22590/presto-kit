@@ -46,7 +46,7 @@ const Form: React.FC<FormProps> = ({
 				value={input}
 				placeholder={placeholder}
 				onChange={(e) => setInput(e.target.value)}
-				className="font-regular w-96 rounded-md bg-presto-input-bg pl-6 pr-6 pt-4 pb-4 font-Inter text-lg text-presto-grey"
+				className="font-regular w-[600px] rounded-md bg-presto-input-bg pl-6 pr-6 pt-4 pb-4 font-Inter text-lg text-presto-grey"
 			></input>
 			<input
 				type="submit"

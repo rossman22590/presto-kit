@@ -91,7 +91,7 @@ const StarterKits: NextPage<StarterKitsProps> = ({ formData }) => {
 						<Container gap="2rem" maxWidth="720px">
 							<DisplayText
 								heading="Generating Starter Kits"
-								text="Thank you for your patience while our AI works hard to create a selection of brand kits for your brand."
+								text="Thank you for your patience while our AI works hard to create a selection of starter kits for your brand."
 							/>
 							<img
 								src="/loading-icon.png"

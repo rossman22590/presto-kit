@@ -15,11 +15,11 @@ const Industry: NextPage<IndustryProps> = ({ formData, setFormData }) => {
 		<Layout>
 			<Container gap="2rem" maxWidth="1080px">
 				<DisplayText
-					heading="Pick your industry or niche"
+					heading="Describe your brand in a few words"
 					text="Knowing your industry will help us choose suitable styles for your brand"
 				/>
 				<Form
-					placeholder="Tech, Restaurant, Finance..."
+					placeholder="Halloween Store, Personal Finance App, Indy Music Platform... "
 					buttonText="Get Started"
 					formData={formData}
 					setFormData={setFormData}

@@ -20,7 +20,7 @@ const Home: NextPage<HomeProps> = ({ formData, setFormData }) => {
 				your project"
 				/>
 				<Form
-					placeholder="Enter your brand name"
+					placeholder="Enter your brand name here..."
 					buttonText="Get Started"
 					formData={formData}
 					setFormData={setFormData}

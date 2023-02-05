@@ -7,24 +7,16 @@ import { TypographySection } from "../components/TypographySection";
 import { Layout } from "../components/Layout";
 import { KitHeading } from "../components/KitHeading";
 import { DisplayText } from "../components/DisplayText";
+import { useRouterQuery } from "../hooks/useRouterQuery";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
 const StarterKits: NextPage = ({}) => {
-	const [starterKits, setStarterKits] = useState<StarterKits>(starterKitsState);
+	const router = useRouter();
+	const { brandName, brandDescription } = useRouterQuery(router);
 
 	const dataFetchedRef = useRef(false);
-
-	const router = useRouter();
-
-	let { name, industry } = router.query;
-	name = Array.isArray(name) ? name[0] : name;
-
-	const capitaliseWords = (str: string | undefined) => {
-		return str?.replace(/\b[a-z]/gi, (char) => char.toUpperCase());
-	};
-
-	const brandName = capitaliseWords(name);
+	const [starterKits, setStarterKits] = useState<StarterKits>(starterKitsState);
 
 	useEffect(() => {
 		const getInitialKit = async () => {
@@ -34,7 +26,7 @@ const StarterKits: NextPage = ({}) => {
 			let response = await fetch("http://localhost:8000/api/kits", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ brand: industry }),
+				body: JSON.stringify({ brand: brandDescription }),
 			});
 			let data = await response.json();
 			data.payload.id = 1;

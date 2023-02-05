@@ -1,44 +1,19 @@
-import React from "react";
+import type { TypographyCardProps } from "../types/Props";
+import { useColorBrightness } from "../hooks/useColorBrightness";
+import { useKit } from "../hooks/useKit";
 
-type TypographyCardProps = {
-	kit: {
-		title: string;
-		id: number;
-		colors: {
-			details: { id: number; name: string; hex: string }[];
-			description: string;
-		};
-		typography: {
-			typefaces: {
-				display: { font: string; weight: string };
-				text: { font: string; weight: string };
-			};
-			description: string;
-		};
-	};
-	brandName: string | undefined;
-};
+export const TypographyCard = ({ kit, brandName }: TypographyCardProps) => {
+	const {
+		baseColor,
+		primaryColor,
+		accentColor,
+		displayFont,
+		displayWeight,
+		textFont,
+		textWeight,
+	} = useKit(kit);
 
-const TypographyCard: React.FC<TypographyCardProps> = ({ kit, brandName }) => {
-	const { hex: baseColor } = kit.colors.details[0];
-	const { hex: primaryColor } = kit.colors.details[1];
-	const { hex: accentColor } = kit.colors.details[2];
-	const { font: displayFont } = kit.typography.typefaces.display;
-	const { weight: displayWeight } = kit.typography.typefaces.display;
-	const { font: textFont } = kit.typography.typefaces.text;
-	const { weight: textWeight } = kit.typography.typefaces.text;
-	const { title: kitTitle } = kit;
-
-	const hex2rgb = (hex: string) => {
-		const red = parseInt(hex.slice(1, 3), 16);
-		const green = parseInt(hex.slice(3, 5), 16);
-		const blue = parseInt(hex.slice(5, 7), 16);
-		return { red, green, blue };
-	};
-	const isColorBright = (rgb: { red: number; green: number; blue: number }) => {
-		return rgb.red * 0.299 + rgb.green * 0.587 + rgb.blue * 0.114 > 180;
-	};
-	const accentColorRGB = hex2rgb(accentColor);
+	const { isColorBright, accentColorRGB } = useColorBrightness(accentColor);
 
 	return (
 		// Background container
@@ -46,7 +21,7 @@ const TypographyCard: React.FC<TypographyCardProps> = ({ kit, brandName }) => {
 			className="flex flex-col gap-8 rounded-lg border-r-[64px] pl-16 pt-12 pr-16 pb-12 shadow"
 			style={{
 				backgroundColor: baseColor,
-				borderColor: primaryColor
+				borderColor: primaryColor,
 			}}
 		>
 			<div className="flex flex-col gap-2">
@@ -55,7 +30,7 @@ const TypographyCard: React.FC<TypographyCardProps> = ({ kit, brandName }) => {
 					className="text-sm font-light text-[#48505F] opacity-50"
 					style={{
 						fontFamily: textFont,
-						fontWeight: textWeight
+						fontWeight: textWeight,
 					}}
 				>
 					{displayFont} {displayWeight}
@@ -67,7 +42,7 @@ const TypographyCard: React.FC<TypographyCardProps> = ({ kit, brandName }) => {
 					style={{
 						color: primaryColor,
 						fontFamily: displayFont,
-						fontWeight: displayWeight
+						fontWeight: displayWeight,
 					}}
 				>
 					{brandName}
@@ -79,7 +54,7 @@ const TypographyCard: React.FC<TypographyCardProps> = ({ kit, brandName }) => {
 					className="text-sm font-light text-[#48505F] opacity-50"
 					style={{
 						fontFamily: textFont,
-						fontWeight: textWeight
+						fontWeight: textWeight,
 					}}
 				>
 					{textFont} {textWeight}
@@ -89,7 +64,7 @@ const TypographyCard: React.FC<TypographyCardProps> = ({ kit, brandName }) => {
 					className="text-base leading-7 text-[#48505F] opacity-80"
 					style={{
 						fontFamily: textFont,
-						fontWeight: textWeight
+						fontWeight: textWeight,
 					}}
 				>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -105,8 +80,8 @@ const TypographyCard: React.FC<TypographyCardProps> = ({ kit, brandName }) => {
 					color:
 						// If button color is bright, use black text, else use white text
 						isColorBright(accentColorRGB)
-							? "rgba(0, 0, 0, 0.7)"
-							: "rgba(255, 255, 255, 1)"
+							? "rgba(0, 0, 0, 1)"
+							: "rgba(255, 255, 255, 1)",
 				}}
 			>
 				{/* Button text */}
@@ -115,5 +90,3 @@ const TypographyCard: React.FC<TypographyCardProps> = ({ kit, brandName }) => {
 		</div>
 	);
 };
-
-export default TypographyCard;

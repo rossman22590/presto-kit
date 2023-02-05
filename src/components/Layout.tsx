@@ -1,16 +1,12 @@
+import type { LayoutProps } from "../types/Props";
+import { Navbar } from "./Navbar";
 import Head from "next/head";
-import Navbar from "./Navbar";
 
-type LayoutProps = React.PropsWithChildren<{
-	title?: string;
-	description?: string;
-}>;
-
-const Layout: React.FC<LayoutProps> = ({
+export const Layout = ({
 	children,
 	title = "PrestoKit",
-	description = "AI generated brand kits"
-}) => {
+	description = "AI generated brand kits",
+}: LayoutProps) => {
 	return (
 		<>
 			<Head>
@@ -24,5 +20,3 @@ const Layout: React.FC<LayoutProps> = ({
 		</>
 	);
 };
-
-export default Layout;

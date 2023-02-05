@@ -1,7 +1,6 @@
-import SectionDescription from "./SectionDescription";
-import SectionHeading from "./SectionHeading";
-import TypographyCard from "./TypographyCard";
-import React from "react";
+import { SectionDescription } from "./SectionDescription";
+import { SectionHeading } from "./SectionHeading";
+import { TypographyCard } from "./TypographyCard";
 
 type TypographySectionProps = {
 	kit: {
@@ -22,9 +21,9 @@ type TypographySectionProps = {
 	brandName: string | undefined;
 };
 
-const TypographySection: React.FC<TypographySectionProps> = ({
+export const TypographySection: React.FC<TypographySectionProps> = ({
 	kit,
-	brandName
+	brandName,
 }) => {
 	return (
 		<section className="flex flex-col gap-12">
@@ -34,5 +33,3 @@ const TypographySection: React.FC<TypographySectionProps> = ({
 		</section>
 	);
 };
-
-export default TypographySection;

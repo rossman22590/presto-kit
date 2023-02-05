@@ -1,17 +1,13 @@
-import React from "react";
+import type { ColorCardProps } from "../types/Props";
 
-type ColorCardProps = {
-	color: { id: number; name: string; hex: string };
-};
-
-const ColorCard: React.FC<ColorCardProps> = ({ color }) => {
+export const ColorCard = ({ color }: ColorCardProps) => {
 	return (
 		<div id="color-card" className="w-[31%] rounded-lg shadow">
 			<div
 				id="color-display"
 				className="color h-36 w-full rounded-t-lg"
 				style={{
-					backgroundColor: color.hex
+					backgroundColor: color.hex,
 				}}
 			></div>
 			<div id="text-container" className="flex flex-col gap-1 p-4">
@@ -28,5 +24,3 @@ const ColorCard: React.FC<ColorCardProps> = ({ color }) => {
 		</div>
 	);
 };
-
-export default ColorCard;

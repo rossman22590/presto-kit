@@ -1,12 +1,10 @@
-import React from "react";
 import { useRouter } from "next/router";
 
-const Navbar: React.FC = () => {
+export const Navbar = () => {
 	const router = useRouter();
 
-	const handleClick = () => {
-		router.push("/");
-	};
+	const handleClick = () => router.push("/");
+
 	return (
 		<nav className="sticky top-0 z-50 flex cursor-pointer flex-wrap items-center justify-between bg-presto-white bg-opacity-70 p-6 pl-8 pr-8 shadow bg-blur-xl">
 			<img
@@ -32,5 +30,3 @@ const Navbar: React.FC = () => {
 		</nav>
 	);
 };
-
-export default Navbar;

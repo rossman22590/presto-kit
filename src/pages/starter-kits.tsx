@@ -1,7 +1,5 @@
-import type { StarterKits } from "../types/StarterKits";
+import { useFetchKits } from "../hooks/useFetchKits";
 import type { NextPage } from "next";
-import { useEffect, useState, useRef } from "react";
-import { starterKitsState } from "../states/starterKitsState";
 import { ColorSection } from "../components/ColorSection";
 import { TypographySection } from "../components/TypographySection";
 import { Layout } from "../components/Layout";
@@ -14,26 +12,7 @@ import Head from "next/head";
 const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
 	const { brandName, brandDescription } = useRouterQuery(router);
-
-	const dataFetchedRef = useRef(false);
-	const [starterKits, setStarterKits] = useState<StarterKits>(starterKitsState);
-
-	useEffect(() => {
-		const getInitialKit = async () => {
-			if (dataFetchedRef.current) return;
-			dataFetchedRef.current = true;
-
-			let response = await fetch("http://localhost:8000/api/kits", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ brand: brandDescription }),
-			});
-			let data = await response.json();
-			data.payload.id = 1;
-			setStarterKits(data.payload);
-		};
-		getInitialKit();
-	}, []);
+	const { starterKits, error } = useFetchKits(brandDescription);
 
 	return (
 		<>

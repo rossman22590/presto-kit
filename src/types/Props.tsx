@@ -61,3 +61,8 @@ export type TypographyCardProps = {
 	};
 	brandName: string | undefined;
 };
+
+import type { StarterKits } from "../types/StarterKits";
+export type DynamicStylesheetsProps = {
+	starterKits: StarterKits;
+};

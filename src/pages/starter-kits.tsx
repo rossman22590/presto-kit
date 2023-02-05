@@ -1,13 +1,13 @@
-import { useFetchKits } from "../hooks/useFetchKits";
-import type { NextPage } from "next";
+import { DynamicStylesheets } from "./../components/DynamicStylesheets";
 import { ColorSection } from "../components/ColorSection";
 import { TypographySection } from "../components/TypographySection";
 import { Layout } from "../components/Layout";
 import { KitHeading } from "../components/KitHeading";
 import { DisplayText } from "../components/DisplayText";
 import { useRouterQuery } from "../hooks/useRouterQuery";
+import { useFetchKits } from "../hooks/useFetchKits";
 import { useRouter } from "next/router";
-import Head from "next/head";
+import type { NextPage } from "next";
 
 const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
@@ -16,34 +16,9 @@ const StarterKits: NextPage = ({}) => {
 
 	return (
 		<>
-			<Head>
-				<link
-					href={`https://fonts.googleapis.com/css2?family=${starterKits[0].typography.typefaces.display.font}:wght@${starterKits[0].typography.typefaces.display.weight}&display=swap`}
-					rel="stylesheet"
-				></link>
-				<link
-					href={`https://fonts.googleapis.com/css2?family=${starterKits[0].typography.typefaces.text.font}:wght@${starterKits[0].typography.typefaces.text.weight}&display=swap`}
-					rel="stylesheet"
-				></link>
-				<link
-					href={`https://fonts.googleapis.com/css2?family=${starterKits[1].typography.typefaces.display.font}:wght@${starterKits[1].typography.typefaces.display.weight}&display=swap`}
-					rel="stylesheet"
-				></link>
-				<link
-					href={`https://fonts.googleapis.com/css2?family=${starterKits[1].typography.typefaces.text.font}:wght@${starterKits[1].typography.typefaces.text.weight}&display=swap`}
-					rel="stylesheet"
-				></link>
-				<link
-					href={`https://fonts.googleapis.com/css2?family=${starterKits[2].typography.typefaces.display.font}:wght@${starterKits[2].typography.typefaces.display.weight}&display=swap`}
-					rel="stylesheet"
-				></link>
-				<link
-					href={`https://fonts.googleapis.com/css2?family=${starterKits[2].typography.typefaces.text.font}:wght@${starterKits[2].typography.typefaces.text.weight}&display=swap`}
-					rel="stylesheet"
-				></link>
-			</Head>
+			<DynamicStylesheets starterKits={starterKits} />
 			<Layout>
-				<section className="m-auto flex max-w-[720px] flex-col items-center gap-36 pb-56">
+				<section className="m-auto flex max-w-[720px] flex-col items-center gap-20 pb-56">
 					{isLoading && !error ? (
 						<section className="m-auto flex max-w-[720px] flex-col items-center gap-8 pb-56">
 							<DisplayText

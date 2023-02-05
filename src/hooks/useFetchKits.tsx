@@ -7,6 +7,7 @@ export const useFetchKits = (brandDescription: string) => {
 	const dataFetchedRef = useRef(false);
 	const [starterKits, setStarterKits] = useState<StarterKits>(starterKitsState);
 	const [error, setError] = useState<Error | null>(null);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	useEffect(() => {
 		const getInitialKits = async () => {
@@ -22,13 +23,15 @@ export const useFetchKits = (brandDescription: string) => {
 				let data = await response.json();
 				data.payload.id = 1;
 				setStarterKits(data.payload);
+				setIsLoading(false);
 			} catch (error) {
 				console.error(error);
 				setError(error as Error);
+				setIsLoading(false);
 			}
 		};
 		getInitialKits();
 	}, []);
 
-	return { starterKits, error };
+	return { starterKits, isLoading, error };
 };

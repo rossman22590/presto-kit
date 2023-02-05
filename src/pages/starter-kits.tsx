@@ -12,7 +12,7 @@ import Head from "next/head";
 const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
 	const { brandName, brandDescription } = useRouterQuery(router);
-	const { starterKits, error } = useFetchKits(brandDescription);
+	const { starterKits, isLoading, error } = useFetchKits(brandDescription);
 
 	return (
 		<>
@@ -44,7 +44,7 @@ const StarterKits: NextPage = ({}) => {
 			</Head>
 			<Layout>
 				<section className="m-auto flex max-w-[720px] flex-col items-center gap-36 pb-56">
-					{starterKits[2].typography.typefaces.text.weight === "" && (
+					{isLoading && !error ? (
 						<section className="m-auto flex max-w-[720px] flex-col items-center gap-8 pb-56">
 							<DisplayText
 								heading="Generating Starter Kits"
@@ -56,17 +56,34 @@ const StarterKits: NextPage = ({}) => {
 								className="h-20 w-20 animate-spin"
 							/>
 						</section>
-					)}
-					{starterKits[2].typography.typefaces.text.weight !== "" && (
+					) : !isLoading && !error ? (
 						<>
-							<h1></h1>
 							{starterKits.map((kit) => (
-								<section className="flex w-full flex-col gap-16" key={kit.id}>
+								<section
+									className=" mt-32 flex w-full flex-col gap-16"
+									key={kit.id}
+								>
 									<KitHeading id={kit.id} title={kit.title} />
 									<ColorSection kit={kit} />
 									<TypographySection kit={kit} brandName={brandName} />
 								</section>
 							))}
+						</>
+					) : (
+						<>
+							<section className="m-auto flex max-w-[720px] flex-col items-center gap-8 pb-56">
+								<DisplayText
+									heading="Woops, something went wrong!"
+									text="Occasionally the AI response is not valid but we are working to fix this."
+								/>
+								<button
+									type="submit"
+									onClick={() => router.push("/")}
+									className="font-regular cursor-pointer rounded-md bg-presto-green pl-8 pr-8 pt-4 pb-4 font-Inter text-lg text-white hover:opacity-90"
+								>
+									Please try again
+								</button>
+							</section>
 						</>
 					)}
 				</section>

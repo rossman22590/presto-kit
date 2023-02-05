@@ -1,4 +1,4 @@
-type starterKitsType = {
+export type StarterKits = {
 	title: string;
 	id: number;
 	colors: {
@@ -23,5 +23,3 @@ type starterKitsType = {
 		description: string;
 	};
 }[];
-
-export default starterKitsType;

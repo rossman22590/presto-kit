@@ -1,11 +1,5 @@
-import React from "react";
+import type { SectionHeadingProps } from "../types/Props";
 
-type SectionHeadingProps = {
-	text: string;
-};
-
-const SectionHeading: React.FC<SectionHeadingProps> = ({ text }) => {
+export const SectionHeading = ({ text }: SectionHeadingProps) => {
 	return <h3 className="font-Inter text-2xl font-semibold"> {text} </h3>;
 };
-
-export default SectionHeading;

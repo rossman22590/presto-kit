@@ -1,20 +1,9 @@
-import SectionDescription from "./SectionDescription";
-import ColorCard from "./ColorCard";
-import SectionHeading from "./SectionHeading";
-import React from "react";
+import type { ColorSectionProps } from "../types/Props";
+import { SectionDescription } from "./SectionDescription";
+import { SectionHeading } from "./SectionHeading";
+import { ColorCard } from "./ColorCard";
 
-type ColorSectionProps = {
-	kit: {
-		title: string;
-		id: number;
-		colors: {
-			details: { id: number; name: string; hex: string }[];
-			description: string;
-		};
-	};
-};
-
-const ColorSection: React.FC<ColorSectionProps> = ({ kit }) => {
+export const ColorSection = ({ kit }: ColorSectionProps) => {
 	return (
 		<section className="flex flex-col gap-12">
 			<SectionHeading text="Color Scheme" />
@@ -27,5 +16,3 @@ const ColorSection: React.FC<ColorSectionProps> = ({ kit }) => {
 		</section>
 	);
 };
-
-export default ColorSection;

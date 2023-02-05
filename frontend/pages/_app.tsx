@@ -1,18 +1,6 @@
-import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { useState } from "react";
-
-export type FormData = {
-	name: string;
-	industry: string;
-};
+import "../styles/globals.css";
 
 export default function App({ Component, pageProps }: AppProps) {
-	const [formData, setFormData] = useState<FormData>({
-		name: "",
-		industry: ""
-	});
-	return (
-		<Component {...pageProps} formData={formData} setFormData={setFormData} />
-	);
+	return <Component {...pageProps} />;
 }

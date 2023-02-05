@@ -1,31 +1,17 @@
-import { useRouter } from "next/router";
+import type { StarterKits } from "../types/StarterKits";
 import type { NextPage } from "next";
 import { useEffect, useState, useRef } from "react";
-import starterKitsType from "../types/starterKitsType";
-import starterKitsShape from "../data/starterKitsShape";
-import ColorSection from "./../components/ColorSection";
-import TypographySection from "./../components/TypographySection";
-import Layout from "../components/Layout";
-import Container from "./../components/Container";
-import KitHeading from "../components/KitHeading";
-import DisplayText from "../components/DisplayText";
-
-// ! Should not add stylesheets using next/head here
-// this pattern is not recommended because it will potentially break when used with Suspense and/or streaming
-// TODO -> try to import fonts dynamically another way
+import { starterKitsState } from "../states/starterKitsState";
+import { ColorSection } from "./../components/ColorSection";
+import { TypographySection } from "./../components/TypographySection";
+import { Layout } from "../components/Layout";
+import { KitHeading } from "../components/KitHeading";
+import { DisplayText } from "../components/DisplayText";
+import { useRouter } from "next/router";
 import Head from "next/head";
 
-//? refactored form data to be captured through queries to prevent losing data (state) on manual page refresh
-//? is formData state still useful ? - leaving it in place for now
-import { FormData } from "./_app";
-
-export type StarterKitsProps = {
-	formData: FormData;
-};
-
-const StarterKits: NextPage<StarterKitsProps> = ({ formData }) => {
-	const [starterKits, setStarterKits] =
-		useState<starterKitsType>(starterKitsShape);
+const StarterKits: NextPage = ({}) => {
+	const [starterKits, setStarterKits] = useState<StarterKits>(starterKitsState);
 
 	const dataFetchedRef = useRef(false);
 
@@ -48,7 +34,7 @@ const StarterKits: NextPage<StarterKitsProps> = ({ formData }) => {
 			let response = await fetch("http://localhost:8000/api/kits", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ brand: industry })
+				body: JSON.stringify({ brand: industry }),
 			});
 			let data = await response.json();
 			data.payload.id = 1;
@@ -86,9 +72,9 @@ const StarterKits: NextPage<StarterKitsProps> = ({ formData }) => {
 				></link>
 			</Head>
 			<Layout>
-				<Container gap="9rem" maxWidth="720px">
+				<section className="m-auto flex max-w-[720px] flex-col items-center gap-36 pb-56">
 					{starterKits[2].typography.typefaces.text.weight === "" && (
-						<Container gap="2rem" maxWidth="720px">
+						<section className="m-auto flex max-w-[720px] flex-col items-center gap-8 pb-56">
 							<DisplayText
 								heading="Generating Starter Kits"
 								text="Thank you for your patience while our AI works hard to create a selection of starter kits for your brand."
@@ -98,7 +84,7 @@ const StarterKits: NextPage<StarterKitsProps> = ({ formData }) => {
 								alt="Loading Icon"
 								className="h-20 w-20 animate-spin"
 							/>
-						</Container>
+						</section>
 					)}
 					{starterKits[2].typography.typefaces.text.weight !== "" && (
 						<>
@@ -112,7 +98,7 @@ const StarterKits: NextPage<StarterKitsProps> = ({ formData }) => {
 							))}
 						</>
 					)}
-				</Container>
+				</section>
 			</Layout>
 		</>
 	);

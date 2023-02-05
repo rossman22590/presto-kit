@@ -1,19 +1,12 @@
-import DisplayText from "../components/DisplayText";
 import type { NextPage } from "next";
-import { FormData } from "./_app";
-import Layout from "../components/Layout";
-import Container from "../components/Container";
-import Form from "../components/Form";
+import { DisplayText } from "../components/DisplayText";
+import { Layout } from "../components/Layout";
+import { Form } from "../components/Form";
 
-type IndustryProps = {
-	formData: FormData;
-	setFormData: React.Dispatch<React.SetStateAction<FormData>>;
-};
-
-const Industry: NextPage<IndustryProps> = ({ formData, setFormData }) => {
+const Industry: NextPage = ({}) => {
 	return (
 		<Layout>
-			<Container gap="2rem" maxWidth="1080px">
+			<section className="m-auto flex max-w-5xl flex-col items-center gap-8 pb-56">
 				<DisplayText
 					heading="Describe your brand in a few words"
 					text="Knowing your industry will help us choose suitable styles for your brand"
@@ -21,12 +14,10 @@ const Industry: NextPage<IndustryProps> = ({ formData, setFormData }) => {
 				<Form
 					placeholder="Halloween Store, Personal Finance App, Indy Music Platform... "
 					buttonText="Get Started"
-					formData={formData}
-					setFormData={setFormData}
-					formDataKey="industry"
+					formId="industry"
 					submitRoute="starter-kits"
 				/>
-			</Container>
+			</section>
 		</Layout>
 	);
 };

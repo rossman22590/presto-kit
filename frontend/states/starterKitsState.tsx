@@ -1,4 +1,4 @@
-const starterKitsShape = [
+export const starterKitsState = [
 	{
 		title: "",
 		id: 1,
@@ -6,17 +6,17 @@ const starterKitsShape = [
 			details: [
 				{ id: 1, name: "", hex: "" },
 				{ id: 2, name: "", hex: "" },
-				{ id: 3, name: "", hex: "" }
+				{ id: 3, name: "", hex: "" },
 			],
-			description: ""
+			description: "",
 		},
 		typography: {
 			typefaces: {
 				display: { font: "", weight: "" },
-				text: { font: "", weight: "" }
+				text: { font: "", weight: "" },
 			},
-			description: ""
-		}
+			description: "",
+		},
 	},
 	{
 		title: "",
@@ -25,17 +25,17 @@ const starterKitsShape = [
 			details: [
 				{ id: 1, name: "", hex: "" },
 				{ id: 2, name: "", hex: "" },
-				{ id: 3, name: "", hex: "" }
+				{ id: 3, name: "", hex: "" },
 			],
-			description: ""
+			description: "",
 		},
 		typography: {
 			typefaces: {
 				display: { font: "", weight: "" },
-				text: { font: "", weight: "" }
+				text: { font: "", weight: "" },
 			},
-			description: ""
-		}
+			description: "",
+		},
 	},
 	{
 		title: "",
@@ -44,18 +44,16 @@ const starterKitsShape = [
 			details: [
 				{ id: 1, name: "", hex: "" },
 				{ id: 2, name: "", hex: "" },
-				{ id: 3, name: "", hex: "" }
+				{ id: 3, name: "", hex: "" },
 			],
-			description: ""
+			description: "",
 		},
 		typography: {
 			typefaces: {
 				display: { font: "", weight: "" },
-				text: { font: "", weight: "" }
+				text: { font: "", weight: "" },
 			},
-			description: ""
-		}
-	}
+			description: "",
+		},
+	},
 ];
-
-export default starterKitsShape;

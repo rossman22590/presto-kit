@@ -1,11 +1,6 @@
-import React from "react";
+import type { DisplayTextProps } from "../types/Props";
 
-type DisplayTextProps = {
-	heading: string;
-	text: string;
-};
-
-const DisplayText: React.FC<DisplayTextProps> = ({ heading, text }) => {
+export const DisplayText = ({ heading, text }: DisplayTextProps) => {
 	return (
 		<>
 			<h1 className="mt-20 text-center font-Inter text-3xl font-semibold text-black">
@@ -17,5 +12,3 @@ const DisplayText: React.FC<DisplayTextProps> = ({ heading, text }) => {
 		</>
 	);
 };
-
-export default DisplayText;

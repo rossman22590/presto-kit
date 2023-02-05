@@ -1,43 +1,13 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { FormData } from "../pages/_app";
-import { useRouter } from "next/router";
+import type { FormProps } from "../types/Props";
+import { useForm } from "../hooks/useForm";
 
-type FormProps = {
-	placeholder: string;
-	buttonText: string;
-	formDataKey: string;
-	submitRoute: string;
-	formData: FormData;
-	setFormData: React.Dispatch<React.SetStateAction<FormData>>;
-};
-
-const Form: React.FC<FormProps> = ({
+export const Form = ({
 	placeholder,
 	buttonText,
-	formData,
-	setFormData,
-	formDataKey,
-	submitRoute
-}) => {
-	const [input, setInput] = useState("");
-	const router = useRouter();
-
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		setFormData({ ...formData, [formDataKey]: input });
-		router.push({
-			pathname: "/" + submitRoute,
-			query:
-				formDataKey === "name"
-					? { name: input }
-					: { name: router.query.name, industry: input }
-		});
-	};
-
-	useEffect(() => {
-		console.log(formData);
-	}, [formData]);
+	formId,
+	submitRoute,
+}: FormProps) => {
+	const { input, setInput, handleSubmit } = useForm(formId, submitRoute);
 
 	return (
 		<form className="mt-4 flex gap-5" onSubmit={handleSubmit}>
@@ -56,5 +26,3 @@ const Form: React.FC<FormProps> = ({
 		</form>
 	);
 };
-
-export default Form;

@@ -1,30 +1,12 @@
+import type { TypographySectionProps } from "../types/Props";
 import { SectionDescription } from "./SectionDescription";
 import { SectionHeading } from "./SectionHeading";
 import { TypographyCard } from "./TypographyCard";
 
-type TypographySectionProps = {
-	kit: {
-		title: string;
-		id: number;
-		colors: {
-			details: { id: number; name: string; hex: string }[];
-			description: string;
-		};
-		typography: {
-			typefaces: {
-				display: { font: string; weight: string };
-				text: { font: string; weight: string };
-			};
-			description: string;
-		};
-	};
-	brandName: string | undefined;
-};
-
-export const TypographySection: React.FC<TypographySectionProps> = ({
+export const TypographySection = ({
 	kit,
 	brandName,
-}) => {
+}: TypographySectionProps) => {
 	return (
 		<section className="flex flex-col gap-12">
 			<SectionHeading text="Typography" />

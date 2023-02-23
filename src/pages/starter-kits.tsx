@@ -16,7 +16,7 @@ const StarterKits: NextPage = ({}) => {
 
 	return (
 		<>
-			<DynamicStylesheets starterKits={starterKits} />
+			{!isLoading && !error && <DynamicStylesheets starterKits={starterKits} />}
 			<Layout>
 				<section className="m-auto flex max-w-[720px] flex-col items-center gap-20 pb-56">
 					{isLoading && !error ? (

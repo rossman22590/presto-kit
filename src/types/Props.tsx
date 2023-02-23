@@ -66,3 +66,22 @@ import type { StarterKits } from "../types/StarterKits";
 export type DynamicStylesheetsProps = {
 	starterKits: StarterKits;
 };
+
+export type TypographySectionProps = {
+	kit: {
+		title: string;
+		id: number;
+		colors: {
+			details: { id: number; name: string; hex: string }[];
+			description: string;
+		};
+		typography: {
+			typefaces: {
+				display: { font: string; weight: string };
+				text: { font: string; weight: string };
+			};
+			description: string;
+		};
+	};
+	brandName: string | undefined;
+};

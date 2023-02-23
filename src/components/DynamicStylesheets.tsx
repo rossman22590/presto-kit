@@ -11,13 +11,22 @@ export const DynamicStylesheets = ({
 		])
 		.map(({ font, weight }) => {
 			return (
-				<link
-					key={`${font}-${weight}`}
-					href={`https://fonts.googleapis.com/css2?family=${font}:wght@${weight}&display=swap`}
-					rel="stylesheet"
-				/>
+				<>
+					{weight ? (
+						<link
+							key={`${font}-${weight}`}
+							href={`https://fonts.googleapis.com/css2?family=${font}:wght@${weight}&display=swap`}
+							rel="stylesheet"
+						/>
+					) : (
+						<link
+							key={`${font}`}
+							href={`https://fonts.googleapis.com/css2?family=${font}&display=swap`}
+							rel="stylesheet"
+						/>
+					)}
+				</>
 			);
 		});
-
 	return <Head>{links}</Head>;
 };

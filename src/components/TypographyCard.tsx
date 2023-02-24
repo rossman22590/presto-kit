@@ -74,7 +74,7 @@ export const TypographyCard = ({ kit, brandName }: TypographyCardProps) => {
 			</div>
 			{/* Example button */}
 			<div
-				className=" w-[10.5rem] rounded-md pt-3 pb-3 text-center font-Inter text-sm font-normal tracking-wide"
+				className=" w-[10.5rem] rounded-md pt-3 pb-3 text-center font-Inter text-[15px] font-normal tracking-wide"
 				style={{
 					backgroundColor: accentColor,
 					color:

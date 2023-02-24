@@ -9,18 +9,18 @@ export const DynamicStylesheets = ({
 			{ font: typefaces.display.font, weight: typefaces.display.weight },
 			{ font: typefaces.text.font, weight: typefaces.text.weight },
 		])
-		.map(({ font, weight }) => {
+		.map(({ font, weight }, i) => {
 			return (
 				<>
 					{weight ? (
 						<link
-							key={`${font}-${weight}`}
+							key={`${font}-${weight}-${i}`}
 							href={`https://fonts.googleapis.com/css2?family=${font}:wght@${weight}&display=swap`}
 							rel="stylesheet"
 						/>
 					) : (
 						<link
-							key={`${font}`}
+							key={`${font}-${i}`}
 							href={`https://fonts.googleapis.com/css2?family=${font}&display=swap`}
 							rel="stylesheet"
 						/>

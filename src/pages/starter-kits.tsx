@@ -6,6 +6,7 @@ import { KitHeading } from "../components/KitHeading";
 import { DisplayText } from "../components/DisplayText";
 import { useRouterQuery } from "../hooks/useRouterQuery";
 import { useFetchKits } from "../hooks/useFetchKits";
+import { KITS_COUNT } from "../constants/global";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
 
@@ -23,7 +24,9 @@ const StarterKits: NextPage = ({}) => {
 						<section className="m-auto flex max-w-[720px] flex-col items-center gap-8 pb-56">
 							<DisplayText
 								heading="Generating Starter Kits"
-								text="Thank you for your patience while our AI works hard to create a selection of starter kits for your brand."
+								text={`Thank you for your patience while our AI works hard to create a selection of starter kits for your brand. Currently generating kit ${
+									starterKits.length + 1
+								} of ${KITS_COUNT}`}
 							/>
 							<img
 								src="/loading-icon.png"

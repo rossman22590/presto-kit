@@ -1,4 +1,6 @@
 import type { DynamicStylesheetsProps } from "../types/Props";
+import { v4 as uuidv4 } from "uuid";
+import { Fragment } from "react";
 import Head from "next/head";
 
 export const DynamicStylesheets = ({
@@ -11,21 +13,19 @@ export const DynamicStylesheets = ({
 		])
 		.map(({ font, weight }) => {
 			return (
-				<>
+				<Fragment key={uuidv4()}>
 					{weight ? (
 						<link
-							key={`${font}-${weight}`}
 							href={`https://fonts.googleapis.com/css2?family=${font}:wght@${weight}&display=swap`}
 							rel="stylesheet"
 						/>
 					) : (
 						<link
-							key={`${font}`}
 							href={`https://fonts.googleapis.com/css2?family=${font}&display=swap`}
 							rel="stylesheet"
 						/>
 					)}
-				</>
+				</Fragment>
 			);
 		});
 	return <Head>{links}</Head>;

@@ -1,11 +1,11 @@
 import type { StarterKits } from "../types/StarterKits";
-import { starterKitsState } from "../states/starterKitsState";
 import { useState, useEffect, useRef } from "react";
+import { KITS_COUNT } from "../constants/global";
 
 export const useFetchKits = (brandDescription: string) => {
 	// dataFetchedRef prevents 2x sequential fetches to OpenAI
 	const dataFetchedRef = useRef(false);
-	const [starterKits, setStarterKits] = useState<StarterKits>(starterKitsState);
+	const [starterKits, setStarterKits] = useState<StarterKits>([]);
 	const [error, setError] = useState<Error | null>(null);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -15,14 +15,23 @@ export const useFetchKits = (brandDescription: string) => {
 				if (dataFetchedRef.current) return;
 				dataFetchedRef.current = true;
 
-				let response = await fetch("http://localhost:8000/api/kits", {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ brand: brandDescription }),
-				});
-				let data = await response.json();
-				data.payload.id = 1;
-				setStarterKits(data.payload);
+				for (let i = 0; i < KITS_COUNT; i++) {
+					let response = await fetch("http://localhost:8000/api/kits", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							brandDescription: brandDescription,
+							previousKitData: starterKits,
+							id: i + 1,
+						}),
+					});
+					let data = await response.json();
+					setStarterKits((prevStarterKits) => [
+						...prevStarterKits,
+						...data.payload,
+					]);
+				}
+
 				setIsLoading(false);
 			} catch (error) {
 				console.error(error);
@@ -32,6 +41,10 @@ export const useFetchKits = (brandDescription: string) => {
 		};
 		getInitialKits();
 	}, []);
+
+	// useEffect(() => {
+	// 	console.log("starterKits", starterKits);
+	// }, [starterKits]);
 
 	return { starterKits, isLoading, error };
 };

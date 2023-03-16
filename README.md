@@ -16,15 +16,21 @@ Since then, I have been working on the project in my spare time and using it as 
 
 ### Current features:
 
+- The frontend provides a simple way to receive visual feedback as I develop the backend API.
 - Users are prompted to input a brand name and description using a multi-step form.
-- The data is then sent to an express API I am building to handle requests to OpenAI.
-- The API extracts an array of 3 starter kits from the AI completion to send to the frontend.
-- The frontend app then renders the starter kits, which for now includes just color schemes and fonts.
+- The data is then sent to the express API which handles sequential requests to OpenAI.
+- The API extracts and validates a UI kit object from the AI completion to send back to the frontend.
+- The front end includes previously fetched kits in further sequential requests, which the API uses to maintian 'chat' history.
+- Once the kit count has been completed, the frontend renders the starter kits, which for now includes just color schemes and fonts.
 
-### What I'm working on next:
+### What I'm working on now:
 
-- Improving the reliability of the backend API and implementing fallback options if something goes wrong.
-- Adjusting the prompts to improve the quality of AI completions.
-- Working on new features, such as user login and the ability to save, edit, and download UI kits.
-- High-fidelity wireframes to give the app a more unique look and feel.
+- [x] Improved the reliability of the backend API and implemented fallback kit data if something goes wrong.
+- [x] Refactored the API to use the `gpt-3.5-turbo` model rather than the `text-davinci-003` model, which has:
+  - [x] Helped improve the quality, suitability and uniqueness of each starter kit
+  - [x] Allowed previous kit data to be stored in messages 'chat' history.
+  - [x] Decreased the cost of OpenAI API calls.
+- [ ] High-fidelity wireframes for v2 of the frontend. 
+- [ ] New features goals for v2 include user login and the ability to save, edit and download UI kits.
+
 

@@ -1,4 +1,4 @@
-export type StarterKits = {
+export type Kit = {
 	title: string;
 	id: number;
 	colors: {
@@ -22,4 +22,6 @@ export type StarterKits = {
 		};
 		description: string;
 	};
-}[];
+};
+
+export type StarterKits = Kit[];

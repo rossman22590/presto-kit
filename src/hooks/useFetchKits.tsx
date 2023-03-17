@@ -14,6 +14,7 @@ export const useFetchKits = (brandDescription: string) => {
 			try {
 				if (dataFetchedRef.current) return;
 				dataFetchedRef.current = true;
+				let previousKitData: StarterKits | [] = [];
 
 				for (let i = 0; i < KITS_COUNT; i++) {
 					let response = await fetch("http://localhost:8000/api/kits", {
@@ -21,11 +22,12 @@ export const useFetchKits = (brandDescription: string) => {
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({
 							brandDescription: brandDescription,
-							previousKitData: starterKits,
+							previousKitData: previousKitData,
 							id: i + 1,
 						}),
 					});
 					let data = await response.json();
+					previousKitData = [...previousKitData, ...data.payload];
 					setStarterKits((prevStarterKits) => [
 						...prevStarterKits,
 						...data.payload,

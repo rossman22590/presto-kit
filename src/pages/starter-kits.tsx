@@ -1,12 +1,12 @@
-import { DynamicStylesheets } from "./../components/DynamicStylesheets";
-import { ColorSection } from "../components/ColorSection";
 import { TypographySection } from "../components/TypographySection";
-import { Layout } from "../components/Layout";
-import { KitHeading } from "../components/KitHeading";
-import { DisplayText } from "../components/DisplayText";
+import { useDynamicStylesheets } from "../hooks/useDynamicStylesheets";
+import { ColorSection } from "../components/ColorSection";
 import { useRouterQuery } from "../hooks/useRouterQuery";
+import { DisplayText } from "../components/DisplayText";
+import { KitHeading } from "../components/KitHeading";
 import { useFetchKits } from "../hooks/useFetchKits";
 import { KITS_COUNT } from "../constants/global";
+import { Layout } from "../components/Layout";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
 
@@ -14,10 +14,10 @@ const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
 	const { brandName, brandDescription } = useRouterQuery(router);
 	const { starterKits, isLoading, error } = useFetchKits(brandDescription);
+	useDynamicStylesheets(starterKits);
 
 	return (
 		<>
-			{!isLoading && !error && <DynamicStylesheets starterKits={starterKits} />}
 			<Layout>
 				<section className="m-auto flex max-w-[720px] flex-col items-center gap-20 pb-56">
 					{isLoading && !error ? (

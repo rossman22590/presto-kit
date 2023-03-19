@@ -2,7 +2,7 @@ import type { StarterKits } from "../types/StarterKits";
 import { useState, useEffect, useRef } from "react";
 import { KITS_COUNT } from "../constants/global";
 
-export const useFetchKits = (brandDescription: string) => {
+export const useFetchKits = (brandName: string, brandDescription: string) => {
 	// dataFetchedRef prevents 2x sequential fetches to OpenAI
 	const dataFetchedRef = useRef(false);
 	const [starterKits, setStarterKits] = useState<StarterKits>([]);
@@ -21,6 +21,7 @@ export const useFetchKits = (brandDescription: string) => {
 						method: "POST",
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({
+							brandName: brandName,
 							brandDescription: brandDescription,
 							previousKitData: previousKitData,
 							id: i + 1,

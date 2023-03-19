@@ -13,7 +13,10 @@ import type { NextPage } from "next";
 const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
 	const { brandName, brandDescription } = useRouterQuery(router);
-	const { starterKits, isLoading, error } = useFetchKits(brandDescription);
+	const { starterKits, isLoading, error } = useFetchKits(
+		brandDescription,
+		brandName
+	);
 	useDynamicStylesheets(starterKits);
 
 	return (
@@ -34,11 +37,11 @@ const StarterKits: NextPage = ({}) => {
 								className="h-20 w-20 animate-spin"
 							/>
 						</section>
-					) : !isLoading && !error ? (
+					) : !isLoading && starterKits.length > 0 ? (
 						<>
 							{starterKits.map((kit) => (
 								<section
-									className=" mt-32 flex w-full flex-col gap-16"
+									className="mt-32 flex w-full flex-col gap-16"
 									key={kit.id}
 								>
 									<KitHeading id={kit.id} title={kit.title} />

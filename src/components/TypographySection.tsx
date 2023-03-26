@@ -11,7 +11,7 @@ export const TypographySection = ({
 		<section className="flex flex-col gap-12">
 			<SectionHeading text="Typography" />
 			<TypographyCard kit={kit} brandName={brandName} />
-			<SectionDescription text={kit.typography.description} />
+			{/* <SectionDescription text={kit.typography.description} /> */}
 		</section>
 	);
 };

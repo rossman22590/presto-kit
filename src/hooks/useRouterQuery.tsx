@@ -11,8 +11,8 @@ export const useRouterQuery = (router: NextRouter) => {
 		name: string | string[] | undefined,
 		industry: string | string[] | undefined
 	) => {
-		let brandName: string = "Brand Name";
-		let brandDescription: string = "New Brand";
+		let brandName: string = "";
+		let brandDescription: string = "";
 
 		if (name) {
 			brandName = Array.isArray(name) ? name[0] : name;
@@ -20,7 +20,7 @@ export const useRouterQuery = (router: NextRouter) => {
 		}
 		if (industry) {
 			brandDescription = Array.isArray(industry) ? industry[0] : industry;
-			brandDescription = capitaliseWords(brandDescription);
+			brandDescription = brandDescription;
 		}
 
 		return { brandName, brandDescription };

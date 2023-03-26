@@ -12,7 +12,7 @@ export const ColorSection = ({ kit }: ColorSectionProps) => {
 					<ColorCard color={color} key={color.id} />
 				))}
 			</div>
-			<SectionDescription text={kit.colors.description} />
+			{/* <SectionDescription text={kit.colors.description} /> */}
 		</section>
 	);
 };

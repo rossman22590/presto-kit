@@ -11,8 +11,8 @@ export const useRouterQuery = (router: NextRouter) => {
 		name: string | string[] | undefined,
 		industry: string | string[] | undefined
 	) => {
-		let brandName: string = "Brand Name";
-		let brandDescription: string = "New Brand";
+		let brandName: string = "";
+		let brandDescription: string = "";
 
 		if (name) {
 			brandName = Array.isArray(name) ? name[0] : name;

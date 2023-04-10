@@ -30,7 +30,7 @@ Since then, I have been working on the project in my spare time and using it as 
   - [x] Helped improve the quality, suitability and uniqueness of each starter kit
   - [x] Allowed previous kit data to be stored in messages 'chat' history.
   - [x] Decreased the cost of OpenAI API calls.
-- [ ] High-fidelity wireframes for v2 of the frontend. 
-- [ ] New features goals for v2 include user login and the ability to save, edit and download UI kits.
-
+- [x] High-fidelity wireframes for v2 of the frontend. 
+- [ ] Adding the latest features from the v2 design to the frontend, including user login and the ability to save, edit and download UI kits.
+- [ ] Setting up a postgreSQL database to accomodate the v2 features
 

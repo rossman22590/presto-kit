@@ -14,9 +14,11 @@ export const Layout = ({
 				<meta name="description" content={description} />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<Navbar />
-			<main>{children}</main>
-			{/* <Footer /> */}
+
+			<div className="flex min-h-screen flex-col">
+				<Navbar />
+				<main className="flex flex-grow flex-col">{children}</main>
+			</div>
 		</>
 	);
 };

@@ -6,10 +6,9 @@ module.exports = {
 	theme: {
 		extend: {
 			colors: {
-				"presto-white": "#FAFAFA",
 				"presto-grey": "#525A70",
 				"presto-green": "#4ABCA7",
-				"presto-input-bg": "#F1F1F1",
+				"presto-light-grey": "#F4F6F8",
 			},
 			fontFamily: {
 				Inter: ["Inter", ...defaultTheme.fontFamily.sans],

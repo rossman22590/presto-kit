@@ -6,11 +6,11 @@ export const Navbar = () => {
 	const handleClick = () => router.push("/");
 
 	return (
-		<nav className="sticky top-0 z-50 flex cursor-pointer flex-wrap items-center justify-between bg-presto-white bg-opacity-70 p-6 pl-8 pr-8 shadow bg-blur-xl">
+		<nav className="fixed top-0 left-0 z-50 flex w-full cursor-pointer flex-wrap items-center justify-between bg-white bg-opacity-70 p-4 shadow bg-blur-xl md:py-5 md:px-7">
 			<img
 				src="/logo.png"
 				alt="PrestoKit Logo"
-				className="h-8"
+				className="h-7"
 				onClick={handleClick}
 			/>
 			<svg
@@ -19,7 +19,7 @@ export const Navbar = () => {
 				viewBox="0 0 24 24"
 				strokeWidth={1.5}
 				stroke="currentColor"
-				className="h-8"
+				className="h-7"
 			>
 				<path
 					strokeLinecap="round"

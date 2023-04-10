@@ -16,7 +16,7 @@ const Home: NextPage = ({}) => {
 					placeholder="Enter your brand name here..."
 					buttonText="Get Started"
 					formId="name"
-					submitRoute="industry"
+					submitRoute="onboarding"
 				/>
 			</section>
 		</Layout>

@@ -21,7 +21,7 @@ export const useForm: UseForm = (formId: string, submitRoute: string) => {
 			query:
 				formId === "name"
 					? { name: input }
-					: { name: router.query.name, industry: input },
+					: { name: router.query.name, description: input },
 		});
 	};
 

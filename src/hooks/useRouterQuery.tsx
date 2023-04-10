@@ -1,7 +1,7 @@
 import type { NextRouter } from "next/router";
 
 export const useRouterQuery = (router: NextRouter) => {
-	let { name, industry } = router.query;
+	let { name, description } = router.query;
 
 	const capitaliseWords = (str: string) => {
 		return str?.replace(/\b[a-z]/gi, (char) => char.toUpperCase());
@@ -9,7 +9,7 @@ export const useRouterQuery = (router: NextRouter) => {
 
 	const extractQueryStrings = (
 		name: string | string[] | undefined,
-		industry: string | string[] | undefined
+		description: string | string[] | undefined
 	) => {
 		let brandName: string = "";
 		let brandDescription: string = "";
@@ -18,15 +18,20 @@ export const useRouterQuery = (router: NextRouter) => {
 			brandName = Array.isArray(name) ? name[0] : name;
 			brandName = capitaliseWords(brandName);
 		}
-		if (industry) {
-			brandDescription = Array.isArray(industry) ? industry[0] : industry;
+		if (description) {
+			brandDescription = Array.isArray(description)
+				? description[0]
+				: description;
 			brandDescription = brandDescription;
 		}
 
 		return { brandName, brandDescription };
 	};
 
-	const { brandName, brandDescription } = extractQueryStrings(name, industry);
+	const { brandName, brandDescription } = extractQueryStrings(
+		name,
+		description
+	);
 
 	return { brandName, brandDescription };
 };

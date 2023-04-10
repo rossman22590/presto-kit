@@ -13,6 +13,7 @@ const Home: NextPage = ({}) => {
 				your project"
 				/>
 				<Form
+					type="SIMPLE"
 					placeholder="Enter your brand name here..."
 					buttonText="Get Started"
 					formId="name"

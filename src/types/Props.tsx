@@ -19,10 +19,13 @@ export type DisplayTextProps = {
 };
 
 export type FormProps = {
+	type: "SIMPLE" | "ONBOARDING";
 	placeholder: string;
 	buttonText: string;
 	formId: string;
-	submitRoute: string;
+	submitRoute: "onboarding" | "starter-kits";
+	heading?: string;
+	text?: string;
 };
 
 export type KitHeadingProps = {

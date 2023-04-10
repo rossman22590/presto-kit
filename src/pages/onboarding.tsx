@@ -1,21 +1,19 @@
 import type { NextPage } from "next";
-import { DisplayText } from "../components/DisplayText";
 import { Layout } from "../components/Layout";
 import { Form } from "../components/Form";
 
 const Onboarding: NextPage = ({}) => {
 	return (
 		<Layout>
-			<section className="m-auto flex max-w-5xl flex-col items-center gap-8 pb-56">
-				<DisplayText
-					heading="Describe your brand in a few words"
-					text="Knowing your niche will help us choose suitable styles for your brand"
-				/>
+			<section className="m-auto flex max-w-5xl flex-grow flex-col items-center gap-8 pt-40">
 				<Form
-					placeholder="Halloween Store, Personal Finance App, Indy Music Platform... "
-					buttonText="Get Started"
-					formId="onboarding"
+					type="ONBOARDING"
+					buttonText="Continue"
+					formId="description"
 					submitRoute="starter-kits"
+					heading="Describe your brand in a few words"
+					text="Knowing your niche will help us choose suitable styles, colors and fonts for your brand."
+					placeholder="Organic Farm Shop, Halloween Store, Personal Finance App, Indy Music Platform... "
 				/>
 			</section>
 		</Layout>

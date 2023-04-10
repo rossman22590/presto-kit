@@ -1,13 +1,15 @@
 import type { DisplayTextProps } from "../types/Props";
+import Balancer from "react-wrap-balancer";
 
 export const DisplayText = ({ heading, text }: DisplayTextProps) => {
 	return (
 		<>
-			<h1 className="mt-20 text-center font-Inter text-3xl font-semibold text-black">
-				{heading}
+			<h1 className="text-center font-Inter text-2xl font-semibold text-black md:text-3xl">
+				<Balancer>{heading}</Balancer>
 			</h1>
-			<p className="text-center font-Inter text-xl font-normal text-presto-grey">
-				{text}
+			{/* additional lg breakpoint on text resolved a visual bug with Balancer on screen resize */}
+			<p className="text-center font-Inter text-base font-normal text-presto-grey md:text-lg lg:text-xl">
+				<Balancer>{text}</Balancer>
 			</p>
 		</>
 	);

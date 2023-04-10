@@ -1,5 +1,5 @@
-import { TypographySection } from "../components/TypographySection";
 import { useDynamicStylesheets } from "../hooks/useDynamicStylesheets";
+import { TypographySection } from "../components/TypographySection";
 import { ColorSection } from "../components/ColorSection";
 import { useRouterQuery } from "../hooks/useRouterQuery";
 import { DisplayText } from "../components/DisplayText";

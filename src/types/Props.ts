@@ -1,3 +1,6 @@
+import type { StarterKits } from "./StarterKits";
+import type { NumberRange } from "./NumberRange";
+
 export type ColorCardProps = {
 	color: { id: number; name: string; hex: string };
 };
@@ -19,10 +22,13 @@ export type DisplayTextProps = {
 };
 
 export type FormProps = {
+	type: "SIMPLE" | "ONBOARDING";
 	placeholder: string;
 	buttonText: string;
 	formId: string;
-	submitRoute: string;
+	submitRoute: "onboarding" | "starter-kits";
+	heading?: string;
+	text?: string;
 };
 
 export type KitHeadingProps = {
@@ -30,9 +36,16 @@ export type KitHeadingProps = {
 	title: string;
 };
 
+export type NavbarProps = {
+	progressStart?: NumberRange<0, 100>;
+	progressEnd?: NumberRange<0, 100>;
+};
+
 export type LayoutProps = React.PropsWithChildren<{
 	title?: string;
 	description?: string;
+	progressStart?: NumberRange<0, 100>;
+	progressEnd?: NumberRange<0, 100>;
 }>;
 
 export type SectionDescriptionProps = {
@@ -62,7 +75,6 @@ export type TypographyCardProps = {
 	brandName: string | undefined;
 };
 
-import type { StarterKits } from "../types/StarterKits";
 export type DynamicStylesheetsProps = {
 	starterKits: StarterKits;
 };

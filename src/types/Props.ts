@@ -1,3 +1,6 @@
+import type { StarterKits } from "./StarterKits";
+import type { NumberRange } from "./NumberRange";
+
 export type ColorCardProps = {
 	color: { id: number; name: string; hex: string };
 };
@@ -33,9 +36,16 @@ export type KitHeadingProps = {
 	title: string;
 };
 
+export type NavbarProps = {
+	progressStart?: NumberRange<0, 100>;
+	progressEnd?: NumberRange<0, 100>;
+};
+
 export type LayoutProps = React.PropsWithChildren<{
 	title?: string;
 	description?: string;
+	progressStart?: NumberRange<0, 100>;
+	progressEnd?: NumberRange<0, 100>;
 }>;
 
 export type SectionDescriptionProps = {
@@ -65,7 +75,6 @@ export type TypographyCardProps = {
 	brandName: string | undefined;
 };
 
-import type { StarterKits } from "../types/StarterKits";
 export type DynamicStylesheetsProps = {
 	starterKits: StarterKits;
 };

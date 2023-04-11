@@ -24,12 +24,12 @@ export const Form = ({
 					value={input}
 					placeholder={placeholder}
 					onChange={(e) => setInput(e.target.value)}
-					className="font-regular rounded-md bg-presto-light-grey py-4 px-6 font-Inter text-base text-presto-grey md:w-96 md:text-lg"
+					className="font-regular rounded-md bg-presto-light-grey py-4 px-6 font-Inter text-base text-presto-grey focus:outline focus:outline-2 focus:outline-indigo-400 md:w-96 md:text-lg "
 				></input>
 				<input
 					type="submit"
 					value={buttonText}
-					className="font-regular cursor-pointer rounded-md bg-presto-green py-4 px-8 font-Inter text-base text-white hover:opacity-90 md:text-lg"
+					className="font-regular cursor-pointer rounded-md bg-presto-green py-4 px-8 font-Inter text-base text-white hover:opacity-90 focus:outline focus:outline-2 focus:outline-indigo-600 md:text-lg "
 				/>
 			</form>
 		);
@@ -50,7 +50,7 @@ export const Form = ({
 					</div>
 					<button
 						type="submit"
-						className="font-regular flex cursor-pointer items-center gap-2 rounded-md bg-presto-green py-4 px-8 font-Inter text-base text-white hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70 md:text-lg"
+						className="font-regular flex cursor-pointer items-center gap-2 rounded-md bg-presto-green py-4 px-8 font-Inter text-base text-white hover:opacity-90 focus:outline focus:outline-2 focus:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-70 md:text-lg "
 						tabIndex={0}
 						disabled={input.length === 0}
 						aria-disabled={input.length === 0}
@@ -65,7 +65,7 @@ export const Form = ({
 					value={input}
 					placeholder={placeholder}
 					onChange={(e) => setInput(e.target.value)}
-					className="font-regular rounded-md bg-presto-light-grey py-5 px-7 font-Inter text-base text-presto-grey md:text-lg"
+					className="font-regular rounded-md bg-presto-light-grey py-5 px-7 font-Inter text-base text-presto-grey focus:outline focus:outline-2 focus:outline-indigo-400 md:text-lg"
 					tabIndex={1}
 				></input>
 			</form>

@@ -19,8 +19,7 @@ export const Layout = ({
 
 			<div className="flex min-h-screen flex-col">
 				<Navbar progressStart={progressStart} progressEnd={progressEnd} />
-
-				<main className="flex flex-grow flex-col">{children}</main>
+				<main className="flex flex-grow flex-col px-4 md:px-0">{children}</main>
 			</div>
 		</>
 	);

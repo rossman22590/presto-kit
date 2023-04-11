@@ -1,6 +1,7 @@
 import type { FormProps } from "../types/Props";
 import { useForm } from "../hooks/useForm";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import Balancer from "react-wrap-balancer";
 
 export const Form = ({
 	type,
@@ -24,12 +25,12 @@ export const Form = ({
 					value={input}
 					placeholder={placeholder}
 					onChange={(e) => setInput(e.target.value)}
-					className="font-regular rounded-md bg-presto-light-grey py-4 px-6 font-Inter text-base text-presto-grey focus:outline focus:outline-2 focus:outline-indigo-400 md:w-96 md:text-lg "
+					className="rounded-md bg-presto-light-grey py-4 px-6 font-Inter text-base text-presto-grey focus:outline focus:outline-2 focus:outline-indigo-400 md:w-96 md:text-lg "
 				></input>
 				<input
 					type="submit"
 					value={buttonText}
-					className="font-regular cursor-pointer rounded-md bg-presto-green py-4 px-8 font-Inter text-base text-white hover:opacity-90 focus:outline focus:outline-2 focus:outline-indigo-600 md:text-lg "
+					className="cursor-pointer rounded-md bg-presto-green py-4 px-8 font-Inter text-base text-white hover:opacity-90 focus:outline focus:outline-2 focus:outline-indigo-600 md:text-lg "
 				/>
 			</form>
 		);
@@ -37,20 +38,23 @@ export const Form = ({
 
 	if (type === "ONBOARDING") {
 		return (
-			<form className="flex w-full flex-col gap-10" onSubmit={handleSubmit}>
-				{/* 1024px === max-w-5xl */}
-				<div className="flex w-[1024px] items-center justify-between">
+			<form
+				className="flex w-full flex-col gap-5 lg:gap-10"
+				onSubmit={handleSubmit}
+			>
+				{/* 1024px is equal to max-w-5xl from onboarding <section> */}
+				<div className="flex items-center justify-between gap-10 xl:w-[1024px]">
 					<div className="flex flex-col gap-4">
-						<h1 className="text-left font-Inter text-3xl font-semibold text-black">
+						<h1 className="text-left font-Inter text-xl font-semibold text-black sm:text-2xl xl:text-3xl">
 							{heading}
 						</h1>
-						<p className="text-left font-Inter text-lg font-light text-presto-grey">
+						<p className="text-left font-Inter font-light text-presto-grey lg:text-base xl:text-lg">
 							{text}
 						</p>
 					</div>
 					<button
 						type="submit"
-						className="font-regular flex cursor-pointer items-center gap-2 rounded-md bg-presto-green py-4 px-8 font-Inter text-base text-white hover:opacity-90 focus:outline focus:outline-2 focus:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-70 md:text-lg "
+						className="hidden cursor-pointer items-center gap-2 rounded-md bg-presto-green py-4 px-8 font-Inter text-base text-white hover:opacity-90 focus:outline focus:outline-2 focus:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-70 md:text-lg lg:flex "
 						tabIndex={0}
 						disabled={input.length === 0}
 						aria-disabled={input.length === 0}
@@ -65,9 +69,19 @@ export const Form = ({
 					value={input}
 					placeholder={placeholder}
 					onChange={(e) => setInput(e.target.value)}
-					className="font-regular rounded-md bg-presto-light-grey py-5 px-7 font-Inter text-base text-presto-grey focus:outline focus:outline-2 focus:outline-indigo-400 md:text-lg"
+					className="mt-4 rounded-md bg-presto-light-grey py-4 px-6 font-Inter text-base text-presto-grey focus:outline focus:outline-2 focus:outline-indigo-400 md:py-5 md:px-7 md:text-lg lg:mt-0"
 					tabIndex={1}
 				></input>
+				<button
+					type="submit"
+					className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md bg-presto-green py-4 px-8 font-Inter text-base text-white hover:opacity-90 focus:outline focus:outline-2 focus:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-70 md:text-lg lg:hidden"
+					tabIndex={0}
+					disabled={input.length === 0}
+					aria-disabled={input.length === 0}
+				>
+					<p>{buttonText}</p>
+					<ArrowRightIcon className="h-5 w-5" />
+				</button>
 			</form>
 		);
 	}

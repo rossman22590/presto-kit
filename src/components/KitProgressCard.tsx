@@ -1,6 +1,5 @@
 import type { KitProgressCardProps } from "../types/Props";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
-import { v4 as uuidv4 } from "uuid";
 
 export const KitProgressCard = ({
 	starterKits,

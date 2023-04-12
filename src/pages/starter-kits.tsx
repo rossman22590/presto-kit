@@ -3,6 +3,7 @@ import { TypographySection } from "../components/TypographySection";
 import { KitProgressCard } from "../components/KitProgressCard";
 import { ColorSection } from "../components/ColorSection";
 import { useRouterQuery } from "../hooks/useRouterQuery";
+import { useKitProgress } from "../hooks/useKitProgress";
 import { DisplayText } from "../components/DisplayText";
 import { KitHeading } from "../components/KitHeading";
 import { useFetchKits } from "../hooks/useFetchKits";
@@ -19,11 +20,12 @@ const StarterKits: NextPage = ({}) => {
 		brandDescription,
 		brandName
 	);
+	const progress = useKitProgress(starterKits);
 	useDynamicStylesheets(starterKits);
 
 	return (
 		<>
-			<Layout>
+			<Layout prevProgress={33} progress={progress}>
 				<section className="m-auto flex max-w-[720px] flex-col items-center gap-20 pb-56">
 					{isLoading && !error ? (
 						<section className="m-auto flex max-w-[720px] flex-col items-center gap-8 pb-56">

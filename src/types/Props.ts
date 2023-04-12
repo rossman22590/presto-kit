@@ -37,15 +37,15 @@ export type KitHeadingProps = {
 };
 
 export type NavbarProps = {
-	progressStart?: NumberRange<0, 100>;
-	progressEnd?: NumberRange<0, 100>;
+	prevProgress?: number;
+	progress?: number;
 };
 
 export type LayoutProps = React.PropsWithChildren<{
 	title?: string;
 	description?: string;
-	progressStart?: NumberRange<0, 100>;
-	progressEnd?: NumberRange<0, 100>;
+	prevProgress?: number;
+	progress?: number;
 }>;
 
 export type SectionDescriptionProps = {

@@ -8,16 +8,62 @@ import { useFetchKits } from "../hooks/useFetchKits";
 import { KITS_COUNT } from "../constants/global";
 import { Layout } from "../components/Layout";
 import { useRouter } from "next/router";
+import type { StarterKits } from "../types/StarterKits";
 import type { NextPage } from "next";
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
 
 const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
 	const { brandName, brandDescription } = useRouterQuery(router);
-	const { starterKits, isLoading, error } = useFetchKits(
-		brandDescription,
-		brandName
-	);
-	useDynamicStylesheets(starterKits);
+	// const { starterKits, isLoading, error } = useFetchKits(
+	// 	brandDescription,
+	// 	brandName
+	// );
+	// useDynamicStylesheets(starterKits);
+
+	const starterKits: StarterKits | [] = [
+		{
+			title: "",
+			id: 1,
+			colors: {
+				details: [
+					{
+						id: 1,
+						name: "",
+						hex: "#F7EAD9",
+					},
+					{
+						id: 2,
+						name: "",
+						hex: "#5F8A3F",
+					},
+					{
+						id: 3,
+						name: "",
+						hex: "#F2B33D",
+					},
+				],
+				description: "",
+			},
+			typography: {
+				typefaces: {
+					display: {
+						font: "",
+						weight: "",
+					},
+					text: {
+						font: "",
+						weight: "",
+					},
+				},
+				description: "",
+			},
+		},
+	];
+
+	const isLoading = true;
+
+	const error = null;
 
 	return (
 		<>
@@ -31,11 +77,39 @@ const StarterKits: NextPage = ({}) => {
 									starterKits.length + 1
 								} of ${KITS_COUNT}`}
 							/>
-							<img
-								src="/loading-icon.png"
-								alt="Loading Icon"
-								className="h-20 w-20 animate-spin"
-							/>
+
+							<div className="flex gap-12">
+								<div className="flex h-[62px] w-[164px] items-center justify-center rounded-md border-[1px] border-[#e1e4e6]">
+									<div className="flex translate-x-[2px] items-center justify-center gap-[6px]">
+										<div className="flex items-center justify-center gap-1">
+											{starterKits[0].colors.details.map((color) => (
+												<div
+													className="h-6 w-6 rounded"
+													style={{ backgroundColor: `${color.hex}` }}
+												/>
+											))}
+										</div>
+										<CheckCircleIcon className="h-10 w-10 stroke-presto-green stroke-[1.3px]" />
+									</div>
+								</div>
+
+								<div className="flex h-[62px] w-[164px] items-center justify-center rounded-md border-2 border-presto-green">
+									<div className="flex translate-x-[6px] items-center justify-center gap-3">
+										<p className="text-xl font-medium text-presto-grey">
+											Kit 2
+										</p>
+										<img
+											src="/loading-icon.png"
+											alt="Loading Icon"
+											className="h-10 w-10 animate-spin"
+										/>
+									</div>
+								</div>
+
+								<div className="flex h-[62px] w-[164px] items-center justify-center rounded-md border-[1px] border-[#e1e4e6]">
+									<p className="text-xl font-medium text-[#ccd7d9]">Kit 3</p>
+								</div>
+							</div>
 						</section>
 					) : !isLoading && starterKits.length > 0 ? (
 						<>

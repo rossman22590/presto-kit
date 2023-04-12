@@ -16,15 +16,19 @@ import type { NextPage } from "next";
 const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
 	const { brandName, brandDescription } = useRouterQuery(router);
+
 	const { starterKits, isLoading, error } = useFetchKits(
 		brandDescription,
 		brandName
 	);
-	const progress = useKitProgress(starterKits);
+	const prevProgress = 33;
+	const latestProgress = 66;
+	const progress = useKitProgress(starterKits, latestProgress);
+
 	useDynamicStylesheets(starterKits);
 
 	return (
-		<Layout prevProgress={33} progress={progress}>
+		<Layout prevProgress={prevProgress} progress={progress}>
 			{isLoading && !error ? (
 				<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
 					<DisplayText

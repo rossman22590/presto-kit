@@ -24,69 +24,62 @@ const StarterKits: NextPage = ({}) => {
 	useDynamicStylesheets(starterKits);
 
 	return (
-		<>
-			<Layout prevProgress={33} progress={progress}>
-				<section className="m-auto flex max-w-[720px] flex-col items-center gap-20 pb-56">
-					{isLoading && !error ? (
-						<section className="m-auto flex max-w-[720px] flex-col items-center gap-8 pb-56">
-							<DisplayText
-								heading="Generating Starter Kits"
-								text={`Thank you for your patience while our AI works hard to create a selection of starter kits for your brand. Currently generating kit ${
-									starterKits.length + 1
-								} of ${KITS_COUNT}`}
-							/>
-							<div className="mt-6 flex gap-12">
-								{Array(KITS_COUNT)
-									.fill(0)
-									.map((_, index) => {
-										const kitNumber = index + 1;
-										const isGenerating = kitNumber === starterKits.length + 1;
-										const isComplete = kitNumber <= starterKits.length;
-										return (
-											<KitProgressCard
-												key={kitNumber}
-												starterKits={starterKits}
-												kitNumber={kitNumber}
-												isGenerating={isGenerating}
-												isComplete={isComplete}
-											/>
-										);
-									})}
-							</div>
-						</section>
-					) : !isLoading && starterKits.length > 0 ? (
-						<>
-							{starterKits.map((kit) => (
-								<section
-									className="mt-32 flex w-full flex-col gap-16"
-									key={kit.id}
-								>
-									<KitHeading id={kit.id} title={kit.title} />
-									<ColorSection kit={kit} />
-									<TypographySection kit={kit} brandName={brandName} />
-								</section>
-							))}
-						</>
-					) : (
-						<>
-							<section className="m-auto flex max-w-[720px] flex-col items-center gap-8 pb-56">
-								<DisplayText
-									heading="Woops, something went wrong!"
-									text="Occasionally the AI response is not valid but we are working to fix this."
-								/>
-								<button
-									type="submit"
-									onClick={() => router.push("/")}
-									className="font-regular cursor-pointer rounded-md bg-presto-green pl-8 pr-8 pt-4 pb-4 font-Inter text-lg text-white hover:opacity-90"
-								>
-									Please try again
-								</button>
-							</section>
-						</>
-					)}
+		<Layout prevProgress={33} progress={progress}>
+			{isLoading && !error ? (
+				<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
+					<DisplayText
+						heading="Generating Starter Kits"
+						text={`Thank you for your patience while our AI works hard to create a selection of starter kits for your brand. Currently generating kit ${
+							starterKits.length + 1
+						} of ${KITS_COUNT}`}
+					/>
+					<div className="mt-6 flex flex-col gap-8 md:flex-row md:gap-12">
+						{Array(KITS_COUNT)
+							.fill(0)
+							.map((_, index) => {
+								const kitNumber = index + 1;
+								const isGenerating = kitNumber === starterKits.length + 1;
+								const isComplete = kitNumber <= starterKits.length;
+								return (
+									<KitProgressCard
+										key={kitNumber}
+										starterKits={starterKits}
+										kitNumber={kitNumber}
+										isGenerating={isGenerating}
+										isComplete={isComplete}
+									/>
+								);
+							})}
+					</div>
 				</section>
-			</Layout>
-		</>
+			) : !isLoading && starterKits.length > 0 ? (
+				<section className="m-auto flex max-w-[720px] flex-col items-center gap-20 pb-56">
+					{starterKits.map((kit) => (
+						<div className="mt-32 flex w-full flex-col gap-16" key={kit.id}>
+							<KitHeading id={kit.id} title={kit.title} />
+							<ColorSection kit={kit} />
+							<TypographySection kit={kit} brandName={brandName} />
+						</div>
+					))}
+				</section>
+			) : (
+				<section className="m-auto flex max-w-[720px] flex-col items-center gap-20 pb-56">
+					<div className="m-auto flex flex-col items-center gap-8 pb-56">
+						<DisplayText
+							heading="Woops, something went wrong!"
+							text="Occasionally the AI response is not valid but we are working to fix this."
+						/>
+						<button
+							type="submit"
+							onClick={() => router.push("/")}
+							className="font-regular cursor-pointer rounded-md bg-presto-green pl-8 pr-8 pt-4 pb-4 font-Inter text-lg text-white hover:opacity-90"
+						>
+							Please try again
+						</button>
+					</div>
+				</section>
+			)}
+		</Layout>
 	);
 };
 

@@ -1,7 +1,6 @@
 import type { FormProps } from "../types/Props";
 import { useForm } from "../hooks/useForm";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import Balancer from "react-wrap-balancer";
 
 export const Form = ({
 	type,
@@ -25,12 +24,12 @@ export const Form = ({
 					value={input}
 					placeholder={placeholder}
 					onChange={(e) => setInput(e.target.value)}
-					className="rounded-md bg-presto-light-grey py-4 px-6 font-Inter text-base text-presto-grey focus:outline focus:outline-2 focus:outline-indigo-400 md:w-96 md:text-lg "
+					className="rounded-md bg-presto-light-grey py-4 px-6 font-Inter text-base text-presto-grey focus:outline focus:outline-2 focus:outline-indigo-400 md:w-96 md:text-lg"
 				></input>
 				<input
 					type="submit"
 					value={buttonText}
-					className="cursor-pointer rounded-md bg-presto-green py-4 px-8 font-Inter text-base text-white hover:opacity-90 focus:outline focus:outline-2 focus:outline-indigo-600 md:text-lg "
+					className="cursor-pointer rounded-md bg-presto-green py-4 px-8 font-Inter text-base text-white hover:opacity-90 focus:outline focus:outline-2 focus:outline-indigo-600 md:text-lg"
 				/>
 			</form>
 		);
@@ -54,7 +53,7 @@ export const Form = ({
 					</div>
 					<button
 						type="submit"
-						className="hidden cursor-pointer items-center gap-2 rounded-md bg-presto-green py-4 px-8 font-Inter text-base text-white hover:opacity-90 focus:outline focus:outline-2 focus:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-70 md:text-lg lg:flex "
+						className="hidden cursor-pointer items-center gap-2 rounded-md bg-presto-green py-4 px-8 font-Inter text-base text-white hover:opacity-90 focus:outline focus:outline-2 focus:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-70 md:text-lg lg:flex"
 						tabIndex={0}
 						disabled={input.length === 0}
 						aria-disabled={input.length === 0}

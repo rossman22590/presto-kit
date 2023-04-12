@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import type { NavbarProps } from "../types/Props";
 import { useRouter } from "next/router";
 
-export const Navbar = ({ progressStart, progressEnd }: NavbarProps) => {
+export const Navbar = ({ prevProgress, progress }: NavbarProps) => {
 	const router = useRouter();
 
 	const handleClick = () => router.push("/");
 
-	const [progressBar, setProgressBar] = useState(progressStart);
+	const [progressBar, setProgressBar] = useState(prevProgress);
 
 	useEffect(() => {
-		setProgressBar(progressEnd ? progressEnd : 0);
-	}, [progressEnd]);
+		setProgressBar(progress ? progress : prevProgress);
+	}, [progress, prevProgress]);
 
 	return (
 		<div className="fixed top-0 left-0 z-50 w-full">
@@ -38,7 +38,7 @@ export const Navbar = ({ progressStart, progressEnd }: NavbarProps) => {
 				</svg>
 			</nav>
 			{/* Progress Bar */}
-			{progressEnd && (
+			{progress && (
 				<div
 					className="relative z-10 h-[3px] -translate-y-[0.5px] bg-presto-green transition-all duration-700"
 					style={{ width: `${progressBar}%` }}

@@ -6,8 +6,8 @@ export const Layout = ({
 	children,
 	title = "PrestoKit",
 	description = "AI generated brand kits",
-	progressStart,
-	progressEnd,
+	prevProgress,
+	progress,
 }: LayoutProps) => {
 	return (
 		<>
@@ -18,7 +18,7 @@ export const Layout = ({
 			</Head>
 
 			<div className="flex min-h-screen flex-col">
-				<Navbar progressStart={progressStart} progressEnd={progressEnd} />
+				<Navbar prevProgress={prevProgress} progress={progress} />
 				<main className="flex flex-grow flex-col px-4 md:px-0">{children}</main>
 			</div>
 		</>

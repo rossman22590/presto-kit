@@ -97,3 +97,10 @@ export type TypographySectionProps = {
 	};
 	brandName: string | undefined;
 };
+
+export type KitProgressCardProps = {
+	starterKits: StarterKits;
+	kitNumber: number;
+	isGenerating: boolean;
+	isComplete: boolean;
+};

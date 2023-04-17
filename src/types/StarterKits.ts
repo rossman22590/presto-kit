@@ -7,20 +7,20 @@ export type Kit = {
 			name: string;
 			hex: string;
 		}[];
-		description: string;
+		// description: string;
 	};
 	typography: {
 		typefaces: {
 			display: {
 				font: string;
-				weight: string;
+				weight: string | null;
 			};
 			text: {
 				font: string;
 				weight: string;
 			};
 		};
-		description: string;
+		// description: string;
 	};
 };
 

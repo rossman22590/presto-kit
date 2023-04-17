@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Applying h-full here is an alternative to using h-screen in DashboardLayout main wrapper */
+@layer components {
+	#__next {
+		@apply h-full;
+	}
+	html,
+	body {
+		@apply h-full;
+	}
+}

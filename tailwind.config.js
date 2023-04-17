@@ -8,7 +8,7 @@ module.exports = {
 			colors: {
 				"presto-grey": "#525A70",
 				"presto-green": "#4ABCA7",
-				"presto-light-grey": "#F4F6F8",
+				"presto-light-grey": "#F5F7FB",
 			},
 			fontFamily: {
 				Inter: ["Inter", ...defaultTheme.fontFamily.sans],

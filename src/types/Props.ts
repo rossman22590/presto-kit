@@ -1,5 +1,6 @@
 import type { StarterKits } from "./StarterKits";
 import type { NumberRange } from "./NumberRange";
+import type { Navigation } from "./Navigation";
 
 export type ColorCardProps = {
 	color: { id: number; name: string; hex: string };
@@ -11,7 +12,7 @@ export type ColorSectionProps = {
 		id: number;
 		colors: {
 			details: { id: number; name: string; hex: string }[];
-			description: string;
+			// description: string;
 		};
 	};
 };
@@ -62,14 +63,14 @@ export type TypographyCardProps = {
 		id: number;
 		colors: {
 			details: { id: number; name: string; hex: string }[];
-			description: string;
+			// description: string;
 		};
 		typography: {
 			typefaces: {
-				display: { font: string; weight: string };
-				text: { font: string; weight: string };
+				display: { font: string; weight: string | null };
+				text: { font: string; weight: string | null };
 			};
-			description: string;
+			// description: string;
 		};
 	};
 	brandName: string | undefined;
@@ -85,14 +86,14 @@ export type TypographySectionProps = {
 		id: number;
 		colors: {
 			details: { id: number; name: string; hex: string }[];
-			description: string;
+			// description: string;
 		};
 		typography: {
 			typefaces: {
-				display: { font: string; weight: string };
-				text: { font: string; weight: string };
+				display: { font: string; weight: string | null };
+				text: { font: string; weight: string | null };
 			};
-			description: string;
+			// description: string;
 		};
 	};
 	brandName: string | undefined;
@@ -103,4 +104,20 @@ export type KitProgressCardProps = {
 	kitNumber: number;
 	isGenerating: boolean;
 	isComplete: boolean;
+};
+
+export type DesktopSidebarProps = {
+	primaryNavigation: Navigation[];
+	secondaryNavigation: Navigation[];
+};
+
+export type MobileNavbarProps = {
+	setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type MobileSidebarProps = {
+	sidebarOpen: boolean;
+	setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	primaryNavigation: Navigation[];
+	secondaryNavigation: Navigation[];
 };

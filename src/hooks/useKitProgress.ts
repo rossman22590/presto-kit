@@ -2,16 +2,25 @@ import { useState, useEffect } from "react";
 import { StarterKits } from "../types/StarterKits";
 import { KITS_COUNT } from "../constants/global";
 
-export const useKitProgress = (starterKits: StarterKits) => {
-	const [progress, setprogress] = useState<number | undefined>(66);
+export const useKitProgress = (
+	starterKits: StarterKits,
+	latestProgress: number
+) => {
+	const [progress, setprogress] = useState<number | undefined>(latestProgress);
+
+	const remainingProgress = 100 - latestProgress;
 
 	useEffect(() => {
 		if (starterKits.length > 0 && starterKits.length < KITS_COUNT) {
-			setprogress(66 + (starterKits.length / KITS_COUNT) * 34);
-		} else if (starterKits.length === KITS_COUNT) {
+			setprogress(
+				latestProgress + (starterKits.length / KITS_COUNT) * remainingProgress
+			);
+		}
+
+		if (starterKits.length === KITS_COUNT) {
 			setprogress(undefined);
 		}
-	}, [starterKits, KITS_COUNT]);
+	}, [starterKits]);
 
 	return progress;
 };

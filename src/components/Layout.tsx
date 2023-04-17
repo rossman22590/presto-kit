@@ -5,7 +5,7 @@ import Head from "next/head";
 export const Layout = ({
 	children,
 	title = "PrestoKit",
-	description = "AI generated brand kits",
+	description = "AI generated UI kits",
 	prevProgress,
 	progress,
 }: LayoutProps) => {

@@ -45,6 +45,7 @@ export const secondaryNavigation: Navigation[] = [
 		current: false,
 	},
 ];
+
 export const handleNavClick = (pageName: PageName, router: NextRouter) => {
 	switch (pageName) {
 		case "Starter Kits":

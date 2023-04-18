@@ -10,7 +10,7 @@ export const DesktopSidebar = ({
 	const router = useRouter();
 
 	return (
-		<div className="hidden lg:flex lg:flex-shrink-0">
+		<div className="hidden xl:flex xl:flex-shrink-0">
 			<div className="flex w-64 flex-col">
 				<div className="flex min-h-0 flex-1 flex-col bg-white">
 					<div className="flex flex-1 flex-col overflow-y-auto pt-1 pb-4">

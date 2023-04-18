@@ -13,6 +13,7 @@ import { mockStarterKits } from "../data/mockData";
 import { KITS_COUNT } from "../constants/global";
 import { Layout } from "../components/Layout";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import type { StarterKits } from "../types/StarterKits";
 import type { NextPage } from "next";
 
@@ -72,14 +73,70 @@ const StarterKits: NextPage = ({}) => {
 				</Layout>
 			) : !isLoading && starterKits.length > 0 ? (
 				<DashboardLayout>
-					<section className="m-auto flex max-w-[720px] flex-col items-center gap-20 pb-56">
-						{starterKits.map((kit) => (
-							<div className="mt-32 flex w-full flex-col gap-16" key={kit.id}>
-								<KitHeading id={kit.id} title={kit.title} />
-								<ColorSection kit={kit} />
-								<TypographySection kit={kit} brandName={brandName} />
-							</div>
-						))}
+					<section className="m-auto flex max-w-5xl flex-col items-center gap-8 py-6">
+						<div className="w-full">
+							<h1 className="mb-2 text-2xl font-bold">
+								Your starter kits are ready ✨
+							</h1>
+							<p className="text-base text-presto-text-grey">
+								You can select any of the kits, colors and fonts below to see
+								how they look in the Kit View section.
+							</p>
+						</div>
+						<div className="flex w-full justify-between">
+							{starterKits.map((starterKit, i) => (
+								<div
+									key={i}
+									className="group flex w-[310px] cursor-pointer flex-col gap-4"
+								>
+									{/*  */}
+									<h1 className="w-fit rounded-xl border-[1px] border-white bg-white px-5 py-3 text-lg font-medium group-hover:border-presto-green-light">
+										<span className="text-[#AAB2C6]">{`0${starterKit.id} `}</span>
+										{starterKit.title}
+									</h1>
+
+									<div className="flex flex-col gap-5 rounded-xl border-[1px] border-white bg-white p-8 group-hover:border-presto-green-light">
+										{starterKit.colors.details.map((color) => (
+											<div className="flex items-center gap-4 text-base">
+												<div
+													className="aspect-square h-14 rounded-md"
+													style={{ backgroundColor: color.hex }}
+												>
+													&nbsp;
+												</div>
+												<div className="flex flex-col gap-[2px]">
+													<p className="font-medium">{color.name}</p>
+													<p className="tracking-wide text-[#AAB2C6]">
+														{color.hex}
+													</p>
+												</div>
+											</div>
+										))}
+									</div>
+
+									<div
+										className="rounded-xl border-[1px] border-white bg-white px-8 py-5 text-xl group-hover:border-presto-green-light"
+										style={{
+											fontFamily: starterKit.typography.typefaces.display.font,
+											color: starterKit.colors.details[1].hex,
+										}}
+									>
+										{starterKit.typography.typefaces.display.font}{" "}
+										{starterKit.typography.typefaces.display.weight} Display
+									</div>
+
+									<div
+										className="rounded-xl border-[1px] border-white bg-white px-8 py-5 text-lg text-[#343b45] subpixel-antialiased group-hover:border-presto-green-light"
+										style={{
+											fontFamily: starterKit.typography.typefaces.text.font,
+										}}
+									>
+										{starterKit.typography.typefaces.text.font}{" "}
+										{starterKit.typography.typefaces.text.weight} Text
+									</div>
+								</div>
+							))}
+						</div>
 					</section>
 				</DashboardLayout>
 			) : (
@@ -106,3 +163,15 @@ const StarterKits: NextPage = ({}) => {
 };
 
 export default StarterKits;
+
+{
+	/* <section className="m-auto flex max-w-[720px] flex-col items-center gap-20 pb-56">
+	{starterKits.map((kit) => (
+		<div className="mt-32 flex w-full flex-col gap-16" key={kit.id}>
+			<KitHeading id={kit.id} title={kit.title} />
+			<ColorSection kit={kit} />
+			<TypographySection kit={kit} brandName={brandName} />
+		</div>
+	))}
+</section>; */
+}

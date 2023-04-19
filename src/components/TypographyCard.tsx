@@ -30,7 +30,7 @@ export const TypographyCard = ({ kit, brandName }: TypographyCardProps) => {
 					className="text-sm font-light text-[#48505F] opacity-50"
 					style={{
 						fontFamily: textFont,
-						fontWeight: textWeight,
+						fontWeight: textWeight ? textWeight : "",
 					}}
 				>
 					{displayFont} {displayWeight}
@@ -42,7 +42,7 @@ export const TypographyCard = ({ kit, brandName }: TypographyCardProps) => {
 					style={{
 						color: primaryColor,
 						fontFamily: displayFont,
-						fontWeight: displayWeight,
+						fontWeight: displayWeight ? displayWeight : "",
 					}}
 				>
 					{brandName}
@@ -54,7 +54,7 @@ export const TypographyCard = ({ kit, brandName }: TypographyCardProps) => {
 					className="text-sm font-light text-[#48505F] opacity-50"
 					style={{
 						fontFamily: textFont,
-						fontWeight: textWeight,
+						fontWeight: textWeight ? textWeight : "",
 					}}
 				>
 					{textFont} {textWeight}
@@ -64,7 +64,7 @@ export const TypographyCard = ({ kit, brandName }: TypographyCardProps) => {
 					className="text-base leading-7 text-[#48505F] opacity-80"
 					style={{
 						fontFamily: textFont,
-						fontWeight: textWeight,
+						fontWeight: textWeight ? textWeight : "",
 					}}
 				>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

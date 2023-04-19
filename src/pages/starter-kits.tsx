@@ -14,8 +14,10 @@ import { KITS_COUNT } from "../constants/global";
 import { Layout } from "../components/Layout";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import type { StarterKits } from "../types/StarterKits";
+import type { Kit, StarterKits } from "../types/StarterKits";
 import type { NextPage } from "next";
+import { TypographyCard } from "../components/TypographyCard";
+import { useKit } from "../hooks/useKit";
 
 const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
@@ -38,6 +40,46 @@ const StarterKits: NextPage = ({}) => {
 	useDynamicStylesheets(starterKits);
 
 	setCurrentPage(primaryNavigation, "Starter Kits");
+
+	const [colorView, setColorView] = useState(starterKits[0].colors);
+	const [displayFontView, setDisplayFontView] = useState(
+		starterKits[0].typography.typefaces.display
+	);
+	const [textFontView, setTextFontView] = useState(
+		starterKits[0].typography.typefaces.text
+	);
+
+	const updateColorView = (i: number) => {
+		setColorView(starterKits[i].colors);
+	};
+
+	const updateDisplayFontView = (i: number) => {
+		setDisplayFontView(starterKits[i].typography.typefaces.display);
+	};
+
+	const updateTextFontView = (i: number) => {
+		setTextFontView(starterKits[i].typography.typefaces.text);
+	};
+
+	const [isFullKitView, setIsFullKitView] = useState(true);
+
+	const updateFullKitView = (i: number) => {
+		updateColorView(i);
+		updateDisplayFontView(i);
+		updateTextFontView(i);
+	};
+
+	const currentKitView = {
+		title: "",
+		id: 0,
+		colors: colorView,
+		typography: {
+			typefaces: {
+				display: displayFontView,
+				text: textFontView,
+			},
+		},
+	};
 
 	return (
 		<>
@@ -88,16 +130,38 @@ const StarterKits: NextPage = ({}) => {
 								<div
 									key={i}
 									className="group flex w-[310px] cursor-pointer flex-col gap-4"
+									onClick={() => {
+										if (isFullKitView) {
+											updateFullKitView(i);
+										}
+									}}
 								>
 									{/*  */}
-									<h1 className="w-fit rounded-xl border-[1px] border-white bg-white px-5 py-3 text-lg font-medium group-hover:border-presto-green-light">
-										<span className="text-[#AAB2C6]">{`0${starterKit.id} `}</span>
-										{starterKit.title}
-									</h1>
-
-									<div className="flex flex-col gap-5 rounded-xl border-[1px] border-white bg-white p-8 group-hover:border-presto-green-light">
-										{starterKit.colors.details.map((color) => (
-											<div className="flex items-center gap-4 text-base">
+									<div className="flex gap-5">
+										<h1 className="w-fit rounded-xl border-[1px] border-white bg-white px-5 py-3 text-lg font-medium group-hover:border-presto-green-light">
+											<span className="text-[#AAB2C6]">{`0${starterKit.id} `}</span>
+											{starterKit.title}
+										</h1>
+										<button
+											className=" hover:text-fuchsia-500"
+											onClick={() => setIsFullKitView(!isFullKitView)}
+										>
+											{isFullKitView ? "locked" : "unlocked"}
+										</button>
+									</div>
+									<div
+										className="flex flex-col gap-5 rounded-xl border-[1px] border-white bg-white p-8 group-hover:border-presto-green-light"
+										onClick={() => {
+											if (!isFullKitView) {
+												updateColorView(i);
+											}
+										}}
+									>
+										{starterKit.colors.details.map((color, i) => (
+											<div
+												className="flex items-center gap-4 text-base"
+												key={i}
+											>
 												<div
 													className="aspect-square h-14 rounded-md"
 													style={{ backgroundColor: color.hex }}
@@ -120,6 +184,11 @@ const StarterKits: NextPage = ({}) => {
 											fontFamily: starterKit.typography.typefaces.display.font,
 											color: starterKit.colors.details[1].hex,
 										}}
+										onClick={() => {
+											if (!isFullKitView) {
+												updateDisplayFontView(i);
+											}
+										}}
 									>
 										{starterKit.typography.typefaces.display.font}{" "}
 										{starterKit.typography.typefaces.display.weight} Display
@@ -130,6 +199,11 @@ const StarterKits: NextPage = ({}) => {
 										style={{
 											fontFamily: starterKit.typography.typefaces.text.font,
 										}}
+										onClick={() => {
+											if (!isFullKitView) {
+												updateTextFontView(i);
+											}
+										}}
 									>
 										{starterKit.typography.typefaces.text.font}{" "}
 										{starterKit.typography.typefaces.text.weight} Text
@@ -137,6 +211,8 @@ const StarterKits: NextPage = ({}) => {
 								</div>
 							))}
 						</div>
+						{/* Kit view section placeholder */}
+						<TypographyCard kit={currentKitView} brandName={brandName} />
 					</section>
 				</DashboardLayout>
 			) : (

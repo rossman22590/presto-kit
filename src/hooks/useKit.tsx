@@ -1,18 +1,4 @@
-type Kit = {
-	title: string;
-	id: number;
-	colors: {
-		details: { id: number; name: string; hex: string }[];
-		description: string;
-	};
-	typography: {
-		typefaces: {
-			display: { font: string; weight: string };
-			text: { font: string; weight: string };
-		};
-		description: string;
-	};
-};
+import { Kit } from "../types/StarterKits";
 
 export const useKit = (kit: Kit) => {
 	const { hex: baseColor } = kit.colors.details[0];

@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
 import type { NavbarProps } from "../types/Props";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 export const Navbar = ({ prevProgress, progress }: NavbarProps) => {
 	const router = useRouter();
-
 	const handleClick = () => router.push("/");
 
 	const [progressBar, setProgressBar] = useState(prevProgress);

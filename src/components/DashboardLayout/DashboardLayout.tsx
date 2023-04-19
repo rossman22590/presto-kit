@@ -43,7 +43,7 @@ export const DashboardLayout = ({
 					<div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-presto-light-grey">
 						<div className="relative z-0 flex flex-1 overflow-hidden">
 							<main className="relative z-0 flex-1 overflow-y-auto focus:outline-none">
-								<div className="absolute inset-0 py-6 px-4 sm:px-6 lg:px-8 ">
+								<div className="absolute inset-0 py-6 px-4 font-Inter sm:px-6 lg:px-8">
 									{children}
 								</div>
 							</main>

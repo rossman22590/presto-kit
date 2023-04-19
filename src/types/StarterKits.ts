@@ -17,7 +17,7 @@ export type Kit = {
 			};
 			text: {
 				font: string;
-				weight: string;
+				weight: string | null;
 			};
 		};
 		// description: string;

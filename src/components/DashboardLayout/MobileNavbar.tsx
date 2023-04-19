@@ -7,8 +7,8 @@ export const MobileNavbar = ({ setSidebarOpen }: MobileNavbarProps) => {
 	const handleClick = () => router.push("/");
 
 	return (
-		<div className="lg:hidden">
-			<div className="flex items-center justify-between bg-white p-4 shadow">
+		<div className="xl:hidden">
+			<div className="relative flex items-center justify-between bg-white p-4 shadow">
 				<img
 					src="/logo.png"
 					alt="PrestoKit Logo"

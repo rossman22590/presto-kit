@@ -1,5 +1,4 @@
-import type { StarterKits } from "./StarterKits";
-import type { NumberRange } from "./NumberRange";
+import type { Kit, StarterKits } from "./StarterKits";
 import type { Navigation } from "./Navigation";
 
 export type ColorCardProps = {
@@ -7,14 +6,7 @@ export type ColorCardProps = {
 };
 
 export type ColorSectionProps = {
-	kit: {
-		title: string;
-		id: number;
-		colors: {
-			details: { id: number; name: string; hex: string }[];
-			// description: string;
-		};
-	};
+	kit: Kit;
 };
 
 export type DisplayTextProps = {
@@ -58,21 +50,7 @@ export type SectionHeadingProps = {
 };
 
 export type TypographyCardProps = {
-	kit: {
-		title: string;
-		id: number;
-		colors: {
-			details: { id: number; name: string; hex: string }[];
-			// description: string;
-		};
-		typography: {
-			typefaces: {
-				display: { font: string; weight: string | null };
-				text: { font: string; weight: string | null };
-			};
-			// description: string;
-		};
-	};
+	kit: Kit;
 	brandName: string | undefined;
 };
 
@@ -81,21 +59,7 @@ export type DynamicStylesheetsProps = {
 };
 
 export type TypographySectionProps = {
-	kit: {
-		title: string;
-		id: number;
-		colors: {
-			details: { id: number; name: string; hex: string }[];
-			// description: string;
-		};
-		typography: {
-			typefaces: {
-				display: { font: string; weight: string | null };
-				text: { font: string; weight: string | null };
-			};
-			// description: string;
-		};
-	};
+	kit: Kit;
 	brandName: string | undefined;
 };
 

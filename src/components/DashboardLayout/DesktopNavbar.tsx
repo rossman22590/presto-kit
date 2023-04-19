@@ -6,7 +6,7 @@ export const DesktopNavbar = ({}) => {
 	const handleClick = () => router.push("/");
 
 	return (
-		<nav className="sticky top-0 z-50 hidden flex-wrap items-center justify-between bg-white py-5 px-7 shadow lg:flex">
+		<nav className="sticky top-0 z-50 hidden flex-wrap items-center justify-between bg-white py-5 px-7 shadow xl:flex">
 			<img
 				src="/logo.png"
 				alt="PrestoKit Logo"

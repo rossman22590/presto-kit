@@ -29,10 +29,20 @@ export const useKitViewSelection = (starterKits: Kit[]) => {
 	};
 
 	const updateKitView = (type: KitSelectionTypes, kitIndex: number) => {
-		setSelectedIndex({
-			...selectedIndex,
-			[type]: kitIndex,
-		});
+		if (type === "fullKit" && !isFullKitView) {
+			setSelectedIndex({
+				fullKit: null,
+				color: kitIndex,
+				displayFont: kitIndex,
+				textFont: kitIndex,
+			});
+		} else {
+			setSelectedIndex({
+				...selectedIndex,
+				[type]: kitIndex,
+			});
+		}
+
 		const kit = starterKits[kitIndex];
 		let updatedKitView = { ...selectedKitView };
 
@@ -48,7 +58,7 @@ export const useKitViewSelection = (starterKits: Kit[]) => {
 		setSelectedKitView(updatedKitView);
 	};
 
-	const toggleFullKitView = (kitIndex: number, isFullKitView: boolean) => {
+	const toggleFullKitView = (isFullKitView: boolean, kitIndex: number) => {
 		setSelectedIndex({
 			fullKit: isFullKitView ? null : kitIndex,
 			color: isFullKitView ? kitIndex : null,
@@ -59,11 +69,11 @@ export const useKitViewSelection = (starterKits: Kit[]) => {
 	};
 
 	return {
-		isFullKitView,
-		isKitView,
-		isSelected,
-		selectedKitView,
 		toggleFullKitView,
+		selectedKitView,
+		isFullKitView,
 		updateKitView,
+		isSelected,
+		isKitView,
 	};
 };

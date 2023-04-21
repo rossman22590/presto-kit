@@ -94,18 +94,7 @@ const StarterKits: NextPage = ({}) => {
 						</div>
 						<div className="flex w-full justify-between">
 							{starterKits.map((starterKit, i) => (
-								<div
-									key={i}
-									className={classNames(
-										isFullKitView ? "cursor-pointer" : "",
-										"group flex w-[310px] flex-col gap-4"
-									)}
-									onClick={() => {
-										if (isFullKitView) {
-											updateKitView("fullKit", i);
-										}
-									}}
-								>
+								<div key={i} className="group flex w-[310px] flex-col gap-4">
 									<div className="flex gap-5">
 										<h1
 											className={classNames(
@@ -116,11 +105,7 @@ const StarterKits: NextPage = ({}) => {
 													: "border-white hover:border-presto-green-light",
 												"w-fit cursor-pointer rounded-xl border-[1px] bg-white px-5 py-3 text-lg font-medium"
 											)}
-											onClick={() => {
-												if (!isFullKitView) {
-													updateKitView("fullKit", i);
-												}
-											}}
+											onClick={() => updateKitView("fullKit", i)}
 										>
 											<span className="text-[#AAB2C6]">{`0${starterKit.id} `}</span>
 											{starterKit.title}
@@ -128,10 +113,7 @@ const StarterKits: NextPage = ({}) => {
 
 										<button
 											className="hover:text-fuchsia-500"
-											onClick={(e) => {
-												e.stopPropagation();
-												toggleFullKitView(i, isFullKitView);
-											}}
+											onClick={() => toggleFullKitView(isFullKitView, i)}
 										>
 											{isFullKitView && isSelected("fullKit", i) && (
 												<LockClosedIcon className="w-7 stroke-presto-green" />
@@ -148,14 +130,14 @@ const StarterKits: NextPage = ({}) => {
 												? "border-presto-green"
 												: isFullKitView
 												? "border-white group-hover:border-presto-green-light"
-												: "cursor-pointer border-white hover:border-presto-green-light",
-											"flex flex-col gap-5 rounded-xl border-[1px] bg-white p-8"
+												: "border-white hover:border-presto-green-light",
+											"flex cursor-pointer flex-col gap-5 rounded-xl border-[1px] bg-white p-8"
 										)}
-										onClick={() => {
-											if (!isFullKitView) {
-												updateKitView("color", i);
-											}
-										}}
+										onClick={() =>
+											isFullKitView
+												? updateKitView("fullKit", i)
+												: updateKitView("color", i)
+										}
 									>
 										{starterKit.colors.details.map((color, i) => (
 											<div
@@ -184,18 +166,17 @@ const StarterKits: NextPage = ({}) => {
 												? "border-presto-green"
 												: isFullKitView
 												? "border-white group-hover:border-presto-green-light"
-												: "cursor-pointer border-white hover:border-presto-green-light",
-											"rounded-xl border-[1px] bg-white px-8 py-5 text-xl text-[#343b45]"
+												: "border-white hover:border-presto-green-light",
+											"cursor-pointer rounded-xl border-[1px] bg-white px-8 py-5 text-xl text-[#343b45]"
 										)}
 										style={{
 											fontFamily: starterKit.typography.typefaces.display.font,
-											// color: starterKit.colors.details[1].hex,
 										}}
-										onClick={() => {
-											if (!isFullKitView) {
-												updateKitView("displayFont", i);
-											}
-										}}
+										onClick={() =>
+											isFullKitView
+												? updateKitView("fullKit", i)
+												: updateKitView("displayFont", i)
+										}
 									>
 										{starterKit.typography.typefaces.display.font}{" "}
 										{starterKit.typography.typefaces.display.weight} Display
@@ -206,18 +187,18 @@ const StarterKits: NextPage = ({}) => {
 											isSelected("fullKit", i) || isSelected("textFont", i)
 												? "border-presto-green"
 												: isFullKitView
-												? "border-white  group-hover:border-presto-green-light"
-												: "cursor-pointer  border-white hover:border-presto-green-light",
-											"rounded-xl border-[1px] bg-white px-8 py-5 text-lg text-[#343b45] subpixel-antialiased "
+												? "border-white group-hover:border-presto-green-light"
+												: "border-white hover:border-presto-green-light",
+											"cursor-pointer rounded-xl border-[1px] bg-white px-8 py-5 text-lg text-[#343b45] subpixel-antialiased "
 										)}
 										style={{
 											fontFamily: starterKit.typography.typefaces.text.font,
 										}}
-										onClick={() => {
-											if (!isFullKitView) {
-												updateKitView("textFont", i);
-											}
-										}}
+										onClick={() =>
+											isFullKitView
+												? updateKitView("fullKit", i)
+												: updateKitView("textFont", i)
+										}
 									>
 										{starterKit.typography.typefaces.text.font}{" "}
 										{starterKit.typography.typefaces.text.weight} Text

@@ -1,4 +1,5 @@
 import { DashboardLayout } from "../components/DashboardLayout/DashboardLayout";
+import { LockClosedIcon, LockOpenIcon } from "@heroicons/react/24/outline";
 import { primaryNavigation, setCurrentPage } from "../utils/navigation";
 import { useDynamicStylesheets } from "../hooks/useDynamicStylesheets";
 import { useKitViewSelection } from "../hooks/useKitViewSelection";
@@ -15,7 +16,6 @@ import { Layout } from "../components/Layout";
 import { useRouter } from "next/router";
 import type { StarterKits } from "../types/Kits";
 import type { NextPage } from "next";
-import { LockClosedIcon, LockOpenIcon } from "@heroicons/react/24/outline";
 
 const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
@@ -84,15 +84,15 @@ const StarterKits: NextPage = ({}) => {
 				<DashboardLayout>
 					<section className="m-auto flex max-w-5xl flex-col items-center gap-12 py-6">
 						<div className="w-full">
-							<h1 className="mb-2 text-2xl font-bold">
+							<h1 className="mb-2 text-center text-2xl font-bold lg:text-left">
 								Your starter kits are ready ✨
 							</h1>
-							<p className="text-base text-presto-text-grey">
+							<p className="text-center text-base text-presto-text-grey lg:text-left">
 								You can select any of the kits, colors and fonts below to see
 								how they look in the Kit View section.
 							</p>
 						</div>
-						<div className="flex w-full justify-between">
+						<div className="flex w-full flex-col items-center justify-between gap-12 lg:flex-row lg:gap-0">
 							{starterKits.map((starterKit, i) => (
 								<div key={i} className="group flex w-[310px] flex-col gap-4">
 									<div className="flex gap-5">

@@ -37,10 +37,10 @@ export const DisplayText = ({
 					<button
 						type="submit"
 						// onClick={() => router.push("/")}
-						className="flex h-fit cursor-pointer items-center gap-2 rounded-md bg-presto-green py-4 pl-8 pr-8 font-Inter text-xl font-medium text-white hover:opacity-90"
+						className="flex h-fit cursor-pointer items-center gap-2 rounded-md bg-presto-green px-7 py-3 font-Inter text-lg font-medium text-white hover:opacity-90"
 					>
 						{buttonText}
-						<ArrowRightIcon className="w-6" />
+						<ArrowRightIcon className="w-5" />
 					</button>
 				)}
 			</div>

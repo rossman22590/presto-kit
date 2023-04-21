@@ -11,7 +11,7 @@ export const useColorBrightness: UseColorBrightness = (hex) => {
 		return { red, green, blue };
 	};
 	const isColorBright = (rgb: { red: number; green: number; blue: number }) => {
-		return rgb.red * 0.299 + rgb.green * 0.587 + rgb.blue * 0.114 > 180;
+		return rgb.red * 0.299 + rgb.green * 0.587 + rgb.blue * 0.114 > 185;
 	};
 	const accentColorRGB = convertHexToRGB(hex);
 

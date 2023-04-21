@@ -30,6 +30,7 @@ export function KitPreviewCard({
 				</h1>
 
 				{/* Toggle lock icon */}
+				{/* TODO: Locking view should update kit view to fullKit) */}
 				<button
 					className="hover:text-fuchsia-500"
 					onClick={() => toggleFullKitView(i)}

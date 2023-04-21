@@ -1,6 +1,6 @@
 import type { FormProps } from "../../types/Props";
-import { useForm } from "../../hooks/useForm";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { useForm } from "../../hooks/useForm";
 
 export const Form = ({
 	type,

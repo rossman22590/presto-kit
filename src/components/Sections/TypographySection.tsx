@@ -1,6 +1,6 @@
 import type { TypographySectionProps } from "../../types/Props";
-import { SectionDescription } from "./SectionDescription";
 import { SectionHeading } from "../Headings/SectionHeading";
+import { SectionDescription } from "./SectionDescription";
 import { TypographyCard } from "../Cards/TypographyCard";
 
 export const TypographySection = ({

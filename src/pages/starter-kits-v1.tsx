@@ -1,14 +1,14 @@
-import { useDynamicStylesheets } from "../hooks/useDynamicStylesheets";
 import { TypographySection } from "../components/Sections/TypographySection";
+import { useDynamicStylesheets } from "../hooks/useDynamicStylesheets";
 import { KitProgressCard } from "../components/Cards/KitProgressCard";
 import { ColorSection } from "../components/Sections/ColorSection";
-import { useRouterQuery } from "../hooks/useRouterQuery";
-import { useKitProgress } from "../hooks/useKitProgress";
 import { DisplayText } from "../components/Headings/DisplayText";
 import { KitHeading } from "../components/Headings/KitHeading";
+import { Layout } from "../components/LandingLayout/Layout";
+import { useKitProgress } from "../hooks/useKitProgress";
+import { useRouterQuery } from "../hooks/useRouterQuery";
 import { useFetchKits } from "../hooks/useFetchKits";
 import { KITS_COUNT } from "../constants/global";
-import { Layout } from "../components/LandingLayout/Layout";
 import { useRouter } from "next/router";
 import type { StarterKits } from "../types/Kits";
 import type { NextPage } from "next";

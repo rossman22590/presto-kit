@@ -1,6 +1,6 @@
 import type { ColorSectionProps } from "../../types/Props";
-import { SectionDescription } from "./SectionDescription";
 import { SectionHeading } from "../Headings/SectionHeading";
+import { SectionDescription } from "./SectionDescription";
 import { ColorCard } from "../Cards/ColorCard";
 
 export const ColorSection = ({ kit }: ColorSectionProps) => {

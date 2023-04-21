@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
-import { DisplayText } from "../components/DisplayText";
-import { Layout } from "../components/Layout";
-import { Form } from "../components/Form";
+import { DisplayText } from "../components/Headings/DisplayText";
+import { Layout } from "../components/LandingLayout/Layout";
+import { Form } from "../components/Forms/Form";
 
 const Home: NextPage = ({}) => {
 	return (

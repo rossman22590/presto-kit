@@ -1,4 +1,4 @@
-import type { DisplayTextProps } from "../types/Props";
+import type { DisplayTextProps } from "../../types/Props";
 import Balancer from "react-wrap-balancer";
 
 export const DisplayText = ({ heading, text, type }: DisplayTextProps) => {

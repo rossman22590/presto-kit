@@ -93,9 +93,18 @@ const StarterKits: NextPage = ({}) => {
 							))}
 						</div>
 						{/* Kit view section placeholder */}
-						<br />
+					</section>
+					<section className="m-auto mt-12 flex max-w-5xl flex-col items-center gap-12 py-6">
 						{isKitView() && (
-							<TypographyCard kit={selectedKitView} brandName={brandName} />
+							<>
+								<DisplayText
+									heading="Kit Preview"
+									text="When you are ready, click continue to make changes, save and download your custom UI Kit"
+									type="DASHBOARD"
+									buttonText="Continue"
+								/>
+								{/* <TypographyCard kit={selectedKitView} brandName={brandName} /> */}
+							</>
 						)}
 					</section>
 				</DashboardLayout>

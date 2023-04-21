@@ -5,6 +5,7 @@ import type {
 	StarterKits,
 	Kit,
 } from "./Kits";
+import { BooleanLiteral } from "@babel/types";
 
 export type ColorCardProps = {
 	color: { id: number; name: string; hex: string };
@@ -18,6 +19,7 @@ export type DisplayTextProps = {
 	heading: string;
 	text: string;
 	type: "MAIN" | "DASHBOARD";
+	buttonText?: string;
 };
 
 export type FormProps = {

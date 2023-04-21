@@ -9,6 +9,7 @@ export function KitPreviewCard({
 }: KitPreviewCardProps) {
 	const { isFullKitView, isSelected, updateKitView, toggleFullKitView } =
 		kitViewSelection;
+
 	return (
 		<div key={i} className="group flex w-[310px] flex-col gap-4">
 			<div className="flex gap-5">

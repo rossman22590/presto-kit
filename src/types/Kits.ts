@@ -37,3 +37,10 @@ export type SelectedKitView = {
 	displayFont: Kit["typography"]["typefaces"]["display"];
 	textFont: Kit["typography"]["typefaces"]["text"];
 };
+
+export type SelectedIndex = {
+	fullKit: number | null;
+	color: number | null;
+	displayFont: number | null;
+	textFont: number | null;
+};

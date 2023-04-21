@@ -1,111 +1,57 @@
 import { DashboardLayout } from "../components/DashboardLayout/DashboardLayout";
 import { primaryNavigation, setCurrentPage } from "../utils/navigation";
 import { useDynamicStylesheets } from "../hooks/useDynamicStylesheets";
+import { useKitViewSelection } from "../hooks/useKitViewSelection";
 import { KitProgressCard } from "../components/KitProgressCard";
+import { TypographyCard } from "../components/TypographyCard";
 import { useRouterQuery } from "../hooks/useRouterQuery";
 import { useKitProgress } from "../hooks/useKitProgress";
 import { DisplayText } from "../components/DisplayText";
 import { useFetchKits } from "../hooks/useFetchKits";
 import { mockStarterKits } from "../data/mockData";
 import { KITS_COUNT } from "../constants/global";
+import { classNames } from "../utils/helpers";
 import { Layout } from "../components/Layout";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import type {
-	Kit,
-	KitSelectionTypes,
-	SelectedKitView,
-	StarterKits,
-} from "../types/Kits";
+import type { StarterKits } from "../types/Kits";
 import type { NextPage } from "next";
-import { TypographyCard } from "../components/TypographyCard";
-import { classNames } from "../utils/helpers";
 
 const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
 
-	// const { brandName, brandDescription } = useRouterQuery(router);
-	// const { starterKits, isLoading, error } = useFetchKits(
-	// 	brandDescription,
-	// 	brandName
-	// );
-	// const prevProgress = 33;
-	// const latestProgress = 66;
-	// const progress = useKitProgress(starterKits, latestProgress);
+	const { brandName, brandDescription } = useRouterQuery(router);
+	const { starterKits, isLoading, error } = useFetchKits(
+		brandDescription,
+		brandName
+	);
+	const prevProgress = 33;
+	const latestProgress = 66;
+	const progress = useKitProgress(starterKits, latestProgress);
 
 	// Mock data
-	const brandName = "Farm Shop";
-	const starterKits = mockStarterKits;
-	const isLoading = false;
-	const error = null;
+	// const brandName = "Farm Shop";
+	// const starterKits = mockStarterKits;
+	// const isLoading = false;
+	// const error = null;
 
 	useDynamicStylesheets(starterKits);
 
 	setCurrentPage(primaryNavigation, "Starter Kits");
 
-	type SelectedIndex = {
-		fullKit: number | null;
-		color: number | null;
-		displayFont: number | null;
-		textFont: number | null;
-	};
-
-	const [selectedIndex, setSelectedIndex] = useState<SelectedIndex>({
-		fullKit: null,
-		color: null,
-		displayFont: null,
-		textFont: null,
-	});
-	const [selectedKitView, setSelectedKitView] = useState<SelectedKitView>({
-		colors: starterKits[0]?.colors,
-		displayFont: starterKits[0]?.typography.typefaces.display,
-		textFont: starterKits[0]?.typography.typefaces.text,
-	});
-	const [isFullKitView, setIsFullKitView] = useState(true);
-
-	const isSelected = (type: KitSelectionTypes, kitIndex: number) => {
-		return selectedIndex[type] === kitIndex;
-	};
-
-	const isKitView = () => {
-		return Object.values(selectedIndex).some((value) => value !== null);
-	};
-
-	const updateKitView = (type: KitSelectionTypes, kitIndex: number) => {
-		setSelectedIndex({
-			...selectedIndex,
-			[type]: kitIndex,
-		});
-		const kit = starterKits[kitIndex];
-		let updatedKitView = { ...selectedKitView };
-
-		if (type === "fullKit" || type === "color") {
-			updatedKitView.colors = kit.colors;
-		}
-		if (type === "fullKit" || type === "displayFont") {
-			updatedKitView.displayFont = kit.typography.typefaces.display;
-		}
-		if (type === "fullKit" || type === "textFont") {
-			updatedKitView.textFont = kit.typography.typefaces.text;
-		}
-		setSelectedKitView(updatedKitView);
-	};
-
-	const toggleFullKitView = (kitIndex: number, isFullKitView: boolean) => {
-		setSelectedIndex({
-			fullKit: isFullKitView ? null : kitIndex,
-			color: isFullKitView ? kitIndex : null,
-			displayFont: isFullKitView ? kitIndex : null,
-			textFont: isFullKitView ? kitIndex : null,
-		});
-		setIsFullKitView(!isFullKitView);
-	};
+	const {
+		toggleFullKitView,
+		selectedKitView,
+		updateKitView,
+		isFullKitView,
+		isSelected,
+		isKitView,
+	} = useKitViewSelection(starterKits);
 
 	return (
 		<>
 			{isLoading && !error ? (
-				// <Layout prevProgress={prevProgress} progress={progress}>
-				<Layout>
+				<Layout prevProgress={prevProgress} progress={progress}>
+					{/* <Layout> */}
 					<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
 						<DisplayText
 							heading="Generating Starter Kits"
@@ -160,7 +106,6 @@ const StarterKits: NextPage = ({}) => {
 									}}
 								>
 									<div className="flex gap-5">
-										{/* placeholer logic */}
 										<h1
 											className={classNames(
 												isFullKitView && isSelected("fullKit", i)
@@ -229,11 +174,11 @@ const StarterKits: NextPage = ({}) => {
 												: isFullKitView
 												? "border-white group-hover:border-presto-green-light"
 												: "cursor-pointer border-white hover:border-presto-green-light",
-											"rounded-xl border-[1px] bg-white px-8 py-5 text-xl"
+											"rounded-xl border-[1px] bg-white px-8 py-5 text-xl text-[#343b45]"
 										)}
 										style={{
 											fontFamily: starterKit.typography.typefaces.display.font,
-											color: starterKit.colors.details[1].hex,
+											// color: starterKit.colors.details[1].hex,
 										}}
 										onClick={() => {
 											if (!isFullKitView) {

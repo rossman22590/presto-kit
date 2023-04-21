@@ -2,62 +2,68 @@ import { DashboardLayout } from "../components/DashboardLayout/DashboardLayout";
 import { primaryNavigation, setCurrentPage } from "../utils/navigation";
 import { useDynamicStylesheets } from "../hooks/useDynamicStylesheets";
 import { useKitViewSelection } from "../hooks/useKitViewSelection";
-import { KitProgressCard } from "../components/KitProgressCard";
-import { TypographyCard } from "../components/TypographyCard";
+import { KitPreviewCard } from "../components/Cards/KitPreviewCard";
+import { KitProgressCard } from "../components/Cards/KitProgressCard";
+import { useColorBrightness } from "../hooks/useColorBrightness";
+import { DisplayText } from "../components/Headings/DisplayText";
+import { Layout } from "../components/LandingLayout/Layout";
 import { useRouterQuery } from "../hooks/useRouterQuery";
 import { useKitProgress } from "../hooks/useKitProgress";
-import { DisplayText } from "../components/DisplayText";
 import { useFetchKits } from "../hooks/useFetchKits";
 import { mockStarterKits } from "../data/mockData";
+import { useSelectedKit } from "../hooks/useKits";
 import { KITS_COUNT } from "../constants/global";
-import { classNames } from "../utils/helpers";
-import { Layout } from "../components/Layout";
 import { useRouter } from "next/router";
 import type { StarterKits } from "../types/Kits";
 import type { NextPage } from "next";
+import {
+	ArrowRightIcon,
+	Bars3Icon,
+	CubeTransparentIcon,
+	UserCircleIcon,
+} from "@heroicons/react/24/outline";
 
 const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
-
-	const { brandName, brandDescription } = useRouterQuery(router);
-	const { starterKits, isLoading, error } = useFetchKits(
-		brandDescription,
-		brandName
-	);
-	const prevProgress = 33;
-	const latestProgress = 66;
-	const progress = useKitProgress(starterKits, latestProgress);
-
-	// Mock data
-	// const brandName = "Farm Shop";
-	// const starterKits = mockStarterKits;
-	// const isLoading = false;
-	// const error = null;
-
-	useDynamicStylesheets(starterKits);
-
 	setCurrentPage(primaryNavigation, "Starter Kits");
 
-	const {
-		toggleFullKitView,
-		selectedKitView,
-		updateKitView,
-		isFullKitView,
-		isSelected,
-		isKitView,
-	} = useKitViewSelection(starterKits);
+	// const { brandName, brandDescription } = useRouterQuery(router);
+	// const { starterKits, isLoading, error } = useFetchKits(
+	// 	brandDescription,
+	// 	brandName
+	// );
+	// const prevProgress = 33;
+	// const latestProgress = 66;
+	// const progress = useKitProgress(starterKits, latestProgress);
+
+	// Mock data
+	const brandName = "Farm Shop";
+	const starterKits = mockStarterKits;
+	const isLoading = false;
+	const error = null;
+
+	const kitViewSelection = useKitViewSelection(starterKits);
+	const { isKitView, selectedKitView } = kitViewSelection;
+
+	const { baseColor, primaryColor, accentColor, displayFont, textFont } =
+		useSelectedKit(selectedKitView);
+
+	const { isColorBright, accentColorRGB } = useColorBrightness(accentColor);
+
+	useDynamicStylesheets(starterKits);
 
 	return (
 		<>
 			{isLoading && !error ? (
-				<Layout prevProgress={prevProgress} progress={progress}>
-					{/* <Layout> */}
+				// <Layout prevProgress={prevProgress} progress={progress}>
+				<Layout>
 					<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
 						<DisplayText
 							heading="Generating Starter Kits"
 							text={`Thank you for your patience while our AI works hard to create a selection of starter kits for your brand. Currently generating kit ${
 								starterKits.length + 1
 							} of ${KITS_COUNT}`}
+							type="MAIN"
 						/>
 						<div className="mt-6 flex flex-col gap-8 md:flex-row md:gap-12">
 							{Array(KITS_COUNT)
@@ -82,142 +88,186 @@ const StarterKits: NextPage = ({}) => {
 			) : !isLoading && starterKits.length > 0 ? (
 				<DashboardLayout>
 					<section className="m-auto flex max-w-5xl flex-col items-center gap-12 py-6">
-						<div className="w-full">
-							<h1 className="mb-2 text-2xl font-bold">
-								Your starter kits are ready ✨
-							</h1>
-							<p className="text-base text-presto-text-grey">
-								You can select any of the kits, colors and fonts below to see
-								how they look in the Kit View section.
-							</p>
-						</div>
-						<div className="flex w-full justify-between">
+						<DisplayText
+							heading="Your starter kits are ready ✨"
+							text="You can select any of the kits, colors and fonts below to see
+								how they look in the Kit View section."
+							type="DASHBOARD"
+						/>
+						<div className="flex w-full flex-col items-center justify-between gap-12 lg:flex-row lg:gap-0">
 							{starterKits.map((starterKit, i) => (
-								<div
+								<KitPreviewCard
+									starterKit={starterKit}
+									kitViewSelection={kitViewSelection}
 									key={i}
-									className={classNames(
-										isFullKitView ? "cursor-pointer" : "",
-										"group flex w-[310px] flex-col gap-4"
-									)}
-									onClick={() => {
-										if (isFullKitView) {
-											updateKitView("fullKit", i);
-										}
-									}}
-								>
-									<div className="flex gap-5">
-										<h1
-											className={classNames(
-												isFullKitView && isSelected("fullKit", i)
-													? "border-presto-green"
-													: isFullKitView
-													? "border-white group-hover:border-presto-green-light"
-													: "border-white hover:border-presto-green-light",
-												"w-fit cursor-pointer rounded-xl border-[1px] bg-white px-5 py-3 text-lg font-medium"
-											)}
-										>
-											<span className="text-[#AAB2C6]">{`0${starterKit.id} `}</span>
-											{starterKit.title}
-										</h1>
-
-										<button
-											className="hover:text-fuchsia-500"
-											onClick={(e) => {
-												e.stopPropagation();
-												toggleFullKitView(i, isFullKitView);
-											}}
-										>
-											{isFullKitView ? "locked" : "unlocked"}
-										</button>
-									</div>
-
-									<div
-										className={classNames(
-											isSelected("fullKit", i) || isSelected("color", i)
-												? "border-presto-green"
-												: isFullKitView
-												? "border-white group-hover:border-presto-green-light"
-												: "cursor-pointer border-white hover:border-presto-green-light",
-											"flex flex-col gap-5 rounded-xl border-[1px] bg-white p-8"
-										)}
-										onClick={() => {
-											if (!isFullKitView) {
-												updateKitView("color", i);
-											}
-										}}
-									>
-										{starterKit.colors.details.map((color, i) => (
-											<div
-												className="flex items-center gap-4 text-base"
-												key={i}
-											>
-												<div
-													className="aspect-square h-14 rounded-md"
-													style={{ backgroundColor: color.hex }}
-												>
-													&nbsp;
-												</div>
-												<div className="flex flex-col gap-[2px]">
-													<p className="font-medium">{color.name}</p>
-													<p className="tracking-wide text-[#AAB2C6]">
-														{color.hex}
-													</p>
-												</div>
-											</div>
-										))}
-									</div>
-
-									<div
-										className={classNames(
-											isSelected("fullKit", i) || isSelected("displayFont", i)
-												? "border-presto-green"
-												: isFullKitView
-												? "border-white group-hover:border-presto-green-light"
-												: "cursor-pointer border-white hover:border-presto-green-light",
-											"rounded-xl border-[1px] bg-white px-8 py-5 text-xl text-[#343b45]"
-										)}
-										style={{
-											fontFamily: starterKit.typography.typefaces.display.font,
-											// color: starterKit.colors.details[1].hex,
-										}}
-										onClick={() => {
-											if (!isFullKitView) {
-												updateKitView("displayFont", i);
-											}
-										}}
-									>
-										{starterKit.typography.typefaces.display.font}{" "}
-										{starterKit.typography.typefaces.display.weight} Display
-									</div>
-
-									<div
-										className={classNames(
-											isSelected("fullKit", i) || isSelected("textFont", i)
-												? "border-presto-green"
-												: isFullKitView
-												? "border-white  group-hover:border-presto-green-light"
-												: "cursor-pointer  border-white hover:border-presto-green-light",
-											"rounded-xl border-[1px] bg-white px-8 py-5 text-lg text-[#343b45] subpixel-antialiased "
-										)}
-										style={{
-											fontFamily: starterKit.typography.typefaces.text.font,
-										}}
-										onClick={() => {
-											if (!isFullKitView) {
-												updateKitView("textFont", i);
-											}
-										}}
-									>
-										{starterKit.typography.typefaces.text.font}{" "}
-										{starterKit.typography.typefaces.text.weight} Text
-									</div>
-								</div>
+									i={i}
+								/>
 							))}
 						</div>
 						{/* Kit view section placeholder */}
-						<br />
+					</section>
+					<section className="m-auto my-12 flex max-w-5xl flex-col items-center gap-12 py-6">
 						{isKitView() && (
-							<TypographyCard kit={selectedKitView} brandName={brandName} />
+							<>
+								<DisplayText
+									heading="Kit Preview"
+									text="When you are ready, click continue to make changes, save and download your custom UI Kit"
+									type="DASHBOARD"
+									buttonText="Continue"
+								/>
+
+								<div className="flex aspect-[3.1/2] w-full flex-col rounded-xl border-4 border-white bg-white">
+									<div className="flex h-7 w-full items-center justify-start gap-[7px]  rounded-t-lg bg-white pl-2">
+										{Array(3)
+											.fill(0)
+											.map((_, i) => (
+												<div
+													className="aspect-square w-[11px] -translate-y-[2px] rounded-full bg-[#f0f2f7]"
+													key={i}
+												></div>
+											))}
+									</div>
+									<div
+										className="flex w-full grow flex-col justify-between rounded-b-lg"
+										style={{
+											backgroundColor: baseColor,
+										}}
+									>
+										<div className="relative flex w-full justify-between py-5 px-6">
+											<div className="flex items-center gap-2">
+												<CubeTransparentIcon
+													className="h-7"
+													style={{
+														color: accentColor,
+													}}
+												/>
+												<h3
+													className="text-lg"
+													style={{
+														color: primaryColor,
+														fontFamily: displayFont,
+													}}
+												>
+													{brandName}
+												</h3>
+											</div>
+
+											<div
+												className="absolute left-0 top-0 bottom-0 right-0 m-auto flex items-center justify-center gap-10 text-center text-sm font-light subpixel-antialiased"
+												style={{
+													color: primaryColor,
+													fontFamily: textFont,
+												}}
+											>
+												<p>Home</p>
+												<p>About</p>
+												<p>Contact</p>
+											</div>
+
+											<div className="flex items-center gap-3">
+												<Bars3Icon
+													className="w-7"
+													style={{
+														color: primaryColor,
+													}}
+												/>
+												<UserCircleIcon
+													className="w-7"
+													style={{
+														color: primaryColor,
+													}}
+												/>
+											</div>
+										</div>
+
+										<div className="flex -translate-y-8 flex-col items-center gap-8">
+											<div
+												className="flex w-fit items-center justify-center gap-1 rounded-full border-[1px] py-2 px-7"
+												style={{
+													borderColor: `${accentColor}40`,
+												}}
+											>
+												<p
+													className="text-sm"
+													style={{
+														color: primaryColor,
+													}}
+												>
+													Lorem ipsum dolor{" "}
+													<span
+														className="font-bold"
+														style={{
+															color: accentColor,
+														}}
+													>
+														sit amet
+													</span>
+												</p>
+												<ArrowRightIcon
+													className="w-4"
+													style={{
+														color: accentColor,
+													}}
+												/>
+											</div>
+
+											<h4
+												className="text-center text-6xl"
+												style={{
+													color: primaryColor,
+													fontFamily: displayFont,
+												}}
+											>
+												{displayFont} Heading
+											</h4>
+
+											<p
+												className="px-32 text-center text-[19px] leading-[1.6] text-[#393b47]"
+												style={{
+													fontFamily: textFont,
+												}}
+											>
+												{textFont} text lorem ipsum dolor sit amet, consectetur
+												adipiscing elit, sed do eiusmod tempor incididunt ut
+												labore et dolore magna aliqua. Ut enim ad minim.
+											</p>
+
+											<div className="flex items-center gap-4">
+												<div
+													className="rounded-md border-2 py-[9px] px-[34px] text-lg text-white subpixel-antialiased"
+													style={{
+														backgroundColor: accentColor,
+														borderColor: accentColor,
+														fontFamily: textFont,
+														color:
+															// If button color is bright, use black text, else use white text
+															isColorBright(accentColorRGB)
+																? "rgba(0, 0, 0, 1)"
+																: "rgba(255, 255, 255, 1)",
+													}}
+												>
+													Get started
+												</div>
+												<div
+													className="rounded-md border-2 py-[9px] px-[34px] text-lg text-white subpixel-antialiased"
+													style={{
+														fontFamily: textFont,
+														color: primaryColor,
+														borderColor: primaryColor,
+													}}
+												>
+													Learn more
+												</div>
+											</div>
+										</div>
+										<div
+											className="h-[60px] w-full rounded-b-lg"
+											style={{ backgroundColor: accentColor }}
+										></div>
+									</div>
+								</div>
+								<div className="h-20"></div>
+							</>
 						)}
 					</section>
 				</DashboardLayout>
@@ -228,6 +278,7 @@ const StarterKits: NextPage = ({}) => {
 							<DisplayText
 								heading="Woops, something went wrong!"
 								text="Occasionally the AI response is not valid but we are working to fix this."
+								type="MAIN"
 							/>
 							<button
 								type="submit"

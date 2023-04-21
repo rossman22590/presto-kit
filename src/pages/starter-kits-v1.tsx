@@ -1,14 +1,14 @@
+import { TypographySection } from "../components/Sections/TypographySection";
 import { useDynamicStylesheets } from "../hooks/useDynamicStylesheets";
-import { TypographySection } from "../components/TypographySection";
-import { KitProgressCard } from "../components/KitProgressCard";
-import { ColorSection } from "../components/ColorSection";
-import { useRouterQuery } from "../hooks/useRouterQuery";
+import { KitProgressCard } from "../components/Cards/KitProgressCard";
+import { ColorSection } from "../components/Sections/ColorSection";
+import { DisplayText } from "../components/Headings/DisplayText";
+import { KitHeading } from "../components/Headings/KitHeading";
+import { Layout } from "../components/LandingLayout/Layout";
 import { useKitProgress } from "../hooks/useKitProgress";
-import { DisplayText } from "../components/DisplayText";
-import { KitHeading } from "../components/KitHeading";
+import { useRouterQuery } from "../hooks/useRouterQuery";
 import { useFetchKits } from "../hooks/useFetchKits";
 import { KITS_COUNT } from "../constants/global";
-import { Layout } from "../components/Layout";
 import { useRouter } from "next/router";
 import type { StarterKits } from "../types/Kits";
 import type { NextPage } from "next";
@@ -36,6 +36,7 @@ const StarterKits: NextPage = ({}) => {
 						text={`Thank you for your patience while our AI works hard to create a selection of starter kits for your brand. Currently generating kit ${
 							starterKits.length + 1
 						} of ${KITS_COUNT}`}
+						type="MAIN"
 					/>
 					<div className="mt-6 flex flex-col gap-8 md:flex-row md:gap-12">
 						{Array(KITS_COUNT)
@@ -72,6 +73,7 @@ const StarterKits: NextPage = ({}) => {
 						<DisplayText
 							heading="Woops, something went wrong!"
 							text="Occasionally the AI response is not valid but we are working to fix this."
+							type="MAIN"
 						/>
 						<button
 							type="submit"

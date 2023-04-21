@@ -1,4 +1,4 @@
-import type { ColorCardProps } from "../types/Props";
+import type { ColorCardProps } from "../../types/Props";
 
 export const ColorCard = ({ color }: ColorCardProps) => {
 	return (

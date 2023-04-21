@@ -1,7 +1,7 @@
-import type { TypographySectionProps } from "../types/Props";
+import type { TypographySectionProps } from "../../types/Props";
+import { SectionHeading } from "../Headings/SectionHeading";
 import { SectionDescription } from "./SectionDescription";
-import { SectionHeading } from "./SectionHeading";
-import { TypographyCard } from "./TypographyCard";
+import { TypographyCard } from "../Cards/TypographyCard";
 
 export const TypographySection = ({
 	kit,
@@ -10,7 +10,7 @@ export const TypographySection = ({
 	return (
 		<section className="flex flex-col gap-12">
 			<SectionHeading text="Typography" />
-			<TypographyCard kit={kit} brandName={brandName} />
+			{/* <TypographyCard kit={kit} brandName={brandName} /> */}
 			{/* <SectionDescription text={kit.typography.description} /> */}
 		</section>
 	);

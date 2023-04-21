@@ -1,4 +1,4 @@
-import type { NavbarProps } from "../types/Props";
+import type { NavbarProps } from "../../types/Props";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 

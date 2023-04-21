@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
-import { Layout } from "../components/Layout";
-import { Form } from "../components/Form";
+import { Layout } from "../components/LandingLayout/Layout";
+import { Form } from "../components/Forms/Form";
 
 const Onboarding: NextPage = ({}) => {
 	return (

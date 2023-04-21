@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
-import { DisplayText } from "../components/DisplayText";
-import { Layout } from "../components/Layout";
-import { Form } from "../components/Form";
+import { DisplayText } from "../components/Headings/DisplayText";
+import { Layout } from "../components/LandingLayout/Layout";
+import { Form } from "../components/Forms/Form";
 
 const Home: NextPage = ({}) => {
 	return (
@@ -11,6 +11,7 @@ const Home: NextPage = ({}) => {
 					heading="Effortlessly create your own UI kit in seconds"
 					text="Use our AI-powered tool to start building a unique visual identity for
 				your project"
+					type="MAIN"
 				/>
 				<Form
 					type="SIMPLE"

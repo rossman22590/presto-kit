@@ -1,6 +1,6 @@
-import type { TypographyCardProps } from "../types/Props";
-import { useColorBrightness } from "../hooks/useColorBrightness";
-import { useKit, useSelectedKit } from "../hooks/useKits";
+import { useColorBrightness } from "../../hooks/useColorBrightness";
+import { useKit, useSelectedKit } from "../../hooks/useKits";
+import type { TypographyCardProps } from "../../types/Props";
 
 export const TypographyCard = ({ kit, brandName }: TypographyCardProps) => {
 	const {

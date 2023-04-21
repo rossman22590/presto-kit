@@ -1,4 +1,4 @@
-import type { StarterKits } from "../types/StarterKits";
+import type { StarterKits } from "../types/Kits";
 import { useState, useEffect, useRef } from "react";
 import { KITS_COUNT } from "../constants/global";
 
@@ -8,6 +8,9 @@ export const useFetchKits = (brandName: string, brandDescription: string) => {
 	const [starterKits, setStarterKits] = useState<StarterKits>([]);
 	const [error, setError] = useState<Error | null>(null);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+
+	const sleep = (ms: number) =>
+		new Promise((resolve) => setTimeout(resolve, ms));
 
 	useEffect(() => {
 		const getInitialKits = async () => {

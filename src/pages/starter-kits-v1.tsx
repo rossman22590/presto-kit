@@ -10,7 +10,7 @@ import { useFetchKits } from "../hooks/useFetchKits";
 import { KITS_COUNT } from "../constants/global";
 import { Layout } from "../components/Layout";
 import { useRouter } from "next/router";
-import type { StarterKits } from "../types/StarterKits";
+import type { StarterKits } from "../types/Kits";
 import type { NextPage } from "next";
 
 const StarterKits: NextPage = ({}) => {

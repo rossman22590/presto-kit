@@ -1,4 +1,4 @@
-import { StarterKits } from "../types/StarterKits";
+import { StarterKits } from "../types/Kits";
 import { KITS_COUNT } from "../constants/global";
 import { useEffect } from "react";
 

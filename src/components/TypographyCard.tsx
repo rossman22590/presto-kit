@@ -1,6 +1,6 @@
 import type { TypographyCardProps } from "../types/Props";
 import { useColorBrightness } from "../hooks/useColorBrightness";
-import { useKit } from "../hooks/useKit";
+import { useKit, useSelectedKit } from "../hooks/useKits";
 
 export const TypographyCard = ({ kit, brandName }: TypographyCardProps) => {
 	const {
@@ -11,7 +11,7 @@ export const TypographyCard = ({ kit, brandName }: TypographyCardProps) => {
 		displayWeight,
 		textFont,
 		textWeight,
-	} = useKit(kit);
+	} = useSelectedKit(kit);
 
 	const { isColorBright, accentColorRGB } = useColorBrightness(accentColor);
 

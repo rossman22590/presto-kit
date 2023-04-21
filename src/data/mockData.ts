@@ -1,4 +1,4 @@
-import type { StarterKits } from "../types/StarterKits";
+import type { StarterKits } from "../types/Kits";
 
 export const mockStarterKits: StarterKits | [] = [
 	{

@@ -1,4 +1,4 @@
-import type { Kit, StarterKits } from "./StarterKits";
+import type { Kit, SelectedKitView, StarterKits } from "./Kits";
 import type { Navigation } from "./Navigation";
 
 export type ColorCardProps = {
@@ -50,7 +50,7 @@ export type SectionHeadingProps = {
 };
 
 export type TypographyCardProps = {
-	kit: Kit;
+	kit: SelectedKitView;
 	brandName: string | undefined;
 };
 

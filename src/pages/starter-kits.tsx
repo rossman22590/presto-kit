@@ -15,24 +15,25 @@ import { Layout } from "../components/Layout";
 import { useRouter } from "next/router";
 import type { StarterKits } from "../types/Kits";
 import type { NextPage } from "next";
+import { LockClosedIcon, LockOpenIcon } from "@heroicons/react/24/outline";
 
 const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
 
-	const { brandName, brandDescription } = useRouterQuery(router);
-	const { starterKits, isLoading, error } = useFetchKits(
-		brandDescription,
-		brandName
-	);
-	const prevProgress = 33;
-	const latestProgress = 66;
-	const progress = useKitProgress(starterKits, latestProgress);
+	// const { brandName, brandDescription } = useRouterQuery(router);
+	// const { starterKits, isLoading, error } = useFetchKits(
+	// 	brandDescription,
+	// 	brandName
+	// );
+	// const prevProgress = 33;
+	// const latestProgress = 66;
+	// const progress = useKitProgress(starterKits, latestProgress);
 
 	// Mock data
-	// const brandName = "Farm Shop";
-	// const starterKits = mockStarterKits;
-	// const isLoading = false;
-	// const error = null;
+	const brandName = "Farm Shop";
+	const starterKits = mockStarterKits;
+	const isLoading = false;
+	const error = null;
 
 	useDynamicStylesheets(starterKits);
 
@@ -50,8 +51,8 @@ const StarterKits: NextPage = ({}) => {
 	return (
 		<>
 			{isLoading && !error ? (
-				<Layout prevProgress={prevProgress} progress={progress}>
-					{/* <Layout> */}
+				// <Layout prevProgress={prevProgress} progress={progress}>
+				<Layout>
 					<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
 						<DisplayText
 							heading="Generating Starter Kits"
@@ -115,6 +116,11 @@ const StarterKits: NextPage = ({}) => {
 													: "border-white hover:border-presto-green-light",
 												"w-fit cursor-pointer rounded-xl border-[1px] bg-white px-5 py-3 text-lg font-medium"
 											)}
+											onClick={() => {
+												if (!isFullKitView) {
+													updateKitView("fullKit", i);
+												}
+											}}
 										>
 											<span className="text-[#AAB2C6]">{`0${starterKit.id} `}</span>
 											{starterKit.title}
@@ -127,7 +133,12 @@ const StarterKits: NextPage = ({}) => {
 												toggleFullKitView(i, isFullKitView);
 											}}
 										>
-											{isFullKitView ? "locked" : "unlocked"}
+											{isFullKitView && isSelected("fullKit", i) && (
+												<LockClosedIcon className="w-7 stroke-presto-green" />
+											)}
+											{!isFullKitView && (
+												<LockOpenIcon className="w-7 translate-x-[3.5px] stroke-[#BCC5D9]" />
+											)}
 										</button>
 									</div>
 

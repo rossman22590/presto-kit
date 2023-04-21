@@ -17,6 +17,7 @@ export type ColorSectionProps = {
 export type DisplayTextProps = {
 	heading: string;
 	text: string;
+	type: "MAIN" | "DASHBOARD";
 };
 
 export type FormProps = {

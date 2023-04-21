@@ -36,6 +36,7 @@ const StarterKits: NextPage = ({}) => {
 						text={`Thank you for your patience while our AI works hard to create a selection of starter kits for your brand. Currently generating kit ${
 							starterKits.length + 1
 						} of ${KITS_COUNT}`}
+						type="MAIN"
 					/>
 					<div className="mt-6 flex flex-col gap-8 md:flex-row md:gap-12">
 						{Array(KITS_COUNT)
@@ -72,6 +73,7 @@ const StarterKits: NextPage = ({}) => {
 						<DisplayText
 							heading="Woops, something went wrong!"
 							text="Occasionally the AI response is not valid but we are working to fix this."
+							type="MAIN"
 						/>
 						<button
 							type="submit"

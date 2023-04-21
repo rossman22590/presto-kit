@@ -11,6 +11,7 @@ const Home: NextPage = ({}) => {
 					heading="Effortlessly create your own UI kit in seconds"
 					text="Use our AI-powered tool to start building a unique visual identity for
 				your project"
+					type="MAIN"
 				/>
 				<Form
 					type="SIMPLE"

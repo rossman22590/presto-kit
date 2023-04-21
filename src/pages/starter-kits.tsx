@@ -51,6 +51,7 @@ const StarterKits: NextPage = ({}) => {
 							text={`Thank you for your patience while our AI works hard to create a selection of starter kits for your brand. Currently generating kit ${
 								starterKits.length + 1
 							} of ${KITS_COUNT}`}
+							type="MAIN"
 						/>
 						<div className="mt-6 flex flex-col gap-8 md:flex-row md:gap-12">
 							{Array(KITS_COUNT)
@@ -75,15 +76,12 @@ const StarterKits: NextPage = ({}) => {
 			) : !isLoading && starterKits.length > 0 ? (
 				<DashboardLayout>
 					<section className="m-auto flex max-w-5xl flex-col items-center gap-12 py-6">
-						<div className="w-full">
-							<h1 className="mb-2 text-center text-2xl font-bold lg:text-left">
-								Your starter kits are ready ✨
-							</h1>
-							<p className="text-center text-base text-presto-text-grey lg:text-left">
-								You can select any of the kits, colors and fonts below to see
-								how they look in the Kit View section.
-							</p>
-						</div>
+						<DisplayText
+							heading="Your starter kits are ready ✨"
+							text="You can select any of the kits, colors and fonts below to see
+								how they look in the Kit View section."
+							type="DASHBOARD"
+						/>
 						<div className="flex w-full flex-col items-center justify-between gap-12 lg:flex-row lg:gap-0">
 							{starterKits.map((starterKit, i) => (
 								<KitPreviewCard
@@ -108,6 +106,7 @@ const StarterKits: NextPage = ({}) => {
 							<DisplayText
 								heading="Woops, something went wrong!"
 								text="Occasionally the AI response is not valid but we are working to fix this."
+								type="MAIN"
 							/>
 							<button
 								type="submit"

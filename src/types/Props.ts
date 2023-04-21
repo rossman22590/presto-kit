@@ -1,5 +1,10 @@
-import type { Kit, SelectedKitView, StarterKits } from "./Kits";
 import type { Navigation } from "./Navigation";
+import type {
+	KitViewSelection,
+	SelectedKitView,
+	StarterKits,
+	Kit,
+} from "./Kits";
 
 export type ColorCardProps = {
 	color: { id: number; name: string; hex: string };
@@ -84,4 +89,10 @@ export type MobileSidebarProps = {
 	setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	primaryNavigation: Navigation[];
 	secondaryNavigation: Navigation[];
+};
+
+export type KitPreviewCardProps = {
+	kitViewSelection: KitViewSelection;
+	starterKit: Kit;
+	i: number;
 };

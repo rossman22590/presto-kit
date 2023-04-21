@@ -58,7 +58,7 @@ export const useKitViewSelection = (starterKits: Kit[]) => {
 		setSelectedKitView(updatedKitView);
 	};
 
-	const toggleFullKitView = (isFullKitView: boolean, kitIndex: number) => {
+	const toggleFullKitView = (kitIndex: number) => {
 		setSelectedIndex({
 			fullKit: isFullKitView ? null : kitIndex,
 			color: isFullKitView ? kitIndex : null,
@@ -68,7 +68,7 @@ export const useKitViewSelection = (starterKits: Kit[]) => {
 		setIsFullKitView(!isFullKitView);
 	};
 
-	return {
+	const kitViewSelection = {
 		toggleFullKitView,
 		selectedKitView,
 		isFullKitView,
@@ -76,4 +76,6 @@ export const useKitViewSelection = (starterKits: Kit[]) => {
 		isSelected,
 		isKitView,
 	};
+
+	return kitViewSelection;
 };

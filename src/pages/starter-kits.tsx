@@ -1,8 +1,8 @@
 import { DashboardLayout } from "../components/DashboardLayout/DashboardLayout";
-import { LockClosedIcon, LockOpenIcon } from "@heroicons/react/24/outline";
 import { primaryNavigation, setCurrentPage } from "../utils/navigation";
 import { useDynamicStylesheets } from "../hooks/useDynamicStylesheets";
 import { useKitViewSelection } from "../hooks/useKitViewSelection";
+import { KitPreviewCard } from "./../components/KitPreviewCard";
 import { KitProgressCard } from "../components/KitProgressCard";
 import { TypographyCard } from "../components/TypographyCard";
 import { useRouterQuery } from "../hooks/useRouterQuery";
@@ -11,7 +11,6 @@ import { DisplayText } from "../components/DisplayText";
 import { useFetchKits } from "../hooks/useFetchKits";
 import { mockStarterKits } from "../data/mockData";
 import { KITS_COUNT } from "../constants/global";
-import { classNames } from "../utils/helpers";
 import { Layout } from "../components/Layout";
 import { useRouter } from "next/router";
 import type { StarterKits } from "../types/Kits";
@@ -19,6 +18,7 @@ import type { NextPage } from "next";
 
 const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
+	setCurrentPage(primaryNavigation, "Starter Kits");
 
 	// const { brandName, brandDescription } = useRouterQuery(router);
 	// const { starterKits, isLoading, error } = useFetchKits(
@@ -35,18 +35,10 @@ const StarterKits: NextPage = ({}) => {
 	const isLoading = false;
 	const error = null;
 
+	const kitViewSelection = useKitViewSelection(starterKits);
+	const { isKitView, selectedKitView } = kitViewSelection;
+
 	useDynamicStylesheets(starterKits);
-
-	setCurrentPage(primaryNavigation, "Starter Kits");
-
-	const {
-		toggleFullKitView,
-		selectedKitView,
-		updateKitView,
-		isFullKitView,
-		isSelected,
-		isKitView,
-	} = useKitViewSelection(starterKits);
 
 	return (
 		<>
@@ -94,116 +86,12 @@ const StarterKits: NextPage = ({}) => {
 						</div>
 						<div className="flex w-full flex-col items-center justify-between gap-12 lg:flex-row lg:gap-0">
 							{starterKits.map((starterKit, i) => (
-								<div key={i} className="group flex w-[310px] flex-col gap-4">
-									<div className="flex gap-5">
-										<h1
-											className={classNames(
-												isFullKitView && isSelected("fullKit", i)
-													? "border-presto-green"
-													: isFullKitView
-													? "border-white group-hover:border-presto-green-light"
-													: "border-white hover:border-presto-green-light",
-												"w-fit cursor-pointer rounded-xl border-[1px] bg-white px-5 py-3 text-lg font-medium"
-											)}
-											onClick={() => updateKitView("fullKit", i)}
-										>
-											<span className="text-[#AAB2C6]">{`0${starterKit.id} `}</span>
-											{starterKit.title}
-										</h1>
-
-										<button
-											className="hover:text-fuchsia-500"
-											onClick={() => toggleFullKitView(isFullKitView, i)}
-										>
-											{isFullKitView && isSelected("fullKit", i) && (
-												<LockClosedIcon className="w-7 stroke-presto-green" />
-											)}
-											{!isFullKitView && (
-												<LockOpenIcon className="w-7 translate-x-[3.5px] stroke-[#BCC5D9]" />
-											)}
-										</button>
-									</div>
-
-									<div
-										className={classNames(
-											isSelected("fullKit", i) || isSelected("color", i)
-												? "border-presto-green"
-												: isFullKitView
-												? "border-white group-hover:border-presto-green-light"
-												: "border-white hover:border-presto-green-light",
-											"flex cursor-pointer flex-col gap-5 rounded-xl border-[1px] bg-white p-8"
-										)}
-										onClick={() =>
-											isFullKitView
-												? updateKitView("fullKit", i)
-												: updateKitView("color", i)
-										}
-									>
-										{starterKit.colors.details.map((color, i) => (
-											<div
-												className="flex items-center gap-4 text-base"
-												key={i}
-											>
-												<div
-													className="aspect-square h-14 rounded-md"
-													style={{ backgroundColor: color.hex }}
-												>
-													&nbsp;
-												</div>
-												<div className="flex flex-col gap-[2px]">
-													<p className="font-medium">{color.name}</p>
-													<p className="tracking-wide text-[#AAB2C6]">
-														{color.hex}
-													</p>
-												</div>
-											</div>
-										))}
-									</div>
-
-									<div
-										className={classNames(
-											isSelected("fullKit", i) || isSelected("displayFont", i)
-												? "border-presto-green"
-												: isFullKitView
-												? "border-white group-hover:border-presto-green-light"
-												: "border-white hover:border-presto-green-light",
-											"cursor-pointer rounded-xl border-[1px] bg-white px-8 py-5 text-xl text-[#343b45]"
-										)}
-										style={{
-											fontFamily: starterKit.typography.typefaces.display.font,
-										}}
-										onClick={() =>
-											isFullKitView
-												? updateKitView("fullKit", i)
-												: updateKitView("displayFont", i)
-										}
-									>
-										{starterKit.typography.typefaces.display.font}{" "}
-										{starterKit.typography.typefaces.display.weight} Display
-									</div>
-
-									<div
-										className={classNames(
-											isSelected("fullKit", i) || isSelected("textFont", i)
-												? "border-presto-green"
-												: isFullKitView
-												? "border-white group-hover:border-presto-green-light"
-												: "border-white hover:border-presto-green-light",
-											"cursor-pointer rounded-xl border-[1px] bg-white px-8 py-5 text-lg text-[#343b45] subpixel-antialiased "
-										)}
-										style={{
-											fontFamily: starterKit.typography.typefaces.text.font,
-										}}
-										onClick={() =>
-											isFullKitView
-												? updateKitView("fullKit", i)
-												: updateKitView("textFont", i)
-										}
-									>
-										{starterKit.typography.typefaces.text.font}{" "}
-										{starterKit.typography.typefaces.text.weight} Text
-									</div>
-								</div>
+								<KitPreviewCard
+									starterKit={starterKit}
+									kitViewSelection={kitViewSelection}
+									key={i}
+									i={i}
+								/>
 							))}
 						</div>
 						{/* Kit view section placeholder */}

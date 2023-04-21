@@ -44,3 +44,12 @@ export type SelectedIndex = {
 	displayFont: number | null;
 	textFont: number | null;
 };
+
+export type KitViewSelection = {
+	toggleFullKitView: (kitIndex: number) => void;
+	selectedKitView: SelectedKitView;
+	isFullKitView: boolean;
+	updateKitView: (type: KitSelectionTypes, kitIndex: number) => void;
+	isSelected: (type: KitSelectionTypes, kitIndex: number) => boolean;
+	isKitView: () => boolean;
+};

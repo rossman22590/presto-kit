@@ -9,6 +9,9 @@ export const useFetchKits = (brandName: string, brandDescription: string) => {
 	const [error, setError] = useState<Error | null>(null);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
+	const sleep = (ms: number) =>
+		new Promise((resolve) => setTimeout(resolve, ms));
+
 	useEffect(() => {
 		const getInitialKits = async () => {
 			try {

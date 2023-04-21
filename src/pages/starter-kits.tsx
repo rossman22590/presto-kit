@@ -13,16 +13,16 @@ import { mockStarterKits } from "../data/mockData";
 import { KITS_COUNT } from "../constants/global";
 import { Layout } from "../components/Layout";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Kit, StarterKits } from "../types/StarterKits";
 import type { NextPage } from "next";
 import { TypographyCard } from "../components/TypographyCard";
-import { useKit } from "../hooks/useKit";
+import { classNames } from "../utils/helpers";
 
 const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
-	// const { brandName, brandDescription } = useRouterQuery(router);
 
+	// const { brandName, brandDescription } = useRouterQuery(router);
 	// const { starterKits, isLoading, error } = useFetchKits(
 	// 	brandDescription,
 	// 	brandName
@@ -41,35 +41,74 @@ const StarterKits: NextPage = ({}) => {
 
 	setCurrentPage(primaryNavigation, "Starter Kits");
 
-	const [colorView, setColorView] = useState(starterKits[0].colors);
+	type SelectedIndex = {
+		fullKit: number | null;
+		color: number | null;
+		displayFont: number | null;
+		textFont: number | null;
+	};
+
+	const isKitView = () => {
+		return Object.values(selectedIndex).some((value) => value !== null);
+	};
+
+	const [colorView, setColorView] = useState(starterKits[0]?.colors);
 	const [displayFontView, setDisplayFontView] = useState(
-		starterKits[0].typography.typefaces.display
+		starterKits[0]?.typography.typefaces.display
 	);
 	const [textFontView, setTextFontView] = useState(
-		starterKits[0].typography.typefaces.text
+		starterKits[0]?.typography.typefaces.text
 	);
-
-	const updateColorView = (i: number) => {
-		setColorView(starterKits[i].colors);
-	};
-
-	const updateDisplayFontView = (i: number) => {
-		setDisplayFontView(starterKits[i].typography.typefaces.display);
-	};
-
-	const updateTextFontView = (i: number) => {
-		setTextFontView(starterKits[i].typography.typefaces.text);
-	};
 
 	const [isFullKitView, setIsFullKitView] = useState(true);
 
-	const updateFullKitView = (i: number) => {
-		updateColorView(i);
-		updateDisplayFontView(i);
-		updateTextFontView(i);
+	const [selectedIndex, setSelectedIndex] = useState<SelectedIndex>({
+		fullKit: null,
+		color: null,
+		displayFont: null,
+		textFont: null,
+	});
+
+	const updateView = (
+		type: "color" | "displayFont" | "textFont" | "fullKit",
+		kitIndex: number
+	) => {
+		const kit = starterKits[kitIndex];
+
+		setSelectedIndex({
+			...selectedIndex,
+			[type]: kitIndex,
+		});
+
+		switch (type) {
+			case "color":
+				setColorView(kit.colors);
+				break;
+			case "displayFont":
+				setDisplayFontView(kit.typography.typefaces.display);
+				break;
+			case "textFont":
+				setTextFontView(kit.typography.typefaces.text);
+				break;
+			case "fullKit":
+				setColorView(kit.colors);
+				setDisplayFontView(kit.typography.typefaces.display);
+				setTextFontView(kit.typography.typefaces.text);
+				break;
+			default:
+				break;
+		}
 	};
 
-	const currentKitView = {
+	// useEffect(() => {
+	// 	updateView("fullKit", 0);
+	// }, [starterKits]);
+
+	// useEffect(() => {
+	// 	console.log("selectedIndex:", selectedIndex);
+	// }, [selectedIndex]);
+
+	const selectedKitView = {
 		title: "",
 		id: 0,
 		colors: colorView,
@@ -79,6 +118,34 @@ const StarterKits: NextPage = ({}) => {
 				text: textFontView,
 			},
 		},
+	};
+
+	const isSelected = (
+		type: "color" | "displayFont" | "textFont" | "fullKit",
+		kitIndex: number
+	) => {
+		switch (type) {
+			case "color":
+				return selectedIndex.color === kitIndex;
+			case "displayFont":
+				return selectedIndex.displayFont === kitIndex;
+			case "textFont":
+				return selectedIndex.textFont === kitIndex;
+			case "fullKit":
+				return selectedIndex.fullKit === kitIndex;
+			default:
+				return false;
+		}
+	};
+
+	const toggleFullKitView = (kitIndex: number) => {
+		setSelectedIndex({
+			fullKit: isFullKitView ? null : kitIndex,
+			color: isFullKitView ? kitIndex : null,
+			displayFont: isFullKitView ? kitIndex : null,
+			textFont: isFullKitView ? kitIndex : null,
+		});
+		setIsFullKitView(!isFullKitView);
 	};
 
 	return (
@@ -115,7 +182,7 @@ const StarterKits: NextPage = ({}) => {
 				</Layout>
 			) : !isLoading && starterKits.length > 0 ? (
 				<DashboardLayout>
-					<section className="m-auto flex max-w-5xl flex-col items-center gap-8 py-6">
+					<section className="m-auto flex max-w-5xl flex-col items-center gap-12 py-6">
 						<div className="w-full">
 							<h1 className="mb-2 text-2xl font-bold">
 								Your starter kits are ready ✨
@@ -129,31 +196,55 @@ const StarterKits: NextPage = ({}) => {
 							{starterKits.map((starterKit, i) => (
 								<div
 									key={i}
-									className="group flex w-[310px] cursor-pointer flex-col gap-4"
+									className={classNames(
+										isFullKitView ? "cursor-pointer" : "",
+										"group flex w-[310px] flex-col gap-4"
+									)}
 									onClick={() => {
 										if (isFullKitView) {
-											updateFullKitView(i);
+											updateView("fullKit", i);
 										}
 									}}
 								>
-									{/*  */}
 									<div className="flex gap-5">
-										<h1 className="w-fit rounded-xl border-[1px] border-white bg-white px-5 py-3 text-lg font-medium group-hover:border-presto-green-light">
+										{/* placeholer logic */}
+										<h1
+											className={classNames(
+												isFullKitView && isSelected("fullKit", i)
+													? "border-presto-green"
+													: isFullKitView
+													? "border-white group-hover:border-presto-green-light"
+													: "border-white hover:border-presto-green-light",
+												"w-fit cursor-pointer rounded-xl border-[1px] bg-white px-5 py-3 text-lg font-medium"
+											)}
+										>
 											<span className="text-[#AAB2C6]">{`0${starterKit.id} `}</span>
 											{starterKit.title}
 										</h1>
+
 										<button
-											className=" hover:text-fuchsia-500"
-											onClick={() => setIsFullKitView(!isFullKitView)}
+											className="hover:text-fuchsia-500"
+											onClick={(e) => {
+												e.stopPropagation();
+												toggleFullKitView(i);
+											}}
 										>
 											{isFullKitView ? "locked" : "unlocked"}
 										</button>
 									</div>
+
 									<div
-										className="flex flex-col gap-5 rounded-xl border-[1px] border-white bg-white p-8 group-hover:border-presto-green-light"
+										className={classNames(
+											isSelected("fullKit", i) || isSelected("color", i)
+												? "border-presto-green"
+												: isFullKitView
+												? "border-white group-hover:border-presto-green-light"
+												: "cursor-pointer border-white hover:border-presto-green-light",
+											"flex flex-col gap-5 rounded-xl border-[1px] bg-white p-8"
+										)}
 										onClick={() => {
 											if (!isFullKitView) {
-												updateColorView(i);
+												updateView("color", i);
 											}
 										}}
 									>
@@ -179,14 +270,21 @@ const StarterKits: NextPage = ({}) => {
 									</div>
 
 									<div
-										className="rounded-xl border-[1px] border-white bg-white px-8 py-5 text-xl group-hover:border-presto-green-light"
+										className={classNames(
+											isSelected("fullKit", i) || isSelected("displayFont", i)
+												? "border-presto-green"
+												: isFullKitView
+												? "border-white group-hover:border-presto-green-light"
+												: "cursor-pointer border-white hover:border-presto-green-light",
+											"rounded-xl border-[1px] bg-white px-8 py-5 text-xl"
+										)}
 										style={{
 											fontFamily: starterKit.typography.typefaces.display.font,
 											color: starterKit.colors.details[1].hex,
 										}}
 										onClick={() => {
 											if (!isFullKitView) {
-												updateDisplayFontView(i);
+												updateView("displayFont", i);
 											}
 										}}
 									>
@@ -195,13 +293,20 @@ const StarterKits: NextPage = ({}) => {
 									</div>
 
 									<div
-										className="rounded-xl border-[1px] border-white bg-white px-8 py-5 text-lg text-[#343b45] subpixel-antialiased group-hover:border-presto-green-light"
+										className={classNames(
+											isSelected("fullKit", i) || isSelected("textFont", i)
+												? "border-presto-green"
+												: isFullKitView
+												? "border-white  group-hover:border-presto-green-light"
+												: "cursor-pointer  border-white hover:border-presto-green-light",
+											"rounded-xl border-[1px] bg-white px-8 py-5 text-lg text-[#343b45] subpixel-antialiased "
+										)}
 										style={{
 											fontFamily: starterKit.typography.typefaces.text.font,
 										}}
 										onClick={() => {
 											if (!isFullKitView) {
-												updateTextFontView(i);
+												updateView("textFont", i);
 											}
 										}}
 									>
@@ -212,7 +317,10 @@ const StarterKits: NextPage = ({}) => {
 							))}
 						</div>
 						{/* Kit view section placeholder */}
-						<TypographyCard kit={currentKitView} brandName={brandName} />
+						<br />
+						{isKitView() && (
+							<TypographyCard kit={selectedKitView} brandName={brandName} />
+						)}
 					</section>
 				</DashboardLayout>
 			) : (

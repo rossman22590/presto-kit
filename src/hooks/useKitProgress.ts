@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StarterKits } from "../types/StarterKits";
+import { StarterKits } from "../types/Kits";
 import { KITS_COUNT } from "../constants/global";
 
 export const useKitProgress = (

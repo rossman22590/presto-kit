@@ -25,3 +25,15 @@ export type Kit = {
 };
 
 export type StarterKits = Kit[];
+
+export type KitSelectionTypes =
+	| "color"
+	| "displayFont"
+	| "textFont"
+	| "fullKit";
+
+export type SelectedKitView = {
+	colors: Kit["colors"];
+	displayFont: Kit["typography"]["typefaces"]["display"];
+	textFont: Kit["typography"]["typefaces"]["text"];
+};

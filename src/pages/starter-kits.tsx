@@ -1,20 +1,22 @@
 import { DashboardLayout } from "../components/DashboardLayout/DashboardLayout";
 import { primaryNavigation, setCurrentPage } from "../utils/navigation";
 import { useDynamicStylesheets } from "../hooks/useDynamicStylesheets";
-import { TypographySection } from "../components/TypographySection";
 import { KitProgressCard } from "../components/KitProgressCard";
-import { ColorSection } from "../components/ColorSection";
 import { useRouterQuery } from "../hooks/useRouterQuery";
 import { useKitProgress } from "../hooks/useKitProgress";
 import { DisplayText } from "../components/DisplayText";
-import { KitHeading } from "../components/KitHeading";
 import { useFetchKits } from "../hooks/useFetchKits";
 import { mockStarterKits } from "../data/mockData";
 import { KITS_COUNT } from "../constants/global";
 import { Layout } from "../components/Layout";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import type { Kit, StarterKits } from "../types/StarterKits";
+import { useState } from "react";
+import type {
+	Kit,
+	KitSelectionTypes,
+	SelectedKitView,
+	StarterKits,
+} from "../types/Kits";
 import type { NextPage } from "next";
 import { TypographyCard } from "../components/TypographyCard";
 import { classNames } from "../utils/helpers";
@@ -48,97 +50,48 @@ const StarterKits: NextPage = ({}) => {
 		textFont: number | null;
 	};
 
-	const isKitView = () => {
-		return Object.values(selectedIndex).some((value) => value !== null);
-	};
-
-	const [colorView, setColorView] = useState(starterKits[0]?.colors);
-	const [displayFontView, setDisplayFontView] = useState(
-		starterKits[0]?.typography.typefaces.display
-	);
-	const [textFontView, setTextFontView] = useState(
-		starterKits[0]?.typography.typefaces.text
-	);
-
-	const [isFullKitView, setIsFullKitView] = useState(true);
-
 	const [selectedIndex, setSelectedIndex] = useState<SelectedIndex>({
 		fullKit: null,
 		color: null,
 		displayFont: null,
 		textFont: null,
 	});
+	const [selectedKitView, setSelectedKitView] = useState<SelectedKitView>({
+		colors: starterKits[0]?.colors,
+		displayFont: starterKits[0]?.typography.typefaces.display,
+		textFont: starterKits[0]?.typography.typefaces.text,
+	});
+	const [isFullKitView, setIsFullKitView] = useState(true);
 
-	const updateView = (
-		type: "color" | "displayFont" | "textFont" | "fullKit",
-		kitIndex: number
-	) => {
-		const kit = starterKits[kitIndex];
+	const isSelected = (type: KitSelectionTypes, kitIndex: number) => {
+		return selectedIndex[type] === kitIndex;
+	};
 
+	const isKitView = () => {
+		return Object.values(selectedIndex).some((value) => value !== null);
+	};
+
+	const updateKitView = (type: KitSelectionTypes, kitIndex: number) => {
 		setSelectedIndex({
 			...selectedIndex,
 			[type]: kitIndex,
 		});
+		const kit = starterKits[kitIndex];
+		let updatedKitView = { ...selectedKitView };
 
-		switch (type) {
-			case "color":
-				setColorView(kit.colors);
-				break;
-			case "displayFont":
-				setDisplayFontView(kit.typography.typefaces.display);
-				break;
-			case "textFont":
-				setTextFontView(kit.typography.typefaces.text);
-				break;
-			case "fullKit":
-				setColorView(kit.colors);
-				setDisplayFontView(kit.typography.typefaces.display);
-				setTextFontView(kit.typography.typefaces.text);
-				break;
-			default:
-				break;
+		if (type === "fullKit" || type === "color") {
+			updatedKitView.colors = kit.colors;
 		}
-	};
-
-	// useEffect(() => {
-	// 	updateView("fullKit", 0);
-	// }, [starterKits]);
-
-	// useEffect(() => {
-	// 	console.log("selectedIndex:", selectedIndex);
-	// }, [selectedIndex]);
-
-	const selectedKitView = {
-		title: "",
-		id: 0,
-		colors: colorView,
-		typography: {
-			typefaces: {
-				display: displayFontView,
-				text: textFontView,
-			},
-		},
-	};
-
-	const isSelected = (
-		type: "color" | "displayFont" | "textFont" | "fullKit",
-		kitIndex: number
-	) => {
-		switch (type) {
-			case "color":
-				return selectedIndex.color === kitIndex;
-			case "displayFont":
-				return selectedIndex.displayFont === kitIndex;
-			case "textFont":
-				return selectedIndex.textFont === kitIndex;
-			case "fullKit":
-				return selectedIndex.fullKit === kitIndex;
-			default:
-				return false;
+		if (type === "fullKit" || type === "displayFont") {
+			updatedKitView.displayFont = kit.typography.typefaces.display;
 		}
+		if (type === "fullKit" || type === "textFont") {
+			updatedKitView.textFont = kit.typography.typefaces.text;
+		}
+		setSelectedKitView(updatedKitView);
 	};
 
-	const toggleFullKitView = (kitIndex: number) => {
+	const toggleFullKitView = (kitIndex: number, isFullKitView: boolean) => {
 		setSelectedIndex({
 			fullKit: isFullKitView ? null : kitIndex,
 			color: isFullKitView ? kitIndex : null,
@@ -202,7 +155,7 @@ const StarterKits: NextPage = ({}) => {
 									)}
 									onClick={() => {
 										if (isFullKitView) {
-											updateView("fullKit", i);
+											updateKitView("fullKit", i);
 										}
 									}}
 								>
@@ -226,7 +179,7 @@ const StarterKits: NextPage = ({}) => {
 											className="hover:text-fuchsia-500"
 											onClick={(e) => {
 												e.stopPropagation();
-												toggleFullKitView(i);
+												toggleFullKitView(i, isFullKitView);
 											}}
 										>
 											{isFullKitView ? "locked" : "unlocked"}
@@ -244,7 +197,7 @@ const StarterKits: NextPage = ({}) => {
 										)}
 										onClick={() => {
 											if (!isFullKitView) {
-												updateView("color", i);
+												updateKitView("color", i);
 											}
 										}}
 									>
@@ -284,7 +237,7 @@ const StarterKits: NextPage = ({}) => {
 										}}
 										onClick={() => {
 											if (!isFullKitView) {
-												updateView("displayFont", i);
+												updateKitView("displayFont", i);
 											}
 										}}
 									>
@@ -306,7 +259,7 @@ const StarterKits: NextPage = ({}) => {
 										}}
 										onClick={() => {
 											if (!isFullKitView) {
-												updateView("textFont", i);
+												updateKitView("textFont", i);
 											}
 										}}
 									>
@@ -347,15 +300,3 @@ const StarterKits: NextPage = ({}) => {
 };
 
 export default StarterKits;
-
-{
-	/* <section className="m-auto flex max-w-[720px] flex-col items-center gap-20 pb-56">
-	{starterKits.map((kit) => (
-		<div className="mt-32 flex w-full flex-col gap-16" key={kit.id}>
-			<KitHeading id={kit.id} title={kit.title} />
-			<ColorSection kit={kit} />
-			<TypographySection kit={kit} brandName={brandName} />
-		</div>
-	))}
-</section>; */
-}

@@ -11,7 +11,7 @@ export function KitPreviewCard({
 		kitViewSelection;
 
 	return (
-		<div key={i} className="group flex w-[310px] flex-col gap-4">
+		<div key={i} className="group flex w-[310px] select-none flex-col gap-4">
 			<div className="flex gap-5">
 				{/* Kit title */}
 				<h1
@@ -30,7 +30,6 @@ export function KitPreviewCard({
 				</h1>
 
 				{/* Toggle lock icon */}
-				{/* TODO: Locking view should update kit view to fullKit) */}
 				<button
 					className="hover:text-fuchsia-500"
 					onClick={() => toggleFullKitView(i)}

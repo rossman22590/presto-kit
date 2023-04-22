@@ -1,7 +1,8 @@
+import type { KitViewSelectionProps } from "../../types/Props";
 import { useColorBrightness } from "../../hooks/useColorBrightness";
-import { useSelectedKit } from "../../hooks/useKits";
-import { KitViewSelection, SelectedKitView } from "../../types/Kits";
 import { DisplayText } from "../Headings/DisplayText";
+import { useSelectedKit } from "../../hooks/useKits";
+import { SelectedKitView } from "../../types/Kits";
 import {
 	ArrowRightIcon,
 	Bars3Icon,
@@ -9,17 +10,20 @@ import {
 	UserCircleIcon,
 } from "@heroicons/react/24/outline";
 
-type KitViewSelectionProps = {
-	selectedKitView: SelectedKitView;
-	brandName: string;
-};
-
 export const KitViewSection = ({
 	selectedKitView,
 	brandName,
+	brandDescription,
 }: KitViewSelectionProps) => {
-	const { baseColor, primaryColor, accentColor, displayFont, textFont } =
-		useSelectedKit(selectedKitView);
+	const {
+		baseColor,
+		primaryColor,
+		accentColor,
+		displayFont,
+		displayWeight,
+		textFont,
+		textWeight,
+	} = useSelectedKit(selectedKitView);
 
 	const { isColorBright, accentColorRGB } = useColorBrightness(accentColor);
 
@@ -34,7 +38,7 @@ export const KitViewSection = ({
 
 			<div className="flex aspect-[3.1/2] w-full flex-col rounded-xl border-4 border-white bg-white">
 				{/* Mockup top bar */}
-				<div className="flex h-7 w-full items-center justify-start gap-[7px]  rounded-t-lg bg-white pl-2">
+				<div className="flex h-7 w-full items-center justify-start gap-[7px] rounded-t-lg bg-white pl-2">
 					{/* Mockup window controls */}
 					{Array(3)
 						.fill(0)
@@ -67,6 +71,7 @@ export const KitViewSection = ({
 								style={{
 									color: primaryColor,
 									fontFamily: displayFont,
+									fontWeight: displayWeight ? displayWeight : "",
 								}}
 							>
 								{brandName}
@@ -78,6 +83,7 @@ export const KitViewSection = ({
 							style={{
 								color: primaryColor,
 								fontFamily: textFont,
+								fontWeight: textWeight ? textWeight : "",
 							}}
 						>
 							<p>Home</p>
@@ -134,19 +140,23 @@ export const KitViewSection = ({
 						</div>
 						{/* Hero header */}
 						<h4
-							className="text-center text-6xl"
+							className="text-center text-6xl capitalize"
 							style={{
 								color: primaryColor,
 								fontFamily: displayFont,
+								fontWeight: displayWeight ? displayWeight : "",
 							}}
 						>
-							{displayFont} Heading
+							{brandDescription.length < 25
+								? brandDescription
+								: `${displayFont} Heading`}
 						</h4>
 						{/* Hero text */}
 						<p
 							className="px-32 text-center text-[19px] leading-[1.6] text-[#393b47]"
 							style={{
 								fontFamily: textFont,
+								fontWeight: textWeight ? textWeight : "",
 							}}
 						>
 							{textFont} text lorem ipsum dolor sit amet, consectetur adipiscing
@@ -161,6 +171,7 @@ export const KitViewSection = ({
 									backgroundColor: accentColor,
 									borderColor: accentColor,
 									fontFamily: textFont,
+									fontWeight: textWeight ? textWeight : "",
 									// If button color is bright, use black text, else use white text
 									color: isColorBright(accentColorRGB)
 										? "rgba(0, 0, 0, 1)"
@@ -173,6 +184,7 @@ export const KitViewSection = ({
 								className="rounded-md border-2 py-[9px] px-[34px] text-lg text-white subpixel-antialiased"
 								style={{
 									fontFamily: textFont,
+									fontWeight: textWeight ? textWeight : "",
 									color: primaryColor,
 									borderColor: primaryColor,
 								}}

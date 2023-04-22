@@ -59,12 +59,21 @@ export const useKitViewSelection = (starterKits: Kit[]) => {
 	};
 
 	const toggleFullKitView = (kitIndex: number) => {
+		if (!isFullKitView) {
+			const kit = starterKits[kitIndex];
+			let updatedKitView = { ...selectedKitView };
+			updatedKitView.colors = kit.colors;
+			updatedKitView.displayFont = kit.typography.typefaces.display;
+			updatedKitView.textFont = kit.typography.typefaces.text;
+			setSelectedKitView(updatedKitView);
+		}
 		setSelectedIndex({
 			fullKit: isFullKitView ? null : kitIndex,
 			color: isFullKitView ? kitIndex : null,
 			displayFont: isFullKitView ? kitIndex : null,
 			textFont: isFullKitView ? kitIndex : null,
 		});
+
 		setIsFullKitView(!isFullKitView);
 	};
 

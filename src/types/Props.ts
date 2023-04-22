@@ -99,3 +99,9 @@ export type KitPreviewCardProps = {
 	starterKit: Kit;
 	i: number;
 };
+
+export type KitViewSelectionProps = {
+	selectedKitView: SelectedKitView;
+	brandName: string;
+	brandDescription: string;
+};

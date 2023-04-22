@@ -20,20 +20,20 @@ const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
 	setCurrentPage(primaryNavigation, "Starter Kits");
 
-	// const { brandName, brandDescription } = useRouterQuery(router);
-	// const { starterKits, isLoading, error } = useFetchKits(
-	// 	brandDescription,
-	// 	brandName
-	// );
-	// const prevProgress = 33;
-	// const latestProgress = 66;
-	// const progress = useKitProgress(starterKits, latestProgress);
+	const { brandName, brandDescription } = useRouterQuery(router);
+	const { starterKits, isLoading, error } = useFetchKits(
+		brandDescription,
+		brandName
+	);
+	const prevProgress = 33;
+	const latestProgress = 66;
+	const progress = useKitProgress(starterKits, latestProgress);
 
 	// Mock data
-	const brandName = "Farm Shop";
-	const starterKits = mockStarterKits;
-	const isLoading = false;
-	const error = null;
+	// const brandName = "Farm Shop";
+	// const starterKits = mockStarterKits;
+	// const isLoading = false;
+	// const error = null;
 
 	const kitViewSelection = useKitViewSelection(starterKits);
 	const { isKitView, selectedKitView } = kitViewSelection;
@@ -43,8 +43,8 @@ const StarterKits: NextPage = ({}) => {
 	return (
 		<>
 			{isLoading && !error ? (
-				// <Layout prevProgress={prevProgress} progress={progress}>
-				<Layout>
+				<Layout prevProgress={prevProgress} progress={progress}>
+					{/* <Layout> */}
 					<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
 						<DisplayText
 							heading="Generating Starter Kits"
@@ -82,7 +82,7 @@ const StarterKits: NextPage = ({}) => {
 								how they look in the Kit View section."
 							type="DASHBOARD"
 						/>
-						<div className="flex w-full flex-col items-center justify-between gap-12 lg:flex-row lg:gap-0">
+						<div className="flex w-full flex-col items-center justify-between gap-12 lg:flex-row lg:items-start lg:gap-0">
 							{starterKits.map((starterKit, i) => (
 								<KitPreviewCard
 									starterKit={starterKit}
@@ -98,6 +98,7 @@ const StarterKits: NextPage = ({}) => {
 						<KitViewSection
 							selectedKitView={selectedKitView}
 							brandName={brandName}
+							brandDescription={brandDescription}
 						/>
 					)}
 					<div className="h-20"></div>

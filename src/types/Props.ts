@@ -5,7 +5,6 @@ import type {
 	StarterKits,
 	Kit,
 } from "./Kits";
-import { BooleanLiteral } from "@babel/types";
 
 export type ColorCardProps = {
 	color: { id: number; name: string; hex: string };
@@ -20,6 +19,8 @@ export type DisplayTextProps = {
 	text: string;
 	type: "MAIN" | "DASHBOARD";
 	buttonText?: string;
+	handleClick?: () => void;
+	route?: URL;
 };
 
 export type FormProps = {
@@ -104,4 +105,12 @@ export type KitViewSelectionProps = {
 	selectedKitView: SelectedKitView;
 	brandName: string;
 	brandDescription: string;
+	handleContinue: () => void;
 };
+
+export type ModalContainerProps = React.PropsWithChildren<{
+	open: boolean;
+	setOpen: (open: boolean) => void;
+	title: string;
+	text: string;
+}>;

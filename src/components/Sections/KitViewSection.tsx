@@ -2,7 +2,6 @@ import type { KitViewSelectionProps } from "../../types/Props";
 import { useColorBrightness } from "../../hooks/useColorBrightness";
 import { DisplayText } from "../Headings/DisplayText";
 import { useSelectedKit } from "../../hooks/useKits";
-import { SelectedKitView } from "../../types/Kits";
 import {
 	ArrowRightIcon,
 	Bars3Icon,
@@ -14,6 +13,7 @@ export const KitViewSection = ({
 	selectedKitView,
 	brandName,
 	brandDescription,
+	handleContinue,
 }: KitViewSelectionProps) => {
 	const {
 		baseColor,
@@ -34,9 +34,10 @@ export const KitViewSection = ({
 				text="When you are ready, click continue to make changes, save and download your custom UI Kit"
 				type="DASHBOARD"
 				buttonText="Continue"
+				handleClick={handleContinue}
 			/>
 
-			<div className="flex aspect-[3.1/2] w-full flex-col rounded-xl border-4 border-white bg-white">
+			<div className="flex aspect-[3.1/2] w-full select-none flex-col rounded-xl border-4 border-white bg-white">
 				{/* Mockup top bar */}
 				<div className="flex h-7 w-full items-center justify-start gap-[7px] rounded-t-lg bg-white pl-2">
 					{/* Mockup window controls */}

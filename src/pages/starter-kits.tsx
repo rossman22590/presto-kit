@@ -1,5 +1,5 @@
-import { KitViewSection } from "./../components/Sections/KitViewSection";
 import { DashboardLayout } from "../components/DashboardLayout/DashboardLayout";
+import { KitViewSection } from "./../components/Sections/KitViewSection";
 import { primaryNavigation, setCurrentPage } from "../utils/navigation";
 import { useDynamicStylesheets } from "../hooks/useDynamicStylesheets";
 import { KitProgressCard } from "../components/Cards/KitProgressCard";
@@ -15,36 +15,45 @@ import { KITS_COUNT } from "../constants/global";
 import { useRouter } from "next/router";
 import type { StarterKits } from "../types/Kits";
 import type { NextPage } from "next";
+import { useState } from "react";
+import { ModalContainer } from "../components/Modals/ModalContainer";
 
 const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
 	setCurrentPage(primaryNavigation, "Starter Kits");
 
-	const { brandName, brandDescription } = useRouterQuery(router);
-	const { starterKits, isLoading, error } = useFetchKits(
-		brandDescription,
-		brandName
-	);
-	const prevProgress = 33;
-	const latestProgress = 66;
-	const progress = useKitProgress(starterKits, latestProgress);
+	// const { brandName, brandDescription } = useRouterQuery(router);
+	// const { starterKits, isLoading, error } = useFetchKits(
+	// 	brandDescription,
+	// 	brandName
+	// );
+	// const prevProgress = 33;
+	// const latestProgress = 66;
+	// const progress = useKitProgress(starterKits, latestProgress);
 
 	// Mock data
-	// const brandName = "Farm Shop";
-	// const starterKits = mockStarterKits;
-	// const isLoading = false;
-	// const error = null;
+	const brandName = "Farm Shop";
+	const brandDescription = "Organic Farm Store";
+	const starterKits = mockStarterKits;
+	const isLoading = false;
+	const error = null;
 
 	const kitViewSelection = useKitViewSelection(starterKits);
 	const { isKitView, selectedKitView } = kitViewSelection;
 
 	useDynamicStylesheets(starterKits);
 
+	const [isAuthOpen, setIsAuthOpen] = useState(false);
+
+	const handleContinue = () => {
+		setIsAuthOpen(true);
+	};
+
 	return (
 		<>
 			{isLoading && !error ? (
-				<Layout prevProgress={prevProgress} progress={progress}>
-					{/* <Layout> */}
+				// <Layout prevProgress={prevProgress} progress={progress}>
+				<Layout>
 					<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
 						<DisplayText
 							heading="Generating Starter Kits"
@@ -77,7 +86,7 @@ const StarterKits: NextPage = ({}) => {
 				<DashboardLayout>
 					<section className="m-auto flex max-w-5xl flex-col items-center gap-12 py-6">
 						<DisplayText
-							heading="Your starter kits are ready ✨"
+							heading={`Your ${brandName} starter kits are ready ✨`}
 							text="You can select any of the kits, colors and fonts below to see
 								how they look in the Kit View section."
 							type="DASHBOARD"
@@ -92,13 +101,21 @@ const StarterKits: NextPage = ({}) => {
 								/>
 							))}
 						</div>
-						{/* Kit view section placeholder */}
 					</section>
 					{isKitView() && (
 						<KitViewSection
 							selectedKitView={selectedKitView}
 							brandName={brandName}
 							brandDescription={brandDescription}
+							handleContinue={handleContinue}
+						/>
+					)}
+					{isAuthOpen && (
+						<ModalContainer
+							open={isAuthOpen}
+							setOpen={setIsAuthOpen}
+							title="Almost there!"
+							text="Sign up for a free account to edit, save and export your custom UI kits."
 						/>
 					)}
 					<div className="h-20"></div>

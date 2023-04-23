@@ -13,8 +13,8 @@ export const Navbar = ({ prevProgress, progress }: NavbarProps) => {
 	}, [progress, prevProgress]);
 
 	return (
-		<div className="fixed top-0 left-0 z-50 w-full">
-			<nav className="relative z-50 flex w-full cursor-pointer flex-wrap items-center justify-between bg-white bg-opacity-70 p-4 shadow bg-blur-xl md:py-5 md:px-7">
+		<div className="fixed top-0 left-0 z-20 w-full">
+			<nav className="relative z-20 flex w-full cursor-pointer flex-wrap items-center justify-between bg-white bg-opacity-70 p-4 shadow bg-blur-xl md:py-5 md:px-7">
 				<img
 					src="/logo.png"
 					alt="PrestoKit Logo"

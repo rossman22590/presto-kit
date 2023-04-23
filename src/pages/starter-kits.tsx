@@ -15,8 +15,12 @@ import { KITS_COUNT } from "../constants/global";
 import { useRouter } from "next/router";
 import type { StarterKits } from "../types/Kits";
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ModalContainer } from "../components/Modals/ModalContainer";
+
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
@@ -43,11 +47,26 @@ const StarterKits: NextPage = ({}) => {
 
 	useDynamicStylesheets(starterKits);
 
+	const session = useSession();
+	const supabase = useSupabaseClient();
+
 	const [isAuthOpen, setIsAuthOpen] = useState(false);
 
 	const handleContinue = () => {
-		setIsAuthOpen(true);
+		if (!session) {
+			setIsAuthOpen(true);
+		}
+		if (session) {
+			router.push("/account");
+		}
 	};
+
+	useEffect(() => {
+		if (session) {
+			setIsAuthOpen(false);
+			router.push("/account");
+		}
+	}, [session]);
 
 	return (
 		<>
@@ -116,7 +135,16 @@ const StarterKits: NextPage = ({}) => {
 							setOpen={setIsAuthOpen}
 							title="Almost there!"
 							text="Sign up for a free account to edit, save and export your custom UI kits."
-						/>
+						>
+							<Auth
+								supabaseClient={supabase}
+								appearance={{ theme: ThemeSupa }}
+								view="sign_up"
+								providers={["facebook", "google", "twitter"]}
+								socialLayout="horizontal"
+								redirectTo="/account"
+							/>
+						</ModalContainer>
 					)}
 					<div className="h-20"></div>
 				</DashboardLayout>

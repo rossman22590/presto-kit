@@ -59,7 +59,9 @@ export const ModalContainer = ({
 										{title}
 									</Dialog.Title>
 									<div className="mt-6">
-										<p className=" text-xl text-presto-text-grey">{text}</p>
+										<p className="text-xl tracking-wide text-presto-text-grey">
+											{text}
+										</p>
 									</div>
 								</div>
 

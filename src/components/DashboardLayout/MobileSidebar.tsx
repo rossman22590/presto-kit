@@ -1,3 +1,4 @@
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import type { MobileSidebarProps } from "../../types/Props";
 import { handleNavClick } from "../../utils/navigation";
 import { XMarkIcon } from "@heroicons/react/24/outline";
@@ -12,8 +13,8 @@ export const MobileSidebar = ({
 	primaryNavigation,
 	secondaryNavigation,
 }: MobileSidebarProps) => {
+	const supabase = useSupabaseClient();
 	const router = useRouter();
-	const handleClick = () => router.push("/");
 
 	return (
 		<Transition.Root show={sidebarOpen} as={Fragment}>
@@ -76,7 +77,7 @@ export const MobileSidebar = ({
 										src="/logo.png"
 										alt="PrestoKit Logo"
 										className="h-7 cursor-pointer"
-										onClick={handleClick}
+										onClick={() => router.push("/")}
 									/>
 								</div>
 								{/* Mobile primary navigation starts here */}
@@ -85,7 +86,9 @@ export const MobileSidebar = ({
 										{primaryNavigation.map((item) => (
 											<button
 												key={item.name}
-												onClick={() => handleNavClick(item.name, router)}
+												onClick={() =>
+													handleNavClick(item.name, router, supabase)
+												}
 												className={classNames(
 													item.current
 														? "bg-presto-light-grey text-black"
@@ -114,7 +117,9 @@ export const MobileSidebar = ({
 									{secondaryNavigation.map((item) => (
 										<button
 											key={item.name}
-											onClick={() => handleNavClick(item.name, router)}
+											onClick={() =>
+												handleNavClick(item.name, router, supabase)
+											}
 											className={classNames(
 												item.current
 													? "bg-presto-light-grey text-black"

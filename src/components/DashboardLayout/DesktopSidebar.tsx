@@ -1,4 +1,5 @@
 import type { DesktopSidebarProps } from "../../types/Props";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { handleNavClick } from "../../utils/navigation";
 import { classNames } from "../../utils/helpers";
 import { useRouter } from "next/router";
@@ -7,6 +8,7 @@ export const DesktopSidebar = ({
 	primaryNavigation,
 	secondaryNavigation,
 }: DesktopSidebarProps) => {
+	const supabase = useSupabaseClient();
 	const router = useRouter();
 
 	return (
@@ -19,7 +21,7 @@ export const DesktopSidebar = ({
 								{primaryNavigation.map((item) => (
 									<button
 										key={item.name}
-										onClick={() => handleNavClick(item.name, router)}
+										onClick={() => handleNavClick(item.name, router, supabase)}
 										className={classNames(
 											item.current
 												? "bg-presto-light-grey text-black"
@@ -47,7 +49,7 @@ export const DesktopSidebar = ({
 							{secondaryNavigation.map((item) => (
 								<button
 									key={item.name}
-									onClick={() => handleNavClick(item.name, router)}
+									onClick={() => handleNavClick(item.name, router, supabase)}
 									className={classNames(
 										item.current
 											? "bg-presto-light-grey text-black"

@@ -1,7 +1,7 @@
-import type { NextPage } from "next";
 import { DisplayText } from "../components/Headings/DisplayText";
 import { Layout } from "../components/LandingLayout/Layout";
 import { Form } from "../components/Forms/Form";
+import type { NextPage } from "next";
 
 const Home: NextPage = ({}) => {
 	return (
@@ -18,7 +18,7 @@ const Home: NextPage = ({}) => {
 					placeholder="Enter your brand name here..."
 					buttonText="Get Started"
 					formId="name"
-					submitRoute="onboarding"
+					route="onboarding"
 				/>
 			</section>
 		</Layout>

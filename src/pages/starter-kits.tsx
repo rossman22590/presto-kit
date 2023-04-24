@@ -1,4 +1,5 @@
 import { DashboardLayout } from "../components/DashboardLayout/DashboardLayout";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { KitViewSection } from "./../components/Sections/KitViewSection";
 import { primaryNavigation, setCurrentPage } from "../utils/navigation";
 import { useDynamicStylesheets } from "../hooks/useDynamicStylesheets";
@@ -16,11 +17,6 @@ import { useRouter } from "next/router";
 import type { StarterKits } from "../types/Kits";
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { ModalContainer } from "../components/Modals/ModalContainer";
-
-import { Auth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
@@ -50,21 +46,9 @@ const StarterKits: NextPage = ({}) => {
 	const session = useSession();
 	const supabase = useSupabaseClient();
 
-	const [isAuthOpen, setIsAuthOpen] = useState(false);
-
-	const handleContinue = () => {
-		if (!session) {
-			setIsAuthOpen(true);
-		}
-		if (session) {
-			router.push("/account");
-		}
-	};
-
 	useEffect(() => {
 		if (session) {
-			setIsAuthOpen(false);
-			router.push("/account");
+			console.log("Session is active ->", session);
 		}
 	}, [session]);
 
@@ -126,26 +110,10 @@ const StarterKits: NextPage = ({}) => {
 							selectedKitView={selectedKitView}
 							brandName={brandName}
 							brandDescription={brandDescription}
-							handleContinue={handleContinue}
+							route="kit-editor"
 						/>
 					)}
-					{isAuthOpen && (
-						<ModalContainer
-							open={isAuthOpen}
-							setOpen={setIsAuthOpen}
-							title="Almost there!"
-							text="Sign up for a free account to edit, save and export your custom UI kits."
-						>
-							<Auth
-								supabaseClient={supabase}
-								appearance={{ theme: ThemeSupa }}
-								view="sign_up"
-								providers={["facebook", "google", "twitter"]}
-								socialLayout="horizontal"
-								redirectTo="/account"
-							/>
-						</ModalContainer>
-					)}
+
 					<div className="h-20"></div>
 				</DashboardLayout>
 			) : (

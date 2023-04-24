@@ -8,6 +8,7 @@ import {
 	PencilSquareIcon,
 	ArrowUpTrayIcon,
 } from "@heroicons/react/24/outline";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 export const primaryNavigation: Navigation[] = [
 	{
@@ -46,10 +47,14 @@ export const secondaryNavigation: Navigation[] = [
 	},
 ];
 
-export const handleNavClick = (pageName: PageName, router: NextRouter) => {
+export const handleNavClick = (
+	pageName: PageName,
+	router: NextRouter,
+	supabase: SupabaseClient
+) => {
 	switch (pageName) {
 		case "Starter Kits":
-			router.push("#");
+			router.push("/starter-kits");
 			break;
 		case "Custom Kits":
 			router.push("#");
@@ -61,10 +66,10 @@ export const handleNavClick = (pageName: PageName, router: NextRouter) => {
 			router.push("#");
 			break;
 		case "Settings":
-			router.push("#");
+			router.push("/account");
 			break;
 		case "Logout":
-			router.push("#");
+			supabase.auth.signOut();
 		default:
 			router.push("#");
 	}

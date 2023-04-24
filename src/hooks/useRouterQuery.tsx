@@ -22,7 +22,7 @@ export const useRouterQuery = (router: NextRouter) => {
 			brandDescription = Array.isArray(description)
 				? description[0]
 				: description;
-			brandDescription = brandDescription;
+			brandDescription = capitaliseWords(brandDescription);
 		}
 
 		return { brandName, brandDescription };

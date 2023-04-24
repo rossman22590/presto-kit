@@ -1,17 +1,36 @@
 import type { FormProps } from "../../types/Props";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { useForm } from "../../hooks/useForm";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 export const Form = ({
 	type,
 	placeholder,
 	buttonText,
 	formId,
-	submitRoute,
+	route,
 	heading,
 	text,
+	handleAuth,
 }: FormProps) => {
-	const { input, setInput, handleSubmit } = useForm(formId, submitRoute);
+	const router = useRouter();
+
+	const [input, setInput] = useState("");
+
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		if (formId === "name") {
+			router.push({
+				pathname: "/" + route,
+				query: { name: input },
+			});
+		}
+		if (formId === "description" && handleAuth) {
+			router.push({ query: { name: router.query.name, description: input } });
+			handleAuth();
+		}
+	};
 
 	if (type === "SIMPLE") {
 		return (

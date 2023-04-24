@@ -20,7 +20,7 @@ export type DisplayTextProps = {
 	type: "MAIN" | "DASHBOARD";
 	buttonText?: string;
 	handleClick?: () => void;
-	route?: URL;
+	route?: string;
 };
 
 export type FormProps = {
@@ -28,9 +28,10 @@ export type FormProps = {
 	placeholder: string;
 	buttonText: string;
 	formId: string;
-	submitRoute: "onboarding" | "starter-kits";
+	route: "onboarding" | "starter-kits";
 	heading?: string;
 	text?: string;
+	handleAuth?: () => void;
 };
 
 export type KitHeadingProps = {
@@ -105,7 +106,7 @@ export type KitViewSelectionProps = {
 	selectedKitView: SelectedKitView;
 	brandName: string;
 	brandDescription: string;
-	handleContinue: () => void;
+	route?: string;
 };
 
 export type ModalContainerProps = React.PropsWithChildren<{

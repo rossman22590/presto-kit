@@ -1,5 +1,4 @@
 import { DashboardLayout } from "../components/DashboardLayout/DashboardLayout";
-import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { KitViewSection } from "./../components/Sections/KitViewSection";
 import { primaryNavigation, setCurrentPage } from "../utils/navigation";
 import { useDynamicStylesheets } from "../hooks/useDynamicStylesheets";
@@ -8,43 +7,90 @@ import { KitPreviewCard } from "../components/Cards/KitPreviewCard";
 import { useKitViewSelection } from "../hooks/useKitViewSelection";
 import { DisplayText } from "../components/Headings/DisplayText";
 import { Layout } from "../components/LandingLayout/Layout";
-import { useRouterQuery } from "../hooks/useRouterQuery";
 import { useKitProgress } from "../hooks/useKitProgress";
 import { useFetchKits } from "../hooks/useFetchKits";
 import { mockStarterKits } from "../data/mockData";
 import { KITS_COUNT } from "../constants/global";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import type { StarterKits } from "../types/Kits";
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
+import {
+	useSupabaseClient,
+	useSession,
+	useUser,
+	User,
+} from "@supabase/auth-helpers-react";
+
+import type { Database } from "../types/supabase";
+type Projects = Database["public"]["Tables"]["projects"]["Row"];
 
 const StarterKits: NextPage = ({}) => {
+	const supabase = useSupabaseClient();
+	const session = useSession();
 	const router = useRouter();
+	const user = useUser();
+
 	setCurrentPage(primaryNavigation, "Starter Kits");
 
-	// const { brandName, brandDescription } = useRouterQuery(router);
-	// const { starterKits, isLoading, error } = useFetchKits(
-	// 	brandDescription,
-	// 	brandName
-	// );
-	// const prevProgress = 33;
-	// const latestProgress = 66;
-	// const progress = useKitProgress(starterKits, latestProgress);
+	const [isLoadingProject, setIsLoadingProject] = useState(true);
+	const [brandName, setBrandName] = useState<Projects["name"] | null>(null);
+	const [brandDescription, setBrandDescription] = useState<
+		Projects["description"] | null
+	>(null);
+
+	useEffect(() => {
+		getProject(user);
+	}, [session]);
+
+	const getProject = async (user: User | null) => {
+		try {
+			setIsLoadingProject(true);
+			if (!user) throw new Error("No user at get project");
+
+			let { data, error, status } = await supabase
+				.from("projects")
+				.select("name, description")
+				.eq("user_id", user.id)
+				.single();
+
+			if (error && status !== 406) {
+				throw error;
+			}
+
+			if (data) {
+				setBrandName(data.name);
+				setBrandDescription(data.description);
+			}
+		} catch (error) {
+			alert("Error loading user data!");
+			console.log(error);
+		} finally {
+			setIsLoadingProject(false);
+		}
+	};
+
+	const { starterKits, isLoadingKits, error } = useFetchKits(
+		brandDescription,
+		brandName,
+		isLoadingProject
+	);
+
+	const prevProgress = 33;
+	const latestProgress = 66;
+	const progress = useKitProgress(starterKits, latestProgress);
 
 	// Mock data
-	const brandName = "Farm Shop";
-	const brandDescription = "Organic Farm Store";
-	const starterKits = mockStarterKits;
-	const isLoading = false;
-	const error = null;
+	// const brandName = "Farm Shop";
+	// const brandDescription = "Organic Farm Store";
+	// const starterKits = mockStarterKits;
+	// const isLoading = false;
+	// const error = null;
 
 	const kitViewSelection = useKitViewSelection(starterKits);
 	const { isKitView, selectedKitView } = kitViewSelection;
 
 	useDynamicStylesheets(starterKits);
-
-	const session = useSession();
-	const supabase = useSupabaseClient();
 
 	useEffect(() => {
 		if (session) {
@@ -54,7 +100,18 @@ const StarterKits: NextPage = ({}) => {
 
 	return (
 		<>
-			{isLoading && !error ? (
+			{isLoadingProject && (
+				<Layout>
+					<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
+						<img
+							src="/loading-icon.png"
+							alt="Loading Icon"
+							className="h-16 w-16 animate-spin"
+						/>
+					</section>
+				</Layout>
+			)}
+			{isLoadingKits && !error ? (
 				// <Layout prevProgress={prevProgress} progress={progress}>
 				<Layout>
 					<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
@@ -85,7 +142,7 @@ const StarterKits: NextPage = ({}) => {
 						</div>
 					</section>
 				</Layout>
-			) : !isLoading && starterKits.length > 0 ? (
+			) : !isLoadingKits && starterKits.length > 0 ? (
 				<DashboardLayout>
 					<section className="m-auto flex max-w-5xl flex-col items-center gap-12 py-6">
 						<DisplayText
@@ -105,7 +162,7 @@ const StarterKits: NextPage = ({}) => {
 							))}
 						</div>
 					</section>
-					{isKitView() && (
+					{isKitView() && brandName && brandDescription && (
 						<KitViewSection
 							selectedKitView={selectedKitView}
 							brandName={brandName}

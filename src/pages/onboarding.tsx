@@ -34,12 +34,12 @@ const Onboarding: NextPage = ({}) => {
 		if (session) {
 			const { brandName: name, brandDescription: description } =
 				useRouterQuery(router);
-			insertProject({ user, name, description });
+			uploadProject({ user, name, description });
 			router.push("/starter-kits");
 		}
 	}, [session]);
 
-	const insertProject = async ({
+	const uploadProject = async ({
 		user,
 		name,
 		description,
@@ -50,7 +50,7 @@ const Onboarding: NextPage = ({}) => {
 	}) => {
 		try {
 			setLoading(true);
-			if (!user) throw new Error("No user");
+			if (!user) throw new Error("No user at upload project");
 
 			const updates = {
 				user_id: user.id,

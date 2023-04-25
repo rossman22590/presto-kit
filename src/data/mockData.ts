@@ -107,3 +107,10 @@ export const mockStarterKits: StarterKits | [] = [
 		},
 	},
 ];
+
+// Mock data
+// const brandName = "Farm Shop";
+// const brandDescription = "Organic Farm Store";
+// const starterKits = mockStarterKits;
+// const isLoading = false;
+// const error = null;

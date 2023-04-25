@@ -89,6 +89,9 @@ export function KitPreviewCard({
 				)}
 				style={{
 					fontFamily: starterKit.typography.typefaces.display.font,
+					fontWeight: starterKit.typography.typefaces.display.weight
+						? starterKit.typography.typefaces.display.weight
+						: "",
 				}}
 				onClick={() =>
 					isFullKitView
@@ -112,6 +115,9 @@ export function KitPreviewCard({
 				)}
 				style={{
 					fontFamily: starterKit.typography.typefaces.text.font,
+					fontWeight: starterKit.typography.typefaces.text.weight
+						? starterKit.typography.typefaces.text.weight
+						: "",
 				}}
 				onClick={() =>
 					isFullKitView

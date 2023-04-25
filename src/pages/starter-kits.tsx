@@ -1,62 +1,65 @@
+import { useUploadStarterKitsContent } from "../hooks/useUploadStarterKitsContent";
 import { DashboardLayout } from "../components/DashboardLayout/DashboardLayout";
-import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { KitViewSection } from "./../components/Sections/KitViewSection";
 import { primaryNavigation, setCurrentPage } from "../utils/navigation";
 import { useDynamicStylesheets } from "../hooks/useDynamicStylesheets";
 import { KitProgressCard } from "../components/Cards/KitProgressCard";
+import { useGetStarterProject } from "../hooks/useGetStarterProject";
+import { useUploadStarterKits } from "../hooks/useUploadStarterKits";
 import { KitPreviewCard } from "../components/Cards/KitPreviewCard";
 import { useKitViewSelection } from "../hooks/useKitViewSelection";
 import { DisplayText } from "../components/Headings/DisplayText";
 import { Layout } from "../components/LandingLayout/Layout";
-import { useRouterQuery } from "../hooks/useRouterQuery";
 import { useKitProgress } from "../hooks/useKitProgress";
 import { useFetchKits } from "../hooks/useFetchKits";
-import { mockStarterKits } from "../data/mockData";
 import { KITS_COUNT } from "../constants/global";
 import { useRouter } from "next/router";
 import type { StarterKits } from "../types/Kits";
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
 
 const StarterKits: NextPage = ({}) => {
-	const router = useRouter();
 	setCurrentPage(primaryNavigation, "Starter Kits");
+	const router = useRouter();
 
-	// const { brandName, brandDescription } = useRouterQuery(router);
-	// const { starterKits, isLoading, error } = useFetchKits(
-	// 	brandDescription,
-	// 	brandName
-	// );
-	// const prevProgress = 33;
-	// const latestProgress = 66;
-	// const progress = useKitProgress(starterKits, latestProgress);
+	const prevProgress = 66;
+	const latestProgress = 66;
 
-	// Mock data
-	const brandName = "Farm Shop";
-	const brandDescription = "Organic Farm Store";
-	const starterKits = mockStarterKits;
-	const isLoading = false;
-	const error = null;
+	const { brandName, brandDescription, isLoadingProject, projectId } =
+		useGetStarterProject();
+
+	const { starterKits, isLoadingKits, error } = useFetchKits(
+		brandDescription,
+		brandName,
+		isLoadingProject
+	);
+
+	const progress = useKitProgress(starterKits, latestProgress);
+
+	const kitIds = useUploadStarterKits(projectId, starterKits);
+
+	useUploadStarterKitsContent(kitIds, starterKits);
 
 	const kitViewSelection = useKitViewSelection(starterKits);
 	const { isKitView, selectedKitView } = kitViewSelection;
 
 	useDynamicStylesheets(starterKits);
 
-	const session = useSession();
-	const supabase = useSupabaseClient();
-
-	useEffect(() => {
-		if (session) {
-			console.log("Session is active ->", session);
-		}
-	}, [session]);
-
 	return (
 		<>
-			{isLoading && !error ? (
-				// <Layout prevProgress={prevProgress} progress={progress}>
+			{isLoadingProject && (
 				<Layout>
+					<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
+						<img
+							src="/loading-icon.png"
+							alt="Loading Icon"
+							className="h-16 w-16 animate-spin"
+						/>
+					</section>
+				</Layout>
+			)}
+			{isLoadingKits && !error ? (
+				<Layout prevProgress={prevProgress} progress={progress}>
+					{/* <Layout> */}
 					<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
 						<DisplayText
 							heading="Generating Starter Kits"
@@ -85,7 +88,7 @@ const StarterKits: NextPage = ({}) => {
 						</div>
 					</section>
 				</Layout>
-			) : !isLoading && starterKits.length > 0 ? (
+			) : !isLoadingKits && starterKits.length > 0 ? (
 				<DashboardLayout>
 					<section className="m-auto flex max-w-5xl flex-col items-center gap-12 py-6">
 						<DisplayText
@@ -105,7 +108,7 @@ const StarterKits: NextPage = ({}) => {
 							))}
 						</div>
 					</section>
-					{isKitView() && (
+					{isKitView() && brandName && brandDescription && (
 						<KitViewSection
 							selectedKitView={selectedKitView}
 							brandName={brandName}

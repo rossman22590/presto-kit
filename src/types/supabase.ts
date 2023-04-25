@@ -11,7 +11,7 @@ export interface Database {
 		Tables: {
 			colors: {
 				Row: {
-					category: string;
+					category: "BASE" | "PRIMARY" | "ACCENT";
 					hex: string;
 					id: number;
 					inserted_at: string;
@@ -20,7 +20,7 @@ export interface Database {
 					updated_at: string;
 				};
 				Insert: {
-					category: string;
+					category: "BASE" | "PRIMARY" | "ACCENT";
 					hex: string;
 					id?: number;
 					inserted_at?: string;
@@ -29,7 +29,7 @@ export interface Database {
 					updated_at?: string;
 				};
 				Update: {
-					category?: string;
+					category?: "BASE" | "PRIMARY" | "ACCENT";
 					hex?: string;
 					id?: number;
 					inserted_at?: string;
@@ -49,7 +49,7 @@ export interface Database {
 					user_id: string | null;
 				};
 				Insert: {
-					category: string;
+					category: "STARTER" | "CUSTOM";
 					id?: number;
 					inserted_at?: string;
 					project_id?: number | null;
@@ -58,7 +58,7 @@ export interface Database {
 					user_id?: string | null;
 				};
 				Update: {
-					category?: string;
+					category?: "STARTER" | "CUSTOM";
 					id?: number;
 					inserted_at?: string;
 					project_id?: number | null;
@@ -124,7 +124,7 @@ export interface Database {
 			};
 			typefaces: {
 				Row: {
-					category: string;
+					category: "DISPLAY" | "TEXT";
 					font: string;
 					id: number;
 					inserted_at: string;
@@ -133,7 +133,7 @@ export interface Database {
 					weight: string | null;
 				};
 				Insert: {
-					category: string;
+					category: "DISPLAY" | "TEXT";
 					font: string;
 					id?: number;
 					inserted_at?: string;
@@ -142,7 +142,7 @@ export interface Database {
 					weight?: string | null;
 				};
 				Update: {
-					category?: string;
+					category?: "DISPLAY" | "TEXT";
 					font?: string;
 					id?: number;
 					inserted_at?: string;

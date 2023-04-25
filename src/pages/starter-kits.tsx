@@ -25,6 +25,10 @@ import {
 import type { Database } from "../types/supabase";
 type Projects = Database["public"]["Tables"]["projects"]["Row"];
 type Kits = Database["public"]["Tables"]["kits"]["Row"];
+type Typefaces = Database["public"]["Tables"]["typefaces"]["Row"];
+type Colors = Database["public"]["Tables"]["colors"]["Row"];
+type UploadTypefaces = Omit<Typefaces, "id" | "inserted_at" | "updated_at">;
+type UploadColors = Omit<Colors, "id" | "inserted_at" | "updated_at">;
 
 const StarterKits: NextPage = ({}) => {
 	const supabase = useSupabaseClient();
@@ -53,13 +57,13 @@ const StarterKits: NextPage = ({}) => {
 			setIsLoadingProject(true);
 			if (!user) throw new Error("No user at get project");
 
-			let { data, error, status } = await supabase
+			let { data, error } = await supabase
 				.from("projects")
 				.select("id, name, description")
 				.eq("user_id", user.id)
 				.single();
 
-			if (error && status !== 406) {
+			if (error) {
 				throw error;
 			}
 
@@ -84,7 +88,7 @@ const StarterKits: NextPage = ({}) => {
 
 	const progress = useKitProgress(starterKits, latestProgress);
 
-	const [kitId, setKitId] = useState<Kits["id"] | null>(null);
+	const [kitId, setKitId] = useState<Kits["id"][] | []>([]);
 
 	useEffect(() => {
 		if (starterKits.length > 0) {
@@ -92,12 +96,6 @@ const StarterKits: NextPage = ({}) => {
 			uploadKit(user, projectId, latestKit, "STARTER");
 		}
 	}, [starterKits]);
-
-	useEffect(() => {
-		if (kitId) {
-			console.log("Inserted kit ID ->", kitId);
-		}
-	}, [kitId]);
 
 	const uploadKit = async (
 		user: User | null,
@@ -116,24 +114,95 @@ const StarterKits: NextPage = ({}) => {
 				category,
 			};
 
-			let { data, error, status } = await supabase
+			let { data, error } = await supabase
 				.from("kits")
 				.insert(updates)
-				.eq("user_id", user.id)
 				.select()
 				.single();
 
-			if (error && status !== 406) {
+			if (error) {
 				throw error;
 			}
 
-			if (data) {
-				setKitId(data.id);
+			if (data && data.id) {
+				setKitId((prevState) => [...prevState, (data as Kits).id]);
 			}
-
-			console.log("Kit inserted!");
 		} catch (error) {
 			alert("Error inserting the kit data!");
+			console.log(error);
+		}
+	};
+
+	useEffect(() => {
+		if (starterKits.length === KITS_COUNT && kitId.length === KITS_COUNT) {
+			starterKits.forEach((kit, index) => {
+				const currentKitId = kitId[index];
+
+				uploadTypography(currentKitId, kit);
+				uploadColors(currentKitId, kit);
+			});
+		}
+	}, [starterKits, kitId]);
+
+	const uploadTypography = async (kitId: Kits["id"], kit: Kit) => {
+		try {
+			const { display, text } = kit.typography.typefaces;
+
+			const typefaceData: UploadTypefaces[] = [
+				{
+					category: "DISPLAY",
+					font: display.font,
+					weight: display.weight,
+					kit_id: kitId,
+				},
+				{
+					category: "TEXT",
+					font: text.font,
+					weight: text.weight,
+					kit_id: kitId,
+				},
+			];
+
+			const { error } = await supabase.from("typefaces").insert(typefaceData);
+
+			if (error) {
+				throw error;
+			}
+		} catch (error) {
+			alert("Error inserting typography data!");
+			console.log(error);
+		}
+	};
+
+	const getColorCategory = (index: number) => {
+		switch (index) {
+			case 0:
+				return "BASE";
+			case 1:
+				return "PRIMARY";
+			case 2:
+				return "ACCENT";
+			default:
+				throw new Error("Invalid index for color category");
+		}
+	};
+
+	const uploadColors = async (kitId: Kits["id"], kit: Kit) => {
+		try {
+			const colorData: UploadColors[] = kit.colors.details.map((color, i) => ({
+				category: getColorCategory(i),
+				name: color.name,
+				hex: color.hex,
+				kit_id: kitId,
+			}));
+
+			const { error } = await supabase.from("colors").insert(colorData);
+
+			if (error) {
+				throw error;
+			}
+		} catch (error) {
+			alert("Error inserting colors data!");
 			console.log(error);
 		}
 	};

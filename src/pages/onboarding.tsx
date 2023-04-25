@@ -23,10 +23,15 @@ const Onboarding: NextPage = ({}) => {
 	const router = useRouter();
 	const user = useUser();
 
+	const prevProgress = 0;
+	const authProgress = 66;
+	const [progress, setProgress] = useState(33);
+
 	const [isAuthOpen, setIsAuthOpen] = useState(false);
 	const [loading, setLoading] = useState(true);
 
 	const handleAuth = () => {
+		setProgress(authProgress);
 		setIsAuthOpen(true);
 	};
 
@@ -74,7 +79,7 @@ const Onboarding: NextPage = ({}) => {
 	};
 
 	return (
-		<Layout prevProgress={0} progress={33}>
+		<Layout prevProgress={prevProgress} progress={progress}>
 			<section className="m-auto flex flex-grow flex-col items-center gap-8 pt-28 md:pt-40 lg:max-w-5xl">
 				<Form
 					type="ONBOARDING"

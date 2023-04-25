@@ -24,6 +24,7 @@ import {
 
 import type { Database } from "../types/supabase";
 type Projects = Database["public"]["Tables"]["projects"]["Row"];
+type Kits = Database["public"]["Tables"]["kits"]["Row"];
 
 const StarterKits: NextPage = ({}) => {
 	const supabase = useSupabaseClient();
@@ -76,7 +77,7 @@ const StarterKits: NextPage = ({}) => {
 		isLoadingProject
 	);
 
-	const prevProgress = 33;
+	const prevProgress = 66;
 	const latestProgress = 66;
 	const progress = useKitProgress(starterKits, latestProgress);
 
@@ -112,8 +113,8 @@ const StarterKits: NextPage = ({}) => {
 				</Layout>
 			)}
 			{isLoadingKits && !error ? (
-				// <Layout prevProgress={prevProgress} progress={progress}>
-				<Layout>
+				<Layout prevProgress={prevProgress} progress={progress}>
+					{/* <Layout> */}
 					<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
 						<DisplayText
 							heading="Generating Starter Kits"

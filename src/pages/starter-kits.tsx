@@ -24,7 +24,7 @@ import {
 
 import type { Database } from "../types/supabase";
 import { useGetStarterProject } from "../hooks/useGetStarterProject";
-type Projects = Database["public"]["Tables"]["projects"]["Row"];
+import { useUploadStarterKits } from "../hooks/useUploadStarterKits";
 type Kits = Database["public"]["Tables"]["kits"]["Row"];
 type Typefaces = Database["public"]["Tables"]["typefaces"]["Row"];
 type Colors = Database["public"]["Tables"]["colors"]["Row"];
@@ -32,22 +32,16 @@ type UploadTypefaces = Omit<Typefaces, "id" | "inserted_at" | "updated_at">;
 type UploadColors = Omit<Colors, "id" | "inserted_at" | "updated_at">;
 
 const StarterKits: NextPage = ({}) => {
+	setCurrentPage(primaryNavigation, "Starter Kits");
 	const supabase = useSupabaseClient();
 	const session = useSession();
 	const router = useRouter();
-	const user = useUser();
-
-	setCurrentPage(primaryNavigation, "Starter Kits");
 
 	const prevProgress = 66;
 	const latestProgress = 66;
 
-	// TODO: useGetStarterProject.ts hook
-
 	const { brandName, brandDescription, isLoadingProject, projectId } =
 		useGetStarterProject();
-
-	//
 
 	const { starterKits, isLoadingKits, error } = useFetchKits(
 		brandDescription,
@@ -57,54 +51,7 @@ const StarterKits: NextPage = ({}) => {
 
 	const progress = useKitProgress(starterKits, latestProgress);
 
-	//TODO: useUploadKit.ts hook
-
-	const [kitId, setKitId] = useState<Kits["id"][] | []>([]);
-
-	const uploadKit = async (
-		user: User | null,
-		projectId: Projects["id"] | null,
-		kit: Kit,
-		category: Kits["category"]
-	) => {
-		try {
-			if (!user) throw new Error("No user at upload kit");
-			if (!projectId) throw new Error("No project ID at upload kit");
-
-			const updates = {
-				project_id: projectId,
-				user_id: user.id,
-				title: kit.title,
-				category,
-			};
-
-			let { data, error } = await supabase
-				.from("kits")
-				.insert(updates)
-				.select()
-				.single();
-
-			if (error) {
-				throw error;
-			}
-
-			if (data && data.id) {
-				setKitId((prevState) => [...prevState, (data as Kits).id]);
-			}
-		} catch (error) {
-			alert("Error inserting the kit data!");
-			console.log(error);
-		}
-	};
-
-	// TODO: useUploadStarterKits.ts hook
-
-	useEffect(() => {
-		if (starterKits.length > 0) {
-			const latestKit = starterKits[starterKits.length - 1];
-			uploadKit(user, projectId, latestKit, "STARTER");
-		}
-	}, [starterKits]);
+	const kitId = useUploadStarterKits(projectId, starterKits);
 
 	// TODO: uploadTypography.ts query util
 

@@ -35,10 +35,7 @@ export const useUploadStarterKits = (
 				.insert(updates)
 				.select()
 				.single();
-
-			if (error) {
-				throw error;
-			}
+			if (error) throw error;
 
 			if (data && data.id) {
 				setKitIds((prevState) => [...prevState, (data as Kits).id]);

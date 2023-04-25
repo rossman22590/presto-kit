@@ -28,9 +28,7 @@ export const uploadTypography = async (
 
 		const { error } = await supabase.from("typefaces").insert(typefaceData);
 
-		if (error) {
-			throw error;
-		}
+		if (error) throw error;
 	} catch (error) {
 		alert("Error inserting typography data!");
 		console.log(error);
@@ -52,9 +50,7 @@ export const uploadColors = async (
 
 		const { error } = await supabase.from("colors").insert(colorData);
 
-		if (error) {
-			throw error;
-		}
+		if (error) throw error;
 	} catch (error) {
 		alert("Error inserting colors data!");
 		console.log(error);

@@ -23,6 +23,7 @@ import {
 } from "@supabase/auth-helpers-react";
 
 import type { Database } from "../types/supabase";
+import { useGetStarterProject } from "../hooks/useGetStarterProject";
 type Projects = Database["public"]["Tables"]["projects"]["Row"];
 type Kits = Database["public"]["Tables"]["kits"]["Row"];
 type Typefaces = Database["public"]["Tables"]["typefaces"]["Row"];
@@ -41,44 +42,12 @@ const StarterKits: NextPage = ({}) => {
 	const prevProgress = 66;
 	const latestProgress = 66;
 
-	const [isLoadingProject, setIsLoadingProject] = useState(true);
-	const [projectId, setProjectId] = useState<Projects["id"] | null>(null);
-	const [brandName, setBrandName] = useState<Projects["name"] | null>(null);
-	const [brandDescription, setBrandDescription] = useState<
-		Projects["description"] | null
-	>(null);
+	// TODO: useGetStarterProject.ts hook
 
-	useEffect(() => {
-		getProject(user);
-	}, [session]);
+	const { brandName, brandDescription, isLoadingProject, projectId } =
+		useGetStarterProject();
 
-	const getProject = async (user: User | null) => {
-		try {
-			setIsLoadingProject(true);
-			if (!user) throw new Error("No user at get project");
-
-			let { data, error } = await supabase
-				.from("projects")
-				.select("id, name, description")
-				.eq("user_id", user.id)
-				.single();
-
-			if (error) {
-				throw error;
-			}
-
-			if (data) {
-				setProjectId(data.id);
-				setBrandName(data.name);
-				setBrandDescription(data.description);
-			}
-		} catch (error) {
-			alert("Error loading user data!");
-			console.log(error);
-		} finally {
-			setIsLoadingProject(false);
-		}
-	};
+	//
 
 	const { starterKits, isLoadingKits, error } = useFetchKits(
 		brandDescription,
@@ -88,14 +57,9 @@ const StarterKits: NextPage = ({}) => {
 
 	const progress = useKitProgress(starterKits, latestProgress);
 
-	const [kitId, setKitId] = useState<Kits["id"][] | []>([]);
+	//TODO: useUploadKit.ts hook
 
-	useEffect(() => {
-		if (starterKits.length > 0) {
-			const latestKit = starterKits[starterKits.length - 1];
-			uploadKit(user, projectId, latestKit, "STARTER");
-		}
-	}, [starterKits]);
+	const [kitId, setKitId] = useState<Kits["id"][] | []>([]);
 
 	const uploadKit = async (
 		user: User | null,
@@ -133,16 +97,16 @@ const StarterKits: NextPage = ({}) => {
 		}
 	};
 
-	useEffect(() => {
-		if (starterKits.length === KITS_COUNT && kitId.length === KITS_COUNT) {
-			starterKits.forEach((kit, index) => {
-				const currentKitId = kitId[index];
+	// TODO: useUploadStarterKits.ts hook
 
-				uploadTypography(currentKitId, kit);
-				uploadColors(currentKitId, kit);
-			});
+	useEffect(() => {
+		if (starterKits.length > 0) {
+			const latestKit = starterKits[starterKits.length - 1];
+			uploadKit(user, projectId, latestKit, "STARTER");
 		}
-	}, [starterKits, kitId]);
+	}, [starterKits]);
+
+	// TODO: uploadTypography.ts query util
 
 	const uploadTypography = async (kitId: Kits["id"], kit: Kit) => {
 		try {
@@ -174,6 +138,8 @@ const StarterKits: NextPage = ({}) => {
 		}
 	};
 
+	// TODO: getColorCategory.ts helper
+
 	const getColorCategory = (index: number) => {
 		switch (index) {
 			case 0:
@@ -186,6 +152,8 @@ const StarterKits: NextPage = ({}) => {
 				throw new Error("Invalid index for color category");
 		}
 	};
+
+	// TODO: uploadColors.ts query util
 
 	const uploadColors = async (kitId: Kits["id"], kit: Kit) => {
 		try {
@@ -206,6 +174,19 @@ const StarterKits: NextPage = ({}) => {
 			console.log(error);
 		}
 	};
+
+	// TODO: useUploadStarterKitContent.ts hook
+
+	useEffect(() => {
+		if (starterKits.length === KITS_COUNT && kitId.length === KITS_COUNT) {
+			starterKits.forEach((kit, index) => {
+				const currentKitId = kitId[index];
+
+				uploadTypography(currentKitId, kit);
+				uploadColors(currentKitId, kit);
+			});
+		}
+	}, [starterKits, kitId]);
 
 	// Mock data
 	// const brandName = "Farm Shop";

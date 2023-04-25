@@ -16,9 +16,6 @@ export const useFetchKits = (
 	const [error, setError] = useState<Error | null>(null);
 	const [isLoadingKits, setIsLoadingKits] = useState<boolean>(true);
 
-	const sleep = (ms: number) =>
-		new Promise((resolve) => setTimeout(resolve, ms));
-
 	useEffect(() => {
 		if (!isLoadingProject) getInitialKits();
 	}, [isLoadingProject]);

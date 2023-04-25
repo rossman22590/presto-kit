@@ -13,7 +13,7 @@ import { mockStarterKits } from "../data/mockData";
 import { KITS_COUNT } from "../constants/global";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import type { StarterKits } from "../types/Kits";
+import type { Kit, StarterKits } from "../types/Kits";
 import type { NextPage } from "next";
 import {
 	useSupabaseClient,
@@ -34,7 +34,11 @@ const StarterKits: NextPage = ({}) => {
 
 	setCurrentPage(primaryNavigation, "Starter Kits");
 
+	const prevProgress = 66;
+	const latestProgress = 66;
+
 	const [isLoadingProject, setIsLoadingProject] = useState(true);
+	const [projectId, setProjectId] = useState<Projects["id"] | null>(null);
 	const [brandName, setBrandName] = useState<Projects["name"] | null>(null);
 	const [brandDescription, setBrandDescription] = useState<
 		Projects["description"] | null
@@ -51,7 +55,7 @@ const StarterKits: NextPage = ({}) => {
 
 			let { data, error, status } = await supabase
 				.from("projects")
-				.select("name, description")
+				.select("id, name, description")
 				.eq("user_id", user.id)
 				.single();
 
@@ -60,6 +64,7 @@ const StarterKits: NextPage = ({}) => {
 			}
 
 			if (data) {
+				setProjectId(data.id);
 				setBrandName(data.name);
 				setBrandDescription(data.description);
 			}
@@ -77,9 +82,61 @@ const StarterKits: NextPage = ({}) => {
 		isLoadingProject
 	);
 
-	const prevProgress = 66;
-	const latestProgress = 66;
 	const progress = useKitProgress(starterKits, latestProgress);
+
+	const [kitId, setKitId] = useState<Kits["id"] | null>(null);
+
+	useEffect(() => {
+		if (starterKits.length > 0) {
+			const latestKit = starterKits[starterKits.length - 1];
+			uploadKit(user, projectId, latestKit, "STARTER");
+		}
+	}, [starterKits]);
+
+	useEffect(() => {
+		if (kitId) {
+			console.log("Inserted kit ID ->", kitId);
+		}
+	}, [kitId]);
+
+	const uploadKit = async (
+		user: User | null,
+		projectId: Projects["id"] | null,
+		kit: Kit,
+		category: Kits["category"]
+	) => {
+		try {
+			if (!user) throw new Error("No user at upload kit");
+			if (!projectId) throw new Error("No project ID at upload kit");
+
+			const updates = {
+				project_id: projectId,
+				user_id: user.id,
+				title: kit.title,
+				category,
+			};
+
+			let { data, error, status } = await supabase
+				.from("kits")
+				.insert(updates)
+				.eq("user_id", user.id)
+				.select()
+				.single();
+
+			if (error && status !== 406) {
+				throw error;
+			}
+
+			if (data) {
+				setKitId(data.id);
+			}
+
+			console.log("Kit inserted!");
+		} catch (error) {
+			alert("Error inserting the kit data!");
+			console.log(error);
+		}
+	};
 
 	// Mock data
 	// const brandName = "Farm Shop";

@@ -1,40 +1,24 @@
+import { useUploadStarterKitsContent } from "../hooks/useUploadStarterKitsContent";
 import { DashboardLayout } from "../components/DashboardLayout/DashboardLayout";
 import { KitViewSection } from "./../components/Sections/KitViewSection";
 import { primaryNavigation, setCurrentPage } from "../utils/navigation";
 import { useDynamicStylesheets } from "../hooks/useDynamicStylesheets";
 import { KitProgressCard } from "../components/Cards/KitProgressCard";
+import { useGetStarterProject } from "../hooks/useGetStarterProject";
+import { useUploadStarterKits } from "../hooks/useUploadStarterKits";
 import { KitPreviewCard } from "../components/Cards/KitPreviewCard";
 import { useKitViewSelection } from "../hooks/useKitViewSelection";
 import { DisplayText } from "../components/Headings/DisplayText";
 import { Layout } from "../components/LandingLayout/Layout";
 import { useKitProgress } from "../hooks/useKitProgress";
 import { useFetchKits } from "../hooks/useFetchKits";
-import { mockStarterKits } from "../data/mockData";
 import { KITS_COUNT } from "../constants/global";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import type { Kit, StarterKits } from "../types/Kits";
+import type { StarterKits } from "../types/Kits";
 import type { NextPage } from "next";
-import {
-	useSupabaseClient,
-	useSession,
-	useUser,
-	User,
-} from "@supabase/auth-helpers-react";
-
-import type { Database } from "../types/supabase";
-import { useGetStarterProject } from "../hooks/useGetStarterProject";
-import { useUploadStarterKits } from "../hooks/useUploadStarterKits";
-type Kits = Database["public"]["Tables"]["kits"]["Row"];
-type Typefaces = Database["public"]["Tables"]["typefaces"]["Row"];
-type Colors = Database["public"]["Tables"]["colors"]["Row"];
-type UploadTypefaces = Omit<Typefaces, "id" | "inserted_at" | "updated_at">;
-type UploadColors = Omit<Colors, "id" | "inserted_at" | "updated_at">;
 
 const StarterKits: NextPage = ({}) => {
 	setCurrentPage(primaryNavigation, "Starter Kits");
-	const supabase = useSupabaseClient();
-	const session = useSession();
 	const router = useRouter();
 
 	const prevProgress = 66;
@@ -51,107 +35,14 @@ const StarterKits: NextPage = ({}) => {
 
 	const progress = useKitProgress(starterKits, latestProgress);
 
-	const kitId = useUploadStarterKits(projectId, starterKits);
+	const kitIds = useUploadStarterKits(projectId, starterKits);
 
-	// TODO: uploadTypography.ts query util
-
-	const uploadTypography = async (kitId: Kits["id"], kit: Kit) => {
-		try {
-			const { display, text } = kit.typography.typefaces;
-
-			const typefaceData: UploadTypefaces[] = [
-				{
-					category: "DISPLAY",
-					font: display.font,
-					weight: display.weight,
-					kit_id: kitId,
-				},
-				{
-					category: "TEXT",
-					font: text.font,
-					weight: text.weight,
-					kit_id: kitId,
-				},
-			];
-
-			const { error } = await supabase.from("typefaces").insert(typefaceData);
-
-			if (error) {
-				throw error;
-			}
-		} catch (error) {
-			alert("Error inserting typography data!");
-			console.log(error);
-		}
-	};
-
-	// TODO: getColorCategory.ts helper
-
-	const getColorCategory = (index: number) => {
-		switch (index) {
-			case 0:
-				return "BASE";
-			case 1:
-				return "PRIMARY";
-			case 2:
-				return "ACCENT";
-			default:
-				throw new Error("Invalid index for color category");
-		}
-	};
-
-	// TODO: uploadColors.ts query util
-
-	const uploadColors = async (kitId: Kits["id"], kit: Kit) => {
-		try {
-			const colorData: UploadColors[] = kit.colors.details.map((color, i) => ({
-				category: getColorCategory(i),
-				name: color.name,
-				hex: color.hex,
-				kit_id: kitId,
-			}));
-
-			const { error } = await supabase.from("colors").insert(colorData);
-
-			if (error) {
-				throw error;
-			}
-		} catch (error) {
-			alert("Error inserting colors data!");
-			console.log(error);
-		}
-	};
-
-	// TODO: useUploadStarterKitContent.ts hook
-
-	useEffect(() => {
-		if (starterKits.length === KITS_COUNT && kitId.length === KITS_COUNT) {
-			starterKits.forEach((kit, index) => {
-				const currentKitId = kitId[index];
-
-				uploadTypography(currentKitId, kit);
-				uploadColors(currentKitId, kit);
-			});
-		}
-	}, [starterKits, kitId]);
-
-	// Mock data
-	// const brandName = "Farm Shop";
-	// const brandDescription = "Organic Farm Store";
-	// const starterKits = mockStarterKits;
-	// const isLoading = false;
-	// const error = null;
+	useUploadStarterKitsContent(kitIds, starterKits);
 
 	const kitViewSelection = useKitViewSelection(starterKits);
 	const { isKitView, selectedKitView } = kitViewSelection;
 
 	useDynamicStylesheets(starterKits);
-
-	useEffect(() => {
-		if (session) {
-			console.log("Session is active ->", session);
-		}
-	}, [session]);
 
 	return (
 		<>

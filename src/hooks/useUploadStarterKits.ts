@@ -11,7 +11,7 @@ export const useUploadStarterKits = (
 	const supabase = useSupabaseClient();
 	const user = useUser();
 
-	const [kitId, setKitId] = useState<Kits["id"][] | []>([]);
+	const [kitIds, setKitIds] = useState<Kits["id"][] | []>([]);
 
 	const uploadKit = async (
 		user: User | null,
@@ -41,7 +41,7 @@ export const useUploadStarterKits = (
 			}
 
 			if (data && data.id) {
-				setKitId((prevState) => [...prevState, (data as Kits).id]);
+				setKitIds((prevState) => [...prevState, (data as Kits).id]);
 			}
 		} catch (error) {
 			alert("Error inserting the kit data!");
@@ -56,5 +56,5 @@ export const useUploadStarterKits = (
 		}
 	}, [starterKits]);
 
-	return kitId;
+	return kitIds;
 };

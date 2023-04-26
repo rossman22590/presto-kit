@@ -1,82 +1,30 @@
+import { useUploadStarterProject } from "../hooks/useUploadStarterProject";
 import { ModalContainer } from "../components/Modals/ModalContainer";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Layout } from "../components/LandingLayout/Layout";
-import { useRouterQuery } from "../hooks/useRouterQuery";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { Form } from "../components/Forms/Form";
 import { Auth } from "@supabase/auth-ui-react";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import type { NextPage } from "next";
-import {
-	User,
-	useSession,
-	useSupabaseClient,
-	useUser,
-} from "@supabase/auth-helpers-react";
-
-import type { Database } from "../types/supabase";
-type Projects = Database["public"]["Tables"]["projects"]["Row"];
 
 const Onboarding: NextPage = ({}) => {
 	const supabase = useSupabaseClient();
-	const session = useSession();
 	const router = useRouter();
-	const user = useUser();
 
 	const prevProgress = 0;
 	const authProgress = 66;
 	const [progress, setProgress] = useState(33);
 
 	const [isAuthOpen, setIsAuthOpen] = useState(false);
-	const [loading, setLoading] = useState(true);
 
 	const handleAuth = () => {
 		setProgress(authProgress);
 		setIsAuthOpen(true);
 	};
 
-	useEffect(() => {
-		if (session) {
-			const { brandName: name, brandDescription: description } =
-				useRouterQuery(router);
-			uploadProject({ user, name, description });
-			router.push("/starter-kits");
-		}
-	}, [session]);
-
-	const uploadProject = async ({
-		user,
-		name,
-		description,
-	}: {
-		user: User | null;
-		name: Projects["name"];
-		description: Projects["description"];
-	}) => {
-		try {
-			setLoading(true);
-			if (!user) throw new Error("No user at upload project");
-
-			const updates = {
-				user_id: user.id,
-				name,
-				description,
-			};
-
-			let { error } = await supabase
-				.from("projects")
-				.insert(updates)
-				.eq("user_id", user.id);
-			if (error) throw error;
-
-			console.log("Project inserted!");
-		} catch (error) {
-			alert("Error inserting the data!");
-			console.log(error);
-		} finally {
-			setLoading(false);
-		}
-	};
+	useUploadStarterProject();
 
 	return (
 		<Layout prevProgress={prevProgress} progress={progress}>

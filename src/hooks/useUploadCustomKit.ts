@@ -1,22 +1,29 @@
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+import { uploadColors, uploadTypography } from "../utils/queries";
 import { useEffect, useState } from "react";
 import type { Kits, Projects } from "../types/Data";
+import type { SelectedKitView } from "../types/Kits";
 import type { User } from "@supabase/supabase-js";
-import type { Kit } from "../types/Kits";
 
-export const useUploadStarterKits = (
+export const useUploadCustomKit = (
 	projectId: Projects["id"] | null,
-	starterKits: Kit[]
+	projectName: Projects["name"] | null,
+	selectedKit: SelectedKitView
 ) => {
 	const supabase = useSupabaseClient();
 	const user = useUser();
+	const kitTitle = projectName + " Custom Kit";
+	const { colors } = selectedKit;
+	const display = selectedKit.displayFont;
+	const text = selectedKit.displayFont;
 
-	const [kitIds, setKitIds] = useState<Kits["id"][] | []>([]);
+	const [isCustomKit, setIsCustomKit] = useState(false);
+	const [kitId, setKitId] = useState<Kits["id"] | null>(null);
 
 	const uploadKit = async (
 		user: User | null,
 		projectId: Projects["id"] | null,
-		kit: Kit,
+		kitTitle: Kits["title"],
 		category: Kits["category"]
 	) => {
 		try {
@@ -26,7 +33,7 @@ export const useUploadStarterKits = (
 			const updates = {
 				project_id: projectId,
 				user_id: user.id,
-				title: kit.title,
+				title: kitTitle,
 				category,
 			};
 
@@ -38,7 +45,7 @@ export const useUploadStarterKits = (
 			if (error) throw error;
 
 			if (data && data.id) {
-				setKitIds((prevState) => [...prevState, (data as Kits).id]);
+				setKitId(data.id);
 			}
 		} catch (error) {
 			alert("Error inserting the kit data!");
@@ -47,11 +54,17 @@ export const useUploadStarterKits = (
 	};
 
 	useEffect(() => {
-		if (starterKits.length > 0) {
-			const latestKit = starterKits[starterKits.length - 1];
-			uploadKit(user, projectId, latestKit, "STARTER");
+		if (isCustomKit) {
+			uploadKit(user, projectId, kitTitle, "CUSTOM");
 		}
-	}, [starterKits]);
+	}, [projectId, isCustomKit]);
 
-	return kitIds;
+	useEffect(() => {
+		if (kitId) {
+			uploadTypography(kitId, display, text, supabase);
+			uploadColors(kitId, colors, supabase);
+		}
+	}, [kitId]);
+
+	return setIsCustomKit;
 };

@@ -4,16 +4,16 @@ import { KITS_COUNT } from "../constants/global";
 
 export const useKitProgress = (
 	starterKits: StarterKits,
-	latestProgress: number
+	prevProgress: number
 ) => {
-	const [progress, setprogress] = useState<number | undefined>(latestProgress);
+	const [progress, setprogress] = useState<number | undefined>(prevProgress);
 
-	const remainingProgress = 100 - latestProgress;
+	const remainingProgress = 100 - prevProgress;
 
 	useEffect(() => {
 		if (starterKits.length > 0 && starterKits.length < KITS_COUNT) {
 			setprogress(
-				latestProgress + (starterKits.length / KITS_COUNT) * remainingProgress
+				prevProgress + (starterKits.length / KITS_COUNT) * remainingProgress
 			);
 		}
 

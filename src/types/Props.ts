@@ -106,7 +106,7 @@ export type KitViewSelectionProps = {
 	selectedKitView: SelectedKitView;
 	brandName: string;
 	brandDescription: string;
-	route?: string;
+	handleContinue: () => void;
 };
 
 export type ModalContainerProps = React.PropsWithChildren<{

@@ -9,6 +9,7 @@ import { useUploadStarterKits } from "../hooks/useUploadStarterKits";
 import { KitPreviewCard } from "../components/Cards/KitPreviewCard";
 import { useKitViewSelection } from "../hooks/useKitViewSelection";
 import { DisplayText } from "../components/Headings/DisplayText";
+import { useUploadCustomKit } from "../hooks/useUploadCustomKit";
 import { Layout } from "../components/LandingLayout/Layout";
 import { useKitProgress } from "../hooks/useKitProgress";
 import { useFetchKits } from "../hooks/useFetchKits";
@@ -21,9 +22,6 @@ const StarterKits: NextPage = ({}) => {
 	setCurrentPage(primaryNavigation, "Starter Kits");
 	const router = useRouter();
 
-	const prevProgress = 66;
-	const latestProgress = 66;
-
 	const { brandName, brandDescription, isLoadingProject, projectId } =
 		useGetStarterProject();
 
@@ -33,7 +31,8 @@ const StarterKits: NextPage = ({}) => {
 		isLoadingProject
 	);
 
-	const progress = useKitProgress(starterKits, latestProgress);
+	const prevProgress = 66;
+	const progress = useKitProgress(starterKits, prevProgress);
 
 	const kitIds = useUploadStarterKits(projectId, starterKits);
 
@@ -43,6 +42,17 @@ const StarterKits: NextPage = ({}) => {
 	const { isKitView, selectedKitView } = kitViewSelection;
 
 	useDynamicStylesheets(starterKits);
+
+	const setIsCustomKit = useUploadCustomKit(
+		projectId,
+		brandName,
+		selectedKitView
+	);
+
+	const handleContinue = () => {
+		setIsCustomKit(true);
+		router.push("/kit-editor");
+	};
 
 	return (
 		<>
@@ -59,7 +69,6 @@ const StarterKits: NextPage = ({}) => {
 			)}
 			{isLoadingKits && !error ? (
 				<Layout prevProgress={prevProgress} progress={progress}>
-					{/* <Layout> */}
 					<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
 						<DisplayText
 							heading="Generating Starter Kits"
@@ -113,7 +122,7 @@ const StarterKits: NextPage = ({}) => {
 							selectedKitView={selectedKitView}
 							brandName={brandName}
 							brandDescription={brandDescription}
-							route="kit-editor"
+							handleContinue={handleContinue}
 						/>
 					)}
 

@@ -1,3 +1,7 @@
+import { ColorsResponse, Kits } from "./Data";
+
+//TODO: normalise kits data
+
 export type Kit = {
 	title: string;
 	id: number;
@@ -52,4 +56,13 @@ export type KitViewSelection = {
 	updateKitView: (type: KitSelectionTypes, kitIndex: number) => void;
 	isSelected: (type: KitSelectionTypes, kitIndex: number) => boolean;
 	isKitView: () => boolean;
+};
+
+export type CustomKit = {
+	id: Kits["id"] | null;
+	projectId: Kits["project_id"];
+	title: Kits["title"] | null;
+	colors: ColorsResponse[] | null;
+	display: Kit["typography"]["typefaces"]["display"] | null;
+	text: Kit["typography"]["typefaces"]["text"] | null;
 };

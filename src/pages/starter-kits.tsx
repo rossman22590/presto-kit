@@ -21,9 +21,6 @@ const StarterKits: NextPage = ({}) => {
 	setCurrentPage(primaryNavigation, "Starter Kits");
 	const router = useRouter();
 
-	const prevProgress = 66;
-	const latestProgress = 66;
-
 	const { brandName, brandDescription, isLoadingProject, projectId } =
 		useGetStarterProject();
 
@@ -33,7 +30,8 @@ const StarterKits: NextPage = ({}) => {
 		isLoadingProject
 	);
 
-	const progress = useKitProgress(starterKits, latestProgress);
+	const prevProgress = 66;
+	const progress = useKitProgress(starterKits, prevProgress);
 
 	const kitIds = useUploadStarterKits(projectId, starterKits);
 
@@ -59,7 +57,6 @@ const StarterKits: NextPage = ({}) => {
 			)}
 			{isLoadingKits && !error ? (
 				<Layout prevProgress={prevProgress} progress={progress}>
-					{/* <Layout> */}
 					<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
 						<DisplayText
 							heading="Generating Starter Kits"

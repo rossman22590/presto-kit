@@ -5,12 +5,11 @@ import { getColorCategory } from "./helpers";
 
 export const uploadTypography = async (
 	kitId: Kits["id"],
-	kit: Kit,
+	display: Kit["typography"]["typefaces"]["display"],
+	text: Kit["typography"]["typefaces"]["text"],
 	supabase: SupabaseClient
 ) => {
 	try {
-		const { display, text } = kit.typography.typefaces;
-
 		const typefaceData: UploadTypefaces[] = [
 			{
 				category: "DISPLAY",
@@ -37,11 +36,11 @@ export const uploadTypography = async (
 
 export const uploadColors = async (
 	kitId: Kits["id"],
-	kit: Kit,
+	colors: Kit["colors"],
 	supabase: SupabaseClient
 ) => {
 	try {
-		const colorData: UploadColors[] = kit.colors.details.map((color, i) => ({
+		const colorData: UploadColors[] = colors.details.map((color, i) => ({
 			category: getColorCategory(i),
 			name: color.name,
 			hex: color.hex,

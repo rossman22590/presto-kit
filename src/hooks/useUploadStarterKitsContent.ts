@@ -14,9 +14,11 @@ export const useUploadStarterKitsContent = (
 		if (starterKits.length === KITS_COUNT && kitIds.length === KITS_COUNT) {
 			starterKits.forEach((kit, index) => {
 				const currentKitId = kitIds[index];
+				const { display, text } = kit.typography.typefaces;
+				const { colors } = kit;
 
-				uploadTypography(currentKitId, kit, supabase);
-				uploadColors(currentKitId, kit, supabase);
+				uploadTypography(currentKitId, display, text, supabase);
+				uploadColors(currentKitId, colors, supabase);
 			});
 		}
 	}, [starterKits, kitIds]);

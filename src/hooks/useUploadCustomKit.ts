@@ -1,13 +1,13 @@
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+import { uploadColors, uploadTypography } from "../utils/queries";
 import { useEffect, useState } from "react";
 import type { Kits, Projects } from "../types/Data";
+import type { SelectedKitView } from "../types/Kits";
 import type { User } from "@supabase/supabase-js";
-import type { Kit, SelectedKitView } from "../types/Kits";
-import { uploadColors, uploadTypography } from "../utils/queries";
 
 export const useUploadCustomKit = (
 	projectId: Projects["id"] | null,
-	projectName: Projects["name"],
+	projectName: Projects["name"] | null,
 	selectedKit: SelectedKitView
 ) => {
 	const supabase = useSupabaseClient();
@@ -17,6 +17,7 @@ export const useUploadCustomKit = (
 	const display = selectedKit.displayFont;
 	const text = selectedKit.displayFont;
 
+	const [isCustomKit, setIsCustomKit] = useState(false);
 	const [kitId, setKitId] = useState<Kits["id"] | null>(null);
 
 	const uploadKit = async (
@@ -52,9 +53,11 @@ export const useUploadCustomKit = (
 		}
 	};
 
-	if (projectId) {
-		uploadKit(user, projectId, kitTitle, "CUSTOM");
-	}
+	useEffect(() => {
+		if (isCustomKit) {
+			uploadKit(user, projectId, kitTitle, "CUSTOM");
+		}
+	}, [projectId, isCustomKit]);
 
 	useEffect(() => {
 		if (kitId) {
@@ -62,4 +65,6 @@ export const useUploadCustomKit = (
 			uploadColors(kitId, colors, supabase);
 		}
 	}, [kitId]);
+
+	return setIsCustomKit;
 };

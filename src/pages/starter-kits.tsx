@@ -9,6 +9,7 @@ import { useUploadStarterKits } from "../hooks/useUploadStarterKits";
 import { KitPreviewCard } from "../components/Cards/KitPreviewCard";
 import { useKitViewSelection } from "../hooks/useKitViewSelection";
 import { DisplayText } from "../components/Headings/DisplayText";
+import { useUploadCustomKit } from "../hooks/useUploadCustomKit";
 import { Layout } from "../components/LandingLayout/Layout";
 import { useKitProgress } from "../hooks/useKitProgress";
 import { useFetchKits } from "../hooks/useFetchKits";
@@ -41,6 +42,17 @@ const StarterKits: NextPage = ({}) => {
 	const { isKitView, selectedKitView } = kitViewSelection;
 
 	useDynamicStylesheets(starterKits);
+
+	const setIsCustomKit = useUploadCustomKit(
+		projectId,
+		brandName,
+		selectedKitView
+	);
+
+	const handleContinue = () => {
+		setIsCustomKit(true);
+		router.push("/kit-editor");
+	};
 
 	return (
 		<>
@@ -110,7 +122,7 @@ const StarterKits: NextPage = ({}) => {
 							selectedKitView={selectedKitView}
 							brandName={brandName}
 							brandDescription={brandDescription}
-							route="kit-editor"
+							handleContinue={handleContinue}
 						/>
 					)}
 

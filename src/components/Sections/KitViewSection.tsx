@@ -13,7 +13,7 @@ export const KitViewSection = ({
 	selectedKitView,
 	brandName,
 	brandDescription,
-	route,
+	handleContinue,
 }: KitViewSelectionProps) => {
 	const {
 		baseColor,
@@ -34,7 +34,7 @@ export const KitViewSection = ({
 				text="When you are ready, click continue to make changes, save and download your custom UI Kit"
 				type="DASHBOARD"
 				buttonText="Continue"
-				route={route}
+				handleClick={handleContinue}
 			/>
 
 			<div className="flex aspect-[3.1/2] w-full select-none flex-col rounded-xl border-4 border-white bg-white">

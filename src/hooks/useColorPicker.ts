@@ -3,6 +3,7 @@ import { ColorsResponse } from "../types/Data";
 import { PresetColor } from "react-color/lib/components/sketch/Sketch";
 import { getColorsByKitsCategory } from "../utils/queries";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { GetColorName } from "hex-color-to-color-name";
 
 export const useColorPicker = (
 	setCustomColors: React.Dispatch<
@@ -32,7 +33,8 @@ export const useColorPicker = (
 	const handleColorChange = (color: any) => {
 		setCustomColors((prevState) => {
 			const newColors = [...(prevState as ColorsResponse[])];
-			newColors[i].hex = color.hex;
+			newColors[i].hex = color.hex.toUpperCase();
+			newColors[i].name = GetColorName(color.hex);
 			return newColors;
 		});
 	};

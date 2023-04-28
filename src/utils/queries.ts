@@ -17,7 +17,7 @@ export const getProjectsByUser = async (
 	supabase: SupabaseClient
 ): Promise<ProjectsResponse[] | null> => {
 	try {
-		if (!user) throw new Error("No user at get project");
+		if (!user) throw new Error("No user at get project by user");
 
 		let { data, error } = await supabase
 			.from("projects")
@@ -58,12 +58,43 @@ export const getKitsByCategory = async (
 	return null;
 };
 
+export const getColorsByKitsCategory = async (
+	kitsCategory: Kits["category"],
+	supabase: SupabaseClient
+): Promise<ColorsResponse[] | null> => {
+	try {
+		let { data, error } = await supabase
+			.from("kits")
+			.select(`colors(category, name, hex)`)
+			.eq("category", kitsCategory);
+
+		if (error) throw error;
+
+		if (data) {
+			// Ensure data is flat array with non null values
+			const flatData = data.flatMap((item) => {
+				if (Array.isArray(item.colors)) {
+					return item.colors.filter((color) => color !== null);
+				} else {
+					return item.colors !== null ? [item.colors] : [];
+				}
+			});
+
+			return flatData;
+		}
+	} catch (error) {
+		alert("Error loading color data!");
+		console.log(error);
+	}
+	return null;
+};
+
 export const getColorsByKitId = async (
 	kitId: number | null,
 	supabase: SupabaseClient
 ): Promise<ColorsResponse[] | null> => {
 	try {
-		if (!kitId) throw new Error("No kit id at get colors");
+		if (!kitId) throw new Error("No kit ID at get colors by kit ID");
 
 		let { data, error } = await supabase
 			.from("colors")
@@ -85,7 +116,7 @@ export const getTypographyByKitId = async (
 	supabase: SupabaseClient
 ): Promise<TypographyResponse[] | null> => {
 	try {
-		if (!kitId) throw new Error("No kit id at get typography");
+		if (!kitId) throw new Error("No kit ID at get typography by kit ID");
 
 		let { data, error } = await supabase
 			.from("typefaces")
@@ -169,6 +200,7 @@ export const uploadTypography = async (
 	text: Kit["typography"]["typefaces"]["text"],
 	supabase: SupabaseClient
 ) => {
+	if (!kitId) throw new Error("No kit ID at upload typography");
 	try {
 		const typefaceData: TypefacesInsert[] = [
 			{
@@ -197,14 +229,18 @@ export const uploadTypography = async (
 export const uploadColors = async (
 	kitId: Kits["id"],
 	colors: Kit["colors"],
+	user: User | null,
 	supabase: SupabaseClient
 ) => {
+	if (!user) throw new Error("No user at upload colors");
+	if (!kitId) throw new Error("No kit ID at upload colors");
 	try {
 		const colorData: ColorsInsert[] = colors.details.map((color, i) => ({
 			category: getColorCategory(i),
 			name: color.name,
 			hex: color.hex,
 			kit_id: kitId,
+			user_id: user?.id,
 		}));
 
 		const { error } = await supabase.from("colors").insert(colorData);

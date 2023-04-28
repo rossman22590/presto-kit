@@ -7,7 +7,7 @@ import type {
 } from "./Kits";
 
 export type ColorCardProps = {
-	color: { id: number; name: string; hex: string };
+	color: { category: string; name: string; hex: string };
 };
 
 export type ColorSectionProps = {

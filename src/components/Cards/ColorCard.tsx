@@ -18,8 +18,26 @@ export const ColorCard = ({
 		});
 	};
 
+	const colorCardRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (
+				colorCardRef.current &&
+				!colorCardRef.current.contains(event.target as Node)
+			) {
+				setShowPicker(false);
+			}
+		};
+
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [colorCardRef]);
+
 	return (
-		<div className="relative">
+		<div className="relative" ref={colorCardRef}>
 			<div
 				id="color-card"
 				className="group w-[300px] cursor-pointer rounded-xl bg-white"

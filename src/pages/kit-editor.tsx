@@ -11,8 +11,11 @@ const KitEditor: NextPage = ({}) => {
 
 	useEffect(() => {
 		setCustomKit(kit);
-		console.log(customKit);
 	}, [isLoadingKit]);
+
+	useEffect(() => {
+		console.log(customKit);
+	}, [customKit]);
 
 	return (
 		<DashboardLayout>

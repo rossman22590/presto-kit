@@ -6,9 +6,33 @@ import type {
 	ColorsResponse,
 	Kits,
 	KitsResponse,
+	Projects,
+	ProjectsResponse,
 	TypefacesInsert,
 	TypographyResponse,
 } from "../types/Data";
+
+export const getProjectsByUser = async (
+	user: User | null,
+	supabase: SupabaseClient
+): Promise<ProjectsResponse[] | null> => {
+	try {
+		if (!user) throw new Error("No user at get project");
+
+		let { data, error } = await supabase
+			.from("projects")
+			.select("id, name, description")
+			.eq("user_id", user.id);
+
+		if (error) throw error;
+
+		return data;
+	} catch (error) {
+		alert("Error loading user data!");
+		console.log(error);
+	}
+	return null;
+};
 
 export const getKitsByCategory = async (
 	category: Kits["category"],
@@ -76,6 +100,67 @@ export const getTypographyByKitId = async (
 		console.log(error);
 	}
 	return null;
+};
+
+export const uploadKit = async (
+	category: Kits["category"],
+	projectId: Projects["id"] | null,
+	kitTitle: Kit["title"],
+	user: User | null,
+	supabase: SupabaseClient
+) => {
+	try {
+		if (!user) throw new Error("No user at upload kit");
+		if (!projectId) throw new Error("No project ID at upload kit");
+
+		const updates = {
+			project_id: projectId,
+			user_id: user.id,
+			title: kitTitle,
+			category,
+		};
+
+		let { data, error } = await supabase
+			.from("kits")
+			.insert(updates)
+			.select()
+			.single();
+
+		if (error) throw error;
+
+		return data;
+	} catch (error) {
+		alert("Error inserting the kit data!");
+		console.log(error);
+	}
+	return null;
+};
+
+export const uploadProject = async (
+	name: Projects["name"],
+	description: Projects["description"],
+	user: User | null,
+	supabase: SupabaseClient
+) => {
+	try {
+		if (!user) throw new Error("No user at upload project");
+
+		const updates = {
+			user_id: user.id,
+			name,
+			description,
+		};
+
+		let { error } = await supabase
+			.from("projects")
+			.insert(updates)
+			.eq("user_id", user.id);
+
+		if (error) throw error;
+	} catch (error) {
+		alert("Error inserting the data!");
+		console.log(error);
+	}
 };
 
 export const uploadTypography = async (

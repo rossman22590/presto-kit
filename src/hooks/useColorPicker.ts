@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { ColorsResponse } from "../types/Data";
+import { PresetColor } from "react-color/lib/components/sketch/Sketch";
+import { getColorsByKitsCategory } from "../utils/queries";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 export const useColorPicker = (
 	setCustomColors: React.Dispatch<
@@ -7,7 +10,24 @@ export const useColorPicker = (
 	>,
 	i: number
 ) => {
+	const supabase = useSupabaseClient();
+
 	const [showPicker, setShowPicker] = useState(false);
+
+	const [presetColors, setPresetColors] = useState<PresetColor[] | undefined>();
+
+	useEffect(() => {
+		(async () => {
+			const data = await getColorsByKitsCategory("STARTER", supabase);
+
+			const colors = data?.map((color) => ({
+				color: color.hex,
+				title: color.name,
+			}));
+
+			setPresetColors(colors);
+		})();
+	}, []);
 
 	const handleColorChange = (color: any) => {
 		setCustomColors((prevState) => {
@@ -35,5 +55,11 @@ export const useColorPicker = (
 		};
 	}, [colorCardRef]);
 
-	return { showPicker, setShowPicker, handleColorChange, colorCardRef };
+	return {
+		showPicker,
+		setShowPicker,
+		handleColorChange,
+		colorCardRef,
+		presetColors,
+	};
 };

@@ -8,7 +8,7 @@ import type {
 import { ColorsResponse } from "./Data";
 
 export type ColorCardProps = {
-	customColor: ColorsResponse;
+	customColors: ColorsResponse[];
 	setCustomColors: React.Dispatch<
 		React.SetStateAction<ColorsResponse[] | null>
 	>;

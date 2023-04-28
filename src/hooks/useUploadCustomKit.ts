@@ -39,7 +39,7 @@ export const useUploadCustomKit = (
 	useEffect(() => {
 		if (kitId) {
 			uploadTypography(kitId, display, text, supabase);
-			uploadColors(kitId, colors, supabase);
+			uploadColors(kitId, colors, user, supabase);
 		}
 	}, [kitId]);
 

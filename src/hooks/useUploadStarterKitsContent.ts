@@ -1,5 +1,5 @@
 import { uploadColors, uploadTypography } from "../utils/queries";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { KITS_COUNT } from "../constants/global";
 import { useEffect } from "react";
 import type { Kits } from "../types/Data";
@@ -10,6 +10,7 @@ export const useUploadStarterKitsContent = (
 	starterKits: Kit[]
 ) => {
 	const supabase = useSupabaseClient();
+	const user = useUser();
 	useEffect(() => {
 		if (starterKits.length === KITS_COUNT && kitIds.length === KITS_COUNT) {
 			starterKits.forEach((kit, index) => {
@@ -18,7 +19,7 @@ export const useUploadStarterKitsContent = (
 				const { colors } = kit;
 
 				uploadTypography(currentKitId, display, text, supabase);
-				uploadColors(currentKitId, colors, supabase);
+				uploadColors(currentKitId, colors, user, supabase);
 			});
 		}
 	}, [starterKits, kitIds]);

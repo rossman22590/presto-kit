@@ -1,4 +1,4 @@
-import type { StarterKits } from "../types/Kits";
+import type { CustomKit, StarterKits } from "../types/Kits";
 
 export const mockStarterKits: StarterKits | [] = [
 	{
@@ -114,3 +114,28 @@ export const mockStarterKits: StarterKits | [] = [
 // const starterKits = mockStarterKits;
 // const isLoading = false;
 // const error = null;
+
+export const mockCustomKit: CustomKit = {
+	id: 1,
+	projectId: 1,
+	title: "Farm Shop",
+	colors: [
+		{
+			category: "BASE",
+			name: "Farmhouse White",
+			hex: "#F7EAD9",
+		},
+		{
+			category: "PRIMARY",
+			name: "Harvest Green",
+			hex: "#5F8A3F",
+		},
+		{
+			category: "ACCENT",
+			name: "Sun-Kissed Orange",
+			hex: "#F2B33D",
+		},
+	],
+	display: { font: "Nunito Sans", weight: "900" },
+	text: { font: "Open Sans", weight: "400" },
+};

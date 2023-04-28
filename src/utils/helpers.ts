@@ -1,4 +1,8 @@
-import { ColorsResponse, Typefaces, TypographyResponse } from "../types/Data";
+import type {
+	ColorsResponse,
+	Typefaces,
+	TypographyResponse,
+} from "../types/Data";
 
 export const classNames = (...classes: string[]) => {
 	return classes.filter(Boolean).join(" ");
@@ -36,11 +40,11 @@ export const getFontByCategory = (
 ) => {
 	if (!typography) return null;
 
-	const displayFont = typography.find((item) => item.category === category);
-	if (!displayFont) return null;
+	const font = typography.find((item) => item.category === category);
+	if (!font) return null;
 
 	return {
-		font: displayFont.font,
-		weight: displayFont.weight,
+		font: font.font,
+		weight: font.weight,
 	};
 };

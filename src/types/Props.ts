@@ -5,9 +5,14 @@ import type {
 	StarterKits,
 	Kit,
 } from "./Kits";
+import { ColorsResponse } from "./Data";
 
 export type ColorCardProps = {
-	color: { id: number; name: string; hex: string };
+	customColor: ColorsResponse;
+	setCustomColors: React.Dispatch<
+		React.SetStateAction<ColorsResponse[] | null>
+	>;
+	i: number;
 };
 
 export type ColorSectionProps = {

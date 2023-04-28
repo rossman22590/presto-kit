@@ -4,6 +4,12 @@ export type Kits = Database["public"]["Tables"]["kits"]["Row"];
 export type Colors = Database["public"]["Tables"]["colors"]["Row"];
 export type Typefaces = Database["public"]["Tables"]["typefaces"]["Row"];
 
+export type ProjectsResponse = {
+	id: Projects["id"];
+	name: Projects["name"];
+	description: Projects["description"];
+};
+
 export type KitsResponse = {
 	id: Kits["id"];
 	project_id: Kits["project_id"];

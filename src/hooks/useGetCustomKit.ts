@@ -1,6 +1,7 @@
 import { ColorsResponse, Kits, TypographyResponse } from "../types/Data";
 import { getFontByCategory, sortColors } from "../utils/helpers";
 import { useEffect, useState } from "react";
+import { CustomKit } from "../types/Kits";
 import {
 	useSession,
 	useSupabaseClient,
@@ -11,7 +12,6 @@ import {
 	getKitsByCategory,
 	getTypographyByKitId,
 } from "../utils/queries";
-import { CustomKit } from "../types/Kits";
 
 export const useGetCustomKit = () => {
 	const supabase = useSupabaseClient();
@@ -31,6 +31,7 @@ export const useGetCustomKit = () => {
 		if (session) {
 			(async () => {
 				const data = await getKitsByCategory("CUSTOM", user, supabase);
+
 				if (data) {
 					setKitId(data[0].id);
 					setProjectId(data[0].project_id);

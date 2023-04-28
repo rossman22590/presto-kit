@@ -6,6 +6,7 @@ import type { NextPage } from "next/types";
 import { mockCustomKit } from "../data/mockData";
 import { DisplayText } from "../components/Headings/DisplayText";
 import { ColorCard } from "../components/Cards/ColorCard";
+import { ColorsResponse } from "../types/Data";
 
 const KitEditor: NextPage = ({}) => {
 	// const { isLoadingKit, kit } = useGetCustomKit();
@@ -21,18 +22,13 @@ const KitEditor: NextPage = ({}) => {
 
 	const [customKit, setCustomKit] = useState<CustomKit | null>(kit);
 
+	const [customColors, setCustomColors] = useState<ColorsResponse[] | null>(
+		kit.colors
+	);
+
 	return (
 		<DashboardLayout>
-			{isLoadingKit && (
-				<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
-					<img
-						src="/loading-icon.png"
-						alt="Loading Icon"
-						className="h-16 w-16 animate-spin"
-					/>
-				</section>
-			)}
-			{customKit && customKit.colors !== null && (
+			{customColors && (
 				<section className="m-auto flex max-w-5xl flex-col items-center gap-12 py-6">
 					<DisplayText
 						heading={`Edit kit colors`}
@@ -40,10 +36,24 @@ const KitEditor: NextPage = ({}) => {
 						type="DASHBOARD"
 					/>
 					<div className="flex w-full flex-col items-center justify-between gap-12 lg:flex-row lg:items-start lg:gap-0">
-						{customKit.colors.map((color, i) => (
-							<ColorCard color={color} key={i} />
+						{customColors.map((_, i) => (
+							<ColorCard
+								customColor={customColors[i]}
+								setCustomColors={setCustomColors}
+								key={i}
+								i={i}
+							/>
 						))}
 					</div>
+				</section>
+			)}
+			{isLoadingKit && (
+				<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
+					<img
+						src="/loading-icon.png"
+						alt="Loading Icon"
+						className="h-16 w-16 animate-spin"
+					/>
 				</section>
 			)}
 		</DashboardLayout>

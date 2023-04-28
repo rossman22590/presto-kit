@@ -1,29 +1,56 @@
+import { useState, useRef, useEffect } from "react";
 import type { ColorCardProps } from "../../types/Props";
+import { ChromePicker } from "react-color";
+import { ColorsResponse } from "../../types/Data";
 
-export const ColorCard = ({ color }: ColorCardProps) => {
+export const ColorCard = ({
+	customColor,
+	setCustomColors,
+	i,
+}: ColorCardProps) => {
+	const [showPicker, setShowPicker] = useState(false);
+
+	const handleColorChange = (color: any) => {
+		setCustomColors((prevState) => {
+			const newColors = [...(prevState as ColorsResponse[])];
+			newColors[i].hex = color.hex;
+			return newColors;
+		});
+	};
+
 	return (
-		<div
-			id="color-card"
-			className="group w-[300px] cursor-pointer rounded-xl bg-white"
-		>
+		<div className="relative">
 			<div
-				id="color-display"
-				className="color h-48 w-full rounded-t-lg"
-				style={{
-					backgroundColor: color.hex,
-				}}
-			></div>
-			<div id="text-container" className="flex flex-col gap-1 px-7 py-5">
-				<h4 id="color-name" className="text-lg font-medium">
-					{color.name}
-				</h4>
-				<button
-					id="color-hex"
-					className="w-fit translate-x-[-4px] rounded-lg px-2 py-[2px] text-lg text-[#95A1B9] group-hover:bg-[#F5F7FB]"
-				>
-					{color.hex}
-				</button>
+				id="color-card"
+				className="group w-[300px] cursor-pointer rounded-xl bg-white"
+				onClick={() => setShowPicker(!showPicker)}
+			>
+				<div
+					id="color-display"
+					className="color h-44 w-full rounded-t-lg"
+					style={{
+						backgroundColor: customColor.hex,
+					}}
+				></div>
+				<div id="text-container" className="flex flex-col gap-1 px-7 py-4">
+					<h4 id="color-name" className="text-lg font-medium">
+						{customColor?.name}
+					</h4>
+					<button
+						id="color-hex"
+						className="w-fit translate-x-[-4px] rounded-lg px-2 py-[2px] text-lg text-[#95A1B9] group-hover:bg-[#F5F7FB]"
+					>
+						{customColor.hex}
+					</button>
+				</div>
 			</div>
+			{showPicker && (
+				<ChromePicker
+					color={customColor.hex}
+					onChange={handleColorChange}
+					disableAlpha
+				/>
+			)}
 		</div>
 	);
 };

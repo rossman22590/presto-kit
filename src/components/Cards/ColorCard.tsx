@@ -1,40 +1,14 @@
-import { useState, useRef, useEffect } from "react";
 import type { ColorCardProps } from "../../types/Props";
 import { ChromePicker } from "react-color";
-import { ColorsResponse } from "../../types/Data";
+import { useColorPicker } from "../../hooks/useColorPicker";
 
 export const ColorCard = ({
 	customColor,
 	setCustomColors,
 	i,
 }: ColorCardProps) => {
-	const [showPicker, setShowPicker] = useState(false);
-
-	const handleColorChange = (color: any) => {
-		setCustomColors((prevState) => {
-			const newColors = [...(prevState as ColorsResponse[])];
-			newColors[i].hex = color.hex;
-			return newColors;
-		});
-	};
-
-	const colorCardRef = useRef<HTMLDivElement>(null);
-
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				colorCardRef.current &&
-				!colorCardRef.current.contains(event.target as Node)
-			) {
-				setShowPicker(false);
-			}
-		};
-
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, [colorCardRef]);
+	const { showPicker, setShowPicker, handleColorChange, colorCardRef } =
+		useColorPicker(setCustomColors, i);
 
 	return (
 		<div className="relative" ref={colorCardRef}>

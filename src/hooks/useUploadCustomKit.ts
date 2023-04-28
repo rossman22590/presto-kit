@@ -14,7 +14,7 @@ export const useUploadCustomKit = (
 	const kitTitle = projectName + " Custom Kit";
 	const { colors } = selectedKit;
 	const display = selectedKit.displayFont;
-	const text = selectedKit.displayFont;
+	const text = selectedKit.textFont;
 
 	const [isCustomKit, setIsCustomKit] = useState(false);
 	const [kitId, setKitId] = useState<Kits["id"] | null>(null);

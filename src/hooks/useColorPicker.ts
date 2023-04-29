@@ -6,17 +6,22 @@ import type { ColorsResponse } from "../types/Data";
 import type { PresetColor } from "../types/Colors";
 
 export const useColorPicker = (
+	customColors: ColorsResponse[],
 	setCustomColors: React.Dispatch<
 		React.SetStateAction<ColorsResponse[] | null>
+	>,
+	presetColors: PresetColor[] | undefined,
+	setPresetColors: React.Dispatch<
+		React.SetStateAction<PresetColor[] | undefined>
 	>,
 	i: number
 ) => {
 	const supabase = useSupabaseClient();
+	const colorCardRef = useRef<HTMLDivElement>(null);
 
 	const [showPicker, setShowPicker] = useState(false);
 
-	const [presetColors, setPresetColors] = useState<PresetColor[] | undefined>();
-
+	// Get colors from all starter kits to popular color picker presets
 	useEffect(() => {
 		(async () => {
 			const data = await getColorsByKitsCategory("STARTER", supabase);
@@ -30,6 +35,8 @@ export const useColorPicker = (
 		})();
 	}, []);
 
+	// Updates custom kit colors when color picker is used
+	// Also generates a name for the color if it doesn't have one yet
 	const handleColorChange = (color: any) => {
 		setCustomColors((prevState) => {
 			const newColors = [...(prevState as ColorsResponse[])];
@@ -47,14 +54,35 @@ export const useColorPicker = (
 		});
 	};
 
-	const colorCardRef = useRef<HTMLDivElement>(null);
-
+	// Closes color picker when user clicks outside of it (colorCardRef)
+	// Also adds new color to preset colors if it's not already there
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			if (
 				colorCardRef.current &&
 				!colorCardRef.current.contains(event.target as Node)
 			) {
+				if (showPicker) {
+					setPresetColors((prevState) => {
+						const newColors = [...(prevState as PresetColor[])];
+
+						const colorHex = customColors[i].hex;
+
+						const isPresetColor = presetColors?.find(
+							(p) => p.color === colorHex
+						);
+
+						if (!isPresetColor) {
+							const currentColor = {
+								color: customColors[i].hex,
+								title: customColors[i].name,
+							};
+							newColors.push(currentColor);
+						}
+
+						return newColors;
+					});
+				}
 				setShowPicker(false);
 			}
 		};
@@ -63,7 +91,7 @@ export const useColorPicker = (
 		return () => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
-	}, [colorCardRef]);
+	}, [colorCardRef, showPicker]);
 
 	return {
 		showPicker,

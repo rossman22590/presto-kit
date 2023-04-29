@@ -5,15 +5,18 @@ import { SketchPicker } from "react-color";
 export const ColorCard = ({
 	customColors,
 	setCustomColors,
+	presetColors,
+	setPresetColors,
 	i,
 }: ColorCardProps) => {
-	const {
-		showPicker,
-		setShowPicker,
-		handleColorChange,
-		colorCardRef,
-		presetColors,
-	} = useColorPicker(setCustomColors, i);
+	const { showPicker, setShowPicker, handleColorChange, colorCardRef } =
+		useColorPicker(
+			customColors,
+			setCustomColors,
+			presetColors,
+			setPresetColors,
+			i
+		);
 
 	return (
 		<div className="relative" ref={colorCardRef}>

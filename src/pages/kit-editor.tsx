@@ -7,6 +7,7 @@ import { mockCustomKit } from "../data/mockData";
 import { DisplayText } from "../components/Headings/DisplayText";
 import { ColorCard } from "../components/Cards/ColorCard";
 import { ColorsResponse } from "../types/Data";
+import { PresetColor } from "../types/Colors";
 
 const KitEditor: NextPage = ({}) => {
 	// const { isLoadingKit, kit } = useGetCustomKit();
@@ -26,6 +27,8 @@ const KitEditor: NextPage = ({}) => {
 		kit.colors
 	);
 
+	const [presetColors, setPresetColors] = useState<PresetColor[] | undefined>();
+
 	return (
 		<DashboardLayout>
 			{customColors && (
@@ -41,6 +44,8 @@ const KitEditor: NextPage = ({}) => {
 								<ColorCard
 									customColors={customColors}
 									setCustomColors={setCustomColors}
+									presetColors={presetColors}
+									setPresetColors={setPresetColors}
 									key={i}
 									i={i}
 								/>

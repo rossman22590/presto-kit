@@ -26,14 +26,14 @@ export const DesktopSidebar = ({
 											item.current
 												? "bg-presto-light-grey text-black"
 												: "bg-white text-presto-grey hover:bg-presto-light-grey",
-											"group flex w-full items-center rounded-xl px-6 py-3 font-Inter"
+											"group flex w-full items-center rounded-xl px-6 py-3 font-Inter subpixel-antialiased"
 										)}
 									>
 										<item.icon
 											className={classNames(
 												item.current
 													? "stroke-presto-green"
-													: "stroke-[#A5DDD3]",
+													: "stroke-[#AAB1BE]",
 												"mr-3 h-6 w-6"
 											)}
 											aria-hidden="true"
@@ -54,12 +54,12 @@ export const DesktopSidebar = ({
 										item.current
 											? "bg-presto-light-grey text-black"
 											: "bg-white text-presto-grey hover:bg-presto-light-grey",
-										"group flex w-full items-center rounded-xl px-6 py-3 font-Inter"
+										"group flex w-full items-center rounded-xl px-6 py-3 font-Inter subpixel-antialiased"
 									)}
 								>
 									<item.icon
 										className={classNames(
-											item.current ? "stroke-presto-green" : "stroke-[#A5DDD3]",
+											item.current ? "stroke-presto-green" : "stroke-[#AAB1BE]",
 											"mr-3 h-6 w-6"
 										)}
 										aria-hidden="true"

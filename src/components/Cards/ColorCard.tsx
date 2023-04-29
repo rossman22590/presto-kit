@@ -3,18 +3,6 @@ import type { ColorCardProps } from "../../types/Props";
 import { SketchPicker } from "react-color";
 import reactCSS from "reactcss";
 
-const styles = reactCSS({
-	default: {
-		picker: {
-			border: "none",
-			backgroundColor: "#fff",
-			padding: "16px 16px 4px 16px",
-			borderRadius: "12px",
-			marginTop: "8px",
-		},
-	},
-});
-
 export const ColorCard = ({
 	customColors,
 	setCustomColors,
@@ -31,11 +19,23 @@ export const ColorCard = ({
 			i
 		);
 
+	const styles = reactCSS({
+		default: {
+			picker: {
+				border: "none",
+				backgroundColor: "#fff",
+				padding: "16px 16px 4px 16px",
+				borderRadius: "12px",
+				marginTop: "8px",
+			},
+		},
+	});
+
 	return (
 		<div className="relative" ref={colorCardRef}>
 			<div
 				id="color-card"
-				className="group relative w-[300px] cursor-pointer rounded-xl bg-white "
+				className="group relative w-[310px] cursor-pointer rounded-xl bg-white "
 				onClick={() => setShowPicker(!showPicker)}
 			>
 				<div

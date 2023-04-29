@@ -1,13 +1,13 @@
 import { DashboardLayout } from "../components/DashboardLayout/DashboardLayout";
+import { DisplayText } from "../components/Headings/DisplayText";
 import { useGetCustomKit } from "../hooks/useGetCustomKit";
+import { ColorCard } from "../components/Cards/ColorCard";
+import { mockCustomKit } from "../data/mockData";
+import { ColorsResponse } from "../types/Data";
+import { PresetColor } from "../types/Colors";
 import { useEffect, useState } from "react";
 import { CustomKit } from "../types/Kits";
 import type { NextPage } from "next/types";
-import { mockCustomKit } from "../data/mockData";
-import { DisplayText } from "../components/Headings/DisplayText";
-import { ColorCard } from "../components/Cards/ColorCard";
-import { ColorsResponse } from "../types/Data";
-import { PresetColor } from "../types/Colors";
 
 const KitEditor: NextPage = ({}) => {
 	const { isLoadingKit, kit } = useGetCustomKit();

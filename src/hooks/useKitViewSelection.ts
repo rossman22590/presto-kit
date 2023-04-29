@@ -61,7 +61,7 @@ export const useKitViewSelection = (starterKits: Kit[]) => {
 	const toggleFullKitView = (kitIndex: number) => {
 		if (!isFullKitView) {
 			const kit = starterKits[kitIndex];
-			let updatedKitView = { ...selectedKitView };
+			const updatedKitView = { ...selectedKitView };
 			updatedKitView.colors = kit.colors;
 			updatedKitView.displayFont = kit.typography.typefaces.display;
 			updatedKitView.textFont = kit.typography.typefaces.text;

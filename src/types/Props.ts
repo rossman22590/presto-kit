@@ -6,11 +6,16 @@ import type {
 	Kit,
 } from "./Kits";
 import { ColorsResponse } from "./Data";
+import { PresetColor } from "./Colors";
 
 export type ColorCardProps = {
-	customColor: ColorsResponse;
+	customColors: ColorsResponse[];
 	setCustomColors: React.Dispatch<
 		React.SetStateAction<ColorsResponse[] | null>
+	>;
+	presetColors: PresetColor[] | undefined;
+	setPresetColors: React.Dispatch<
+		React.SetStateAction<PresetColor[] | undefined>
 	>;
 	i: number;
 };

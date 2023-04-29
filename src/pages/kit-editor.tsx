@@ -10,22 +10,28 @@ import { ColorsResponse } from "../types/Data";
 import { PresetColor } from "../types/Colors";
 
 const KitEditor: NextPage = ({}) => {
-	// const { isLoadingKit, kit } = useGetCustomKit();
+	const { isLoadingKit, kit } = useGetCustomKit();
 
-	// const [customKit, setCustomKit] = useState<CustomKit | null>(null);
+	const [customKit, setCustomKit] = useState<CustomKit | null>(null);
 
-	// useEffect(() => {
-	// 	setCustomKit(kit);
-	// }, [isLoadingKit]);
+	useEffect(() => {
+		setCustomKit(kit);
+	}, [isLoadingKit]);
 
-	const isLoadingKit = false;
-	const kit = mockCustomKit;
+	// const isLoadingKit = false;
+	// const kit = mockCustomKit;
 
-	const [customKit, setCustomKit] = useState<CustomKit | null>(kit);
+	// const [customKit, setCustomKit] = useState<CustomKit | null>(kit);
 
 	const [customColors, setCustomColors] = useState<ColorsResponse[] | null>(
 		kit.colors
 	);
+
+	useEffect(() => {
+		if (customKit) {
+			setCustomColors(customKit.colors);
+		}
+	}, [customKit]);
 
 	const [presetColors, setPresetColors] = useState<PresetColor[] | undefined>();
 

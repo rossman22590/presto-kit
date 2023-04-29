@@ -1,6 +1,19 @@
 import { useColorPicker } from "../../hooks/useColorPicker";
 import type { ColorCardProps } from "../../types/Props";
 import { SketchPicker } from "react-color";
+import reactCSS from "reactcss";
+
+const styles = reactCSS({
+	default: {
+		picker: {
+			border: "none",
+			backgroundColor: "#fff",
+			padding: "16px 16px 4px 16px",
+			borderRadius: "12px",
+			marginTop: "8px",
+		},
+	},
+});
 
 export const ColorCard = ({
 	customColors,
@@ -45,11 +58,13 @@ export const ColorCard = ({
 				</div>
 			</div>
 			{showPicker && (
+				// @ts-ignore
 				<SketchPicker
 					className="absolute"
 					color={customColors[i].hex}
 					onChange={handleColorChange}
 					presetColors={presetColors}
+					styles={styles}
 					disableAlpha
 				/>
 			)}

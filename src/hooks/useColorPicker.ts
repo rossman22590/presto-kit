@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { ColorsResponse } from "../types/Data";
-import { PresetColor } from "react-color/lib/components/sketch/Sketch";
-import { getColorsByKitsCategory } from "../utils/queries";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { getColorsByKitsCategory } from "../utils/queries";
 import { GetColorName } from "hex-color-to-color-name";
+import { useEffect, useRef, useState } from "react";
+import type { ColorsResponse } from "../types/Data";
+import type { PresetColor } from "../types/Colors";
 
 export const useColorPicker = (
 	setCustomColors: React.Dispatch<
@@ -33,8 +33,16 @@ export const useColorPicker = (
 	const handleColorChange = (color: any) => {
 		setCustomColors((prevState) => {
 			const newColors = [...(prevState as ColorsResponse[])];
-			newColors[i].hex = color.hex.toUpperCase();
-			newColors[i].name = GetColorName(color.hex);
+
+			const colorHex = color.hex.toUpperCase();
+
+			const isPresetColor = presetColors?.find((p) => p.color === colorHex);
+
+			const colorName = isPresetColor?.title || GetColorName(color.hex);
+
+			newColors[i].hex = colorHex;
+			newColors[i].name = colorName;
+
 			return newColors;
 		});
 	};

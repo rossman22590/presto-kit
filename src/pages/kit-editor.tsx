@@ -37,18 +37,27 @@ const KitEditor: NextPage = ({}) => {
 		null
 	);
 
-	useEffect(() => {
-		if (customKit) {
-			setCustomColors(customKit.colors);
-		}
-	}, [customKit]);
-
 	const [presetColors, setPresetColors] = useState<PresetColor[] | undefined>();
 
 	const [displayFonts, setDisplayFonts] = useState<Font[]>([]);
-
 	const [customDisplayFont, setCustomDisplayFont] = useState("");
-	const [customDisplayWeight, setCustomDisplayWeight] = useState("400");
+	const [customDisplayWeight, setCustomDisplayWeight] = useState("");
+
+	const [textFonts, setTextFonts] = useState<Font[]>([]);
+	const [customTextFont, setCustomTextFont] = useState("");
+	const [customTextWeight, setCustomTextWeight] = useState("");
+
+	useEffect(() => {
+		if (customKit && customKit.display && customKit.text) {
+			setCustomColors(customKit.colors);
+
+			setCustomDisplayFont(customKit.display.font);
+			setCustomDisplayWeight(customKit.display.weight || "400");
+
+			setCustomTextFont(customKit.text.font);
+			setCustomTextWeight(customKit.text.weight || "400");
+		}
+	}, [customKit]);
 
 	return (
 		<DashboardLayout>
@@ -82,26 +91,53 @@ const KitEditor: NextPage = ({}) => {
 
 						{isMounted && (
 							<>
-								<div className="flex w-full gap-[2px]">
-									<FontSelect
-										fonts={displayFonts}
-										setFonts={setDisplayFonts}
-										selectedFont={customDisplayFont}
-										setSelectedFont={setCustomDisplayFont}
-										selectedWeight={customDisplayWeight}
-										setSelectedWeight={setCustomDisplayWeight}
-									/>
-									<WeightSelect
-										fonts={displayFonts}
-										selectedFont={customDisplayFont}
-										selectedWeight={customDisplayWeight}
-										setSelectedWeight={setCustomDisplayWeight}
-									/>
+								<div className="flex w-full justify-between">
+									<div className="flex">
+										<FontSelect
+											fonts={displayFonts}
+											setFonts={setDisplayFonts}
+											selectedFont={customDisplayFont}
+											setSelectedFont={setCustomDisplayFont}
+											selectedWeight={customDisplayWeight}
+											setSelectedWeight={setCustomDisplayWeight}
+										/>
+										<WeightSelect
+											fonts={displayFonts}
+											selectedFont={customDisplayFont}
+											selectedWeight={customDisplayWeight}
+											setSelectedWeight={setCustomDisplayWeight}
+										/>
+									</div>
+									<div className="flex">
+										<FontSelect
+											fonts={textFonts}
+											setFonts={setTextFonts}
+											selectedFont={customTextFont}
+											setSelectedFont={setCustomTextFont}
+											selectedWeight={customTextWeight}
+											setSelectedWeight={setCustomTextWeight}
+										/>
+										<WeightSelect
+											fonts={textFonts}
+											selectedFont={customTextFont}
+											selectedWeight={customTextWeight}
+											setSelectedWeight={setCustomTextWeight}
+										/>
+									</div>
 								</div>
 								<div
 									style={{
 										fontFamily: customDisplayFont,
 										fontWeight: customDisplayWeight,
+										fontSize: 42,
+									}}
+								>
+									The quick brown fox jumps over the lazy dog
+								</div>
+								<div
+									style={{
+										fontFamily: customTextFont,
+										fontWeight: customTextWeight,
 										fontSize: 24,
 									}}
 								>

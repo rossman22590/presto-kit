@@ -35,7 +35,6 @@ const FontSelect = ({
 				);
 				const data = await response.json();
 				setFonts(data.items);
-				setSelectedFont(data.items[0].family);
 			} catch (error) {
 				console.error(error);
 			}
@@ -137,7 +136,7 @@ const FontSelect = ({
 
 	return (
 		<Select
-			className="w-[320px]"
+			className="w-[330px]"
 			options={fontOptions}
 			value={{ value: selectedFont, label: selectedFont }}
 			onChange={changeFont}

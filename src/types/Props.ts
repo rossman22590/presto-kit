@@ -125,3 +125,8 @@ export type ModalContainerProps = React.PropsWithChildren<{
 	title: string;
 	text: string;
 }>;
+
+export type FontSelectProps = {
+	selectedFont: string;
+	setSelectedFont: (font: string) => void;
+};

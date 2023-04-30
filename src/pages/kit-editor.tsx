@@ -8,8 +8,19 @@ import { PresetColor } from "../types/Colors";
 import { useEffect, useState } from "react";
 import { CustomKit } from "../types/Kits";
 import type { NextPage } from "next/types";
+import dynamic from "next/dynamic";
+
+const FontSelect = dynamic(() => import("../components/Forms/FontSelect"), {
+	ssr: false,
+});
 
 const KitEditor: NextPage = ({}) => {
+	const [isMounted, setIsMounted] = useState(false);
+
+	useEffect(() => {
+		setIsMounted(true);
+	}, []);
+
 	const { isLoadingKit, kit } = useGetCustomKit();
 
 	const [customKit, setCustomKit] = useState<CustomKit | null>(null);
@@ -18,13 +29,8 @@ const KitEditor: NextPage = ({}) => {
 		setCustomKit(kit);
 	}, [isLoadingKit]);
 
-	// const isLoadingKit = false;
-	// const kit = mockCustomKit;
-
-	// const [customKit, setCustomKit] = useState<CustomKit | null>(kit);
-
 	const [customColors, setCustomColors] = useState<ColorsResponse[] | null>(
-		kit.colors
+		null
 	);
 
 	useEffect(() => {
@@ -34,6 +40,8 @@ const KitEditor: NextPage = ({}) => {
 	}, [customKit]);
 
 	const [presetColors, setPresetColors] = useState<PresetColor[] | undefined>();
+
+	const [selectedDisplayFont, setSelectedDisplayFont] = useState("");
 
 	return (
 		<DashboardLayout>
@@ -61,9 +69,23 @@ const KitEditor: NextPage = ({}) => {
 					<section className="m-auto mt-10 flex max-w-5xl flex-col items-center gap-12 py-6">
 						<DisplayText
 							heading="Edit Kit Fonts"
-							text="You can select any of the color hex codes below to edit and try out different colors."
+							text="You can select any of the fonts below to select and try out different fonts."
 							type="DASHBOARD"
 						/>
+
+						{isMounted && (
+							<>
+								<div className="flex w-full">
+									<FontSelect
+										selectedFont={selectedDisplayFont}
+										setSelectedFont={setSelectedDisplayFont}
+									/>
+								</div>
+								<div style={{ fontFamily: selectedDisplayFont, fontSize: 24 }}>
+									The quick brown fox jumps over the lazy dog
+								</div>
+							</>
+						)}
 					</section>
 				</>
 			)}

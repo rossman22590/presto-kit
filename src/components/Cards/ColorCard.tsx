@@ -60,7 +60,7 @@ export const ColorCard = ({
 			{showPicker && (
 				// @ts-ignore
 				<SketchPicker
-					className="absolute"
+					className="absolute z-10"
 					color={customColors[i].hex}
 					onChange={handleColorChange}
 					presetColors={presetColors}

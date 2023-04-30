@@ -3,6 +3,7 @@ import type {
 	Typefaces,
 	TypographyResponse,
 } from "../types/Data";
+import { Font } from "../types/Fonts";
 
 export const classNames = (...classes: string[]) => {
 	return classes.filter(Boolean).join(" ");
@@ -47,4 +48,27 @@ export const getFontByCategory = (
 		font: font.font,
 		weight: font.weight,
 	};
+};
+
+export const findClosestWeight = (
+	availableWeights: number[],
+	targetWeight: number
+) => {
+	return availableWeights.reduce((prev, curr) =>
+		Math.abs(curr - targetWeight) < Math.abs(prev - targetWeight) ? curr : prev
+	);
+};
+
+export const findClosestAvailableWeight = (
+	font: Font,
+	targetWeight: number
+): string => {
+	const availableWeights = font.variants
+		.filter((variant) => !variant.includes("italic"))
+		.map((variant) => (variant === "regular" ? "400" : variant));
+
+	return findClosestWeight(
+		availableWeights.map((weight) => parseInt(weight, 10)),
+		targetWeight
+	).toString();
 };

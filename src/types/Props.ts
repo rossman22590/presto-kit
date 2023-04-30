@@ -7,6 +7,7 @@ import type {
 } from "./Kits";
 import { ColorsResponse } from "./Data";
 import { PresetColor } from "./Colors";
+import { Font } from "./Fonts";
 
 export type ColorCardProps = {
 	customColors: ColorsResponse[];
@@ -126,7 +127,9 @@ export type ModalContainerProps = React.PropsWithChildren<{
 	text: string;
 }>;
 
-export type FontSelectProps = {
+export type WeightSelectProps = {
+	fonts: Font[];
 	selectedFont: string;
-	setSelectedFont: (font: string) => void;
+	selectedWeight: string;
+	setSelectedWeight: (weight: string) => void;
 };

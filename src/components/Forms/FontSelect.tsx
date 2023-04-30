@@ -1,13 +1,31 @@
 import type { Font, OptionType, ValueType } from "../../types/Fonts";
-import type { FontSelectProps } from "../../types/Props";
 import Select, { components, ActionMeta } from "react-select";
 import { FixedSizeList as List } from "react-window";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import WebFont from "webfontloader";
+import {
+	findClosestAvailableWeight,
+	findClosestWeight,
+} from "../../utils/helpers";
 
-const FontSelect = ({ selectedFont, setSelectedFont }: FontSelectProps) => {
+export type FontSelectProps = {
+	fonts: Font[];
+	setFonts: (fonts: Font[]) => void;
+	selectedFont: string;
+	setSelectedFont: (font: string) => void;
+	selectedWeight: string;
+	setSelectedWeight: (weight: string) => void;
+};
+
+const FontSelect = ({
+	fonts,
+	setFonts,
+	selectedFont,
+	setSelectedFont,
+	selectedWeight,
+	setSelectedWeight,
+}: FontSelectProps) => {
 	const apiKey = process.env.NEXT_PUBLIC_GOOGLE_FONTS_API_KEY || "";
-	const [fonts, setFonts] = useState<Font[]>([]);
 
 	useEffect(() => {
 		(async () => {
@@ -25,14 +43,14 @@ const FontSelect = ({ selectedFont, setSelectedFont }: FontSelectProps) => {
 	}, []);
 
 	useEffect(() => {
-		if (selectedFont) {
+		if (selectedFont && selectedWeight) {
 			WebFont.load({
 				google: {
-					families: [`${selectedFont}:regular`],
+					families: [`${selectedFont}:${selectedWeight}`],
 				},
 			});
 		}
-	}, [selectedFont]);
+	}, [selectedFont, selectedWeight]);
 
 	const fontOptions = fonts.map((font) => ({
 		value: font.family,
@@ -45,26 +63,49 @@ const FontSelect = ({ selectedFont, setSelectedFont }: FontSelectProps) => {
 	) => {
 		if (option) {
 			setSelectedFont(option.value);
+
+			const newFont = fonts.find((font) => font.family === option.value);
+			if (newFont) {
+				const availableWeights = newFont.variants
+					.filter((variant) => !variant.includes("italic"))
+					.map((variant) => (variant === "regular" ? "400" : variant))
+					.map((variant) => parseInt(variant, 10));
+
+				const closestWeight = findClosestWeight(
+					availableWeights,
+					parseInt(selectedWeight, 10)
+				);
+				setSelectedWeight(closestWeight.toString());
+			}
 		}
 	};
 
 	const Option = (props: any) => {
-		const { data } = props;
+		const { data, selectedWeight } = props;
 		const font = data.value;
 
 		const text = font.replace(/[^\w\s]/gi, "");
 
 		useEffect(() => {
+			const newFont = fonts.find((f) => f.family === font);
+			const closestWeight = newFont
+				? findClosestAvailableWeight(newFont, parseInt(selectedWeight, 10))
+				: "regular";
+
 			WebFont.load({
 				google: {
-					families: [`${font}:regular&text=${encodeURIComponent(text)}`],
+					families: [
+						`${font}:${closestWeight}&text=${encodeURIComponent(text)}`,
+					],
 				},
 			});
-		}, [font, text]);
+		}, [font, text, selectedWeight]);
 
 		return (
-			<components.Option {...props} style={{ fontFamily: font }}>
-				<div style={{ fontFamily: font }}>{data.label}</div>
+			<components.Option {...props}>
+				<div style={{ fontFamily: font, fontWeight: selectedWeight }}>
+					{data.label}
+				</div>
 			</components.Option>
 		);
 	};
@@ -84,7 +125,10 @@ const FontSelect = ({ selectedFont, setSelectedFont }: FontSelectProps) => {
 			>
 				{({ index, style }: { index: number; style: React.CSSProperties }) => (
 					<div style={style}>
-						<Option {...children[index].props} />
+						<Option
+							{...children[index].props}
+							selectedWeight={selectedWeight}
+						/>
 					</div>
 				)}
 			</List>
@@ -92,7 +136,6 @@ const FontSelect = ({ selectedFont, setSelectedFont }: FontSelectProps) => {
 	};
 
 	return (
-		// ts-ignore
 		<Select
 			className="w-[320px]"
 			options={fontOptions}
@@ -103,12 +146,13 @@ const FontSelect = ({ selectedFont, setSelectedFont }: FontSelectProps) => {
 				singleValue: (base) => ({
 					...base,
 					fontFamily: selectedFont,
+					fontWeight: selectedWeight,
 				}),
 				control: (base) => ({
 					...base,
 					border: "none",
 					boxShadow: "none",
-					fontSize: "26px",
+					fontSize: "24px",
 					padding: "12px 20px",
 					borderRadius: "12px 0 0 12px",
 					cursor: "pointer",

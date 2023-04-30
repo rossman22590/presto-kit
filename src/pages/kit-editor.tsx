@@ -9,8 +9,12 @@ import { useEffect, useState } from "react";
 import { CustomKit } from "../types/Kits";
 import type { NextPage } from "next/types";
 import dynamic from "next/dynamic";
+import { Font } from "../types/Fonts";
 
 const FontSelect = dynamic(() => import("../components/Forms/FontSelect"), {
+	ssr: false,
+});
+const WeightSelect = dynamic(() => import("../components/Forms/WeightSelect"), {
 	ssr: false,
 });
 
@@ -41,7 +45,10 @@ const KitEditor: NextPage = ({}) => {
 
 	const [presetColors, setPresetColors] = useState<PresetColor[] | undefined>();
 
-	const [selectedDisplayFont, setSelectedDisplayFont] = useState("");
+	const [displayFonts, setDisplayFonts] = useState<Font[]>([]);
+
+	const [customDisplayFont, setCustomDisplayFont] = useState("");
+	const [customDisplayWeight, setCustomDisplayWeight] = useState("400");
 
 	return (
 		<DashboardLayout>
@@ -75,13 +82,29 @@ const KitEditor: NextPage = ({}) => {
 
 						{isMounted && (
 							<>
-								<div className="flex w-full">
+								<div className="flex w-full gap-[2px]">
 									<FontSelect
-										selectedFont={selectedDisplayFont}
-										setSelectedFont={setSelectedDisplayFont}
+										fonts={displayFonts}
+										setFonts={setDisplayFonts}
+										selectedFont={customDisplayFont}
+										setSelectedFont={setCustomDisplayFont}
+										selectedWeight={customDisplayWeight}
+										setSelectedWeight={setCustomDisplayWeight}
+									/>
+									<WeightSelect
+										fonts={displayFonts}
+										selectedFont={customDisplayFont}
+										selectedWeight={customDisplayWeight}
+										setSelectedWeight={setCustomDisplayWeight}
 									/>
 								</div>
-								<div style={{ fontFamily: selectedDisplayFont, fontSize: 24 }}>
+								<div
+									style={{
+										fontFamily: customDisplayFont,
+										fontWeight: customDisplayWeight,
+										fontSize: 24,
+									}}
+								>
 									The quick brown fox jumps over the lazy dog
 								</div>
 							</>

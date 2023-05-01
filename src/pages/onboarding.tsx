@@ -34,7 +34,7 @@ const Onboarding: NextPage = ({}) => {
 					buttonText="Continue"
 					formId="description"
 					route="starter-kits"
-					heading="Describe your brand in a few words"
+					heading="Describe your project in a few words"
 					text="Knowing your niche will help us choose suitable styles, colors and fonts for your brand."
 					placeholder="Organic Farm Shop, Halloween Store, Personal Finance App, Indy Music Platform... "
 					handleAuth={handleAuth}

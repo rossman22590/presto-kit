@@ -1,13 +1,8 @@
 import type { Navigation } from "./Navigation";
-import type {
-	KitViewSelection,
-	SelectedKitView,
-	StarterKits,
-	Kit,
-} from "./Kits";
+import type { KitViewSelectionUtils, AiKit, KitContent } from "./Kits";
 import { ColorsResponse } from "./Data";
 import { PresetColor } from "./Colors";
-import { Font } from "./Fonts";
+import { GoogleApiFont } from "./Fonts";
 
 export type ColorCardProps = {
 	customColors: ColorsResponse[];
@@ -22,7 +17,7 @@ export type ColorCardProps = {
 };
 
 export type ColorSectionProps = {
-	kit: Kit;
+	kit: AiKit;
 };
 
 export type DisplayTextProps = {
@@ -71,21 +66,21 @@ export type SectionHeadingProps = {
 };
 
 export type TypographyCardProps = {
-	kit: SelectedKitView;
+	kit: KitContent;
 	brandName: string | undefined;
 };
 
 export type DynamicStylesheetsProps = {
-	starterKits: StarterKits;
+	starterKits: AiKit[];
 };
 
 export type TypographySectionProps = {
-	kit: Kit;
+	kit: AiKit;
 	brandName: string | undefined;
 };
 
 export type KitProgressCardProps = {
-	starterKits: StarterKits;
+	starterKits: AiKit[];
 	kitNumber: number;
 	isGenerating: boolean;
 	isComplete: boolean;
@@ -108,15 +103,15 @@ export type MobileSidebarProps = {
 };
 
 export type KitPreviewCardProps = {
-	kitViewSelection: KitViewSelection;
-	starterKit: Kit;
+	kitViewSelectionUtils: KitViewSelectionUtils;
+	kit: AiKit;
 	i: number;
 };
 
-export type KitViewSelectionProps = {
-	selectedKitView: SelectedKitView;
-	brandName: string;
-	brandDescription: string;
+export type KitViewSectionProps = {
+	kit: KitContent;
+	projectName: string;
+	projectDescription: string;
 	handleContinue: () => void;
 };
 
@@ -128,7 +123,7 @@ export type ModalContainerProps = React.PropsWithChildren<{
 }>;
 
 export type WeightSelectProps = {
-	fonts: Font[];
+	fonts: GoogleApiFont[];
 	selectedFont: string;
 	selectedWeight: string;
 	setSelectedWeight: (weight: string) => void;

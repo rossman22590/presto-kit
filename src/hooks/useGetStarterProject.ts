@@ -12,8 +12,8 @@ export const useGetStarterProject = () => {
 	const session = useSession();
 	const user = useUser();
 
-	const [brandName, setBrandName] = useState<Projects["name"] | null>(null);
-	const [brandDescription, setBrandDescription] = useState<
+	const [projectName, setProjectName] = useState<Projects["name"] | null>(null);
+	const [projectDescription, setProjectDescription] = useState<
 		Projects["description"] | null
 	>(null);
 	const [isLoadingProject, setIsLoadingProject] = useState(true);
@@ -28,13 +28,13 @@ export const useGetStarterProject = () => {
 
 				if (data) {
 					setProjectId(data[0].id);
-					setBrandName(data[0].name);
-					setBrandDescription(data[0].description);
+					setProjectName(data[0].name);
+					setProjectDescription(data[0].description);
 				}
 				setIsLoadingProject(false);
 			})();
 		}
 	}, [session]);
 
-	return { brandName, brandDescription, isLoadingProject, projectId };
+	return { projectName, projectDescription, isLoadingProject, projectId };
 };

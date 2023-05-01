@@ -1,4 +1,4 @@
-import { StarterKits } from "../types/Kits";
+import { AiKit } from "../types/Kits";
 import { KITS_COUNT } from "../constants/global";
 import { useEffect } from "react";
 
@@ -11,12 +11,12 @@ const addFontLink = (font: string, weight: string) => {
 	document.head.appendChild(link);
 };
 
-export const useDynamicStylesheets = (starterKits: StarterKits) => {
+export const useDynamicStylesheets = (starterKits: AiKit[]) => {
 	useEffect(() => {
 		if (starterKits.length === KITS_COUNT) {
-			starterKits.forEach(({ typography: { typefaces } }) => {
-				addFontLink(typefaces.display.font, typefaces.display.weight || "");
-				addFontLink(typefaces.text.font, typefaces.text.weight || "");
+			starterKits.forEach(({ displayFont, textFont }) => {
+				addFontLink(displayFont.name, displayFont.weight || "");
+				addFontLink(textFont.name, textFont.weight || "");
 			});
 		}
 	}, [starterKits]);

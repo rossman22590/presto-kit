@@ -1,57 +1,45 @@
 import { ColorsResponse, Kits } from "./Data";
 
-//TODO: normalise kits data
-
-export type Kit = {
+export type AiKit = {
 	title: string;
 	id: number;
 	colors: {
-		details: {
-			id: number;
-			name: string;
-			hex: string;
-		}[];
-		// description: string;
+		type: "BASE" | "PRIMARY" | "ACCENT";
+		name: string;
+		hex: string;
+	}[];
+	displayFont: {
+		name: string;
+		weight: string | null;
 	};
-	typography: {
-		typefaces: {
-			display: {
-				font: string;
-				weight: string | null;
-			};
-			text: {
-				font: string;
-				weight: string | null;
-			};
-		};
-		// description: string;
+	textFont: {
+		name: string;
+		weight: string | null;
 	};
 };
 
-export type StarterKits = Kit[];
-
 export type KitSelectionTypes =
-	| "color"
+	| "colors"
 	| "displayFont"
 	| "textFont"
 	| "fullKit";
 
-export type SelectedKitView = {
-	colors: Kit["colors"];
-	displayFont: Kit["typography"]["typefaces"]["display"];
-	textFont: Kit["typography"]["typefaces"]["text"];
+export type KitContent = {
+	colors: AiKit["colors"];
+	displayFont: AiKit["displayFont"];
+	textFont: AiKit["textFont"];
 };
 
 export type SelectedIndex = {
 	fullKit: number | null;
-	color: number | null;
+	colors: number | null;
 	displayFont: number | null;
 	textFont: number | null;
 };
 
-export type KitViewSelection = {
+export type KitViewSelectionUtils = {
 	toggleFullKitView: (kitIndex: number) => void;
-	selectedKitView: SelectedKitView;
+	selectedKitView: KitContent;
 	isFullKitView: boolean;
 	updateKitView: (type: KitSelectionTypes, kitIndex: number) => void;
 	isSelected: (type: KitSelectionTypes, kitIndex: number) => boolean;
@@ -63,6 +51,6 @@ export type CustomKit = {
 	projectId: Kits["project_id"];
 	title: Kits["title"] | null;
 	colors: ColorsResponse[] | null;
-	display: Kit["typography"]["typefaces"]["display"] | null;
-	text: Kit["typography"]["typefaces"]["text"] | null;
+	displayFont: AiKit["displayFont"] | null;
+	textFont: AiKit["textFont"] | null;
 };

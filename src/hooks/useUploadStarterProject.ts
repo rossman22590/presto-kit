@@ -16,7 +16,7 @@ export const useUploadStarterProject = () => {
 
 	useEffect(() => {
 		if (session) {
-			const { brandName: name, brandDescription: description } =
+			const { projectName: name, projectDescription: description } =
 				useRouterQuery(router);
 			uploadProject(name, description, user, supabase);
 			router.push("/starter-kits");

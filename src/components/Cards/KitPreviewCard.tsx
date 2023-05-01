@@ -3,12 +3,12 @@ import { KitPreviewCardProps } from "../../types/Props";
 import { classNames } from "../../utils/helpers";
 
 export function KitPreviewCard({
-	kitViewSelection,
-	starterKit,
+	kitViewSelectionUtils,
+	kit,
 	i,
 }: KitPreviewCardProps) {
 	const { isFullKitView, isSelected, updateKitView, toggleFullKitView } =
-		kitViewSelection;
+		kitViewSelectionUtils;
 
 	return (
 		<div key={i} className="group flex w-[310px] select-none flex-col gap-4">
@@ -25,8 +25,8 @@ export function KitPreviewCard({
 					)}
 					onClick={() => updateKitView("fullKit", i)}
 				>
-					<span className="text-[#AAB2C6]">{`0${starterKit.id} `}</span>
-					{starterKit.title}
+					<span className="text-[#AAB2C6]">{`0${kit.id} `}</span>
+					{kit.title}
 				</h1>
 
 				{/* Toggle lock icon */}
@@ -46,7 +46,7 @@ export function KitPreviewCard({
 			{/* Color card */}
 			<div
 				className={classNames(
-					isSelected("fullKit", i) || isSelected("color", i)
+					isSelected("fullKit", i) || isSelected("colors", i)
 						? "border-presto-green"
 						: isFullKitView
 						? "border-white group-hover:border-presto-green-light"
@@ -56,10 +56,10 @@ export function KitPreviewCard({
 				onClick={() =>
 					isFullKitView
 						? updateKitView("fullKit", i)
-						: updateKitView("color", i)
+						: updateKitView("colors", i)
 				}
 			>
-				{starterKit.colors.details.map((color, i) => (
+				{kit.colors.map((color, i) => (
 					<div className="flex items-center gap-4 text-base" key={i}>
 						<div
 							className="aspect-square h-14 rounded-md"
@@ -88,10 +88,8 @@ export function KitPreviewCard({
 					"cursor-pointer rounded-xl border-[1px] bg-white px-8 py-5 text-xl text-[#343b45]"
 				)}
 				style={{
-					fontFamily: starterKit.typography.typefaces.display.font,
-					fontWeight: starterKit.typography.typefaces.display.weight
-						? starterKit.typography.typefaces.display.weight
-						: "",
+					fontFamily: kit.displayFont.name,
+					fontWeight: kit.displayFont.weight ? kit.displayFont.weight : "",
 				}}
 				onClick={() =>
 					isFullKitView
@@ -99,8 +97,7 @@ export function KitPreviewCard({
 						: updateKitView("displayFont", i)
 				}
 			>
-				{starterKit.typography.typefaces.display.font}{" "}
-				{starterKit.typography.typefaces.display.weight} Display
+				{kit.displayFont.name} {kit.displayFont.weight} Display
 			</div>
 
 			{/* Text font card */}
@@ -114,10 +111,8 @@ export function KitPreviewCard({
 					"cursor-pointer rounded-xl border-[1px] bg-white px-8 py-5 text-lg text-[#343b45] subpixel-antialiased "
 				)}
 				style={{
-					fontFamily: starterKit.typography.typefaces.text.font,
-					fontWeight: starterKit.typography.typefaces.text.weight
-						? starterKit.typography.typefaces.text.weight
-						: "",
+					fontFamily: kit.textFont.name,
+					fontWeight: kit.textFont.weight ? kit.textFont.weight : "",
 				}}
 				onClick={() =>
 					isFullKitView
@@ -125,8 +120,7 @@ export function KitPreviewCard({
 						: updateKitView("textFont", i)
 				}
 			>
-				{starterKit.typography.typefaces.text.font}{" "}
-				{starterKit.typography.typefaces.text.weight} Text
+				{kit.textFont.name} {kit.textFont.weight} Text
 			</div>
 		</div>
 	);

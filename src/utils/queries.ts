@@ -1,6 +1,6 @@
 import { SupabaseClient, User } from "@supabase/auth-helpers-react";
 import { getColorCategory } from "./helpers";
-import type { Kit } from "../types/Kits";
+import type { AiKit } from "../types/Kits";
 import type {
 	ColorsInsert,
 	ColorsResponse,
@@ -8,8 +8,8 @@ import type {
 	KitsResponse,
 	Projects,
 	ProjectsResponse,
-	TypefacesInsert,
-	TypographyResponse,
+	FontsInsert,
+	FontsResponse,
 } from "../types/Data";
 
 export const getProjectsByUser = async (
@@ -111,23 +111,23 @@ export const getColorsByKitId = async (
 	return null;
 };
 
-export const getTypographyByKitId = async (
+export const getFontsByKitId = async (
 	kitId: number | null,
 	supabase: SupabaseClient
-): Promise<TypographyResponse[] | null> => {
+): Promise<FontsResponse[] | null> => {
 	try {
-		if (!kitId) throw new Error("No kit ID at get typography by kit ID");
+		if (!kitId) throw new Error("No kit ID at get fonts by kit ID");
 
 		let { data, error } = await supabase
-			.from("typefaces")
-			.select("category, font, weight")
+			.from("fonts")
+			.select("category, name, weight")
 			.eq("kit_id", kitId);
 
 		if (error) throw error;
 
 		return data;
 	} catch (error) {
-		alert("Error loading typography data!");
+		alert("Error loading fonts data!");
 		console.log(error);
 	}
 	return null;
@@ -136,7 +136,7 @@ export const getTypographyByKitId = async (
 export const uploadKit = async (
 	category: Kits["category"],
 	projectId: Projects["id"] | null,
-	kitTitle: Kit["title"],
+	kitTitle: AiKit["title"],
 	user: User | null,
 	supabase: SupabaseClient
 ) => {
@@ -194,53 +194,50 @@ export const uploadProject = async (
 	}
 };
 
-export const uploadTypography = async (
+export const uploadFonts = async (
 	kitId: Kits["id"],
-	display: Kit["typography"]["typefaces"]["display"],
-	text: Kit["typography"]["typefaces"]["text"],
+	displayFont: AiKit["displayFont"],
+	textFont: AiKit["textFont"],
 	supabase: SupabaseClient
 ) => {
-	if (!kitId) throw new Error("No kit ID at upload typography");
+	if (!kitId) throw new Error("No kit ID at upload fonts");
 	try {
-		const typefaceData: TypefacesInsert[] = [
+		const fontsData: FontsInsert[] = [
 			{
 				category: "DISPLAY",
-				font: display.font,
-				weight: display.weight,
+				name: displayFont.name,
+				weight: displayFont.weight,
 				kit_id: kitId,
 			},
 			{
 				category: "TEXT",
-				font: text.font,
-				weight: text.weight,
+				name: textFont.name,
+				weight: textFont.weight,
 				kit_id: kitId,
 			},
 		];
 
-		const { error } = await supabase.from("typefaces").insert(typefaceData);
+		const { error } = await supabase.from("fonts").insert(fontsData);
 
 		if (error) throw error;
 	} catch (error) {
-		alert("Error inserting typography data!");
+		alert("Error inserting fonts data!");
 		console.log(error);
 	}
 };
 
 export const uploadColors = async (
 	kitId: Kits["id"],
-	colors: Kit["colors"],
-	user: User | null,
+	colors: AiKit["colors"],
 	supabase: SupabaseClient
 ) => {
-	if (!user) throw new Error("No user at upload colors");
 	if (!kitId) throw new Error("No kit ID at upload colors");
 	try {
-		const colorData: ColorsInsert[] = colors.details.map((color, i) => ({
+		const colorData: ColorsInsert[] = colors.map((color, i) => ({
 			category: getColorCategory(i),
 			name: color.name,
 			hex: color.hex,
 			kit_id: kitId,
-			user_id: user?.id,
 		}));
 
 		const { error } = await supabase.from("colors").insert(colorData);

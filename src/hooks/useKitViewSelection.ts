@@ -1,22 +1,25 @@
 import { useState } from "react";
 import type {
 	KitSelectionTypes,
-	SelectedKitView,
+	KitContent,
 	SelectedIndex,
-	Kit,
+	AiKit,
+	KitViewSelectionUtils,
 } from "../types/Kits";
 
-export const useKitViewSelection = (starterKits: Kit[]) => {
+export const useKitViewSelection = (
+	starterKits: AiKit[]
+): KitViewSelectionUtils => {
 	const [selectedIndex, setSelectedIndex] = useState<SelectedIndex>({
 		fullKit: null,
-		color: null,
+		colors: null,
 		displayFont: null,
 		textFont: null,
 	});
-	const [selectedKitView, setSelectedKitView] = useState<SelectedKitView>({
+	const [selectedKitView, setSelectedKitView] = useState<KitContent>({
 		colors: starterKits[0]?.colors,
-		displayFont: starterKits[0]?.typography.typefaces.display,
-		textFont: starterKits[0]?.typography.typefaces.text,
+		displayFont: starterKits[0]?.displayFont,
+		textFont: starterKits[0]?.textFont,
 	});
 	const [isFullKitView, setIsFullKitView] = useState(true);
 
@@ -32,7 +35,7 @@ export const useKitViewSelection = (starterKits: Kit[]) => {
 		if (type === "fullKit" && !isFullKitView) {
 			setSelectedIndex({
 				fullKit: null,
-				color: kitIndex,
+				colors: kitIndex,
 				displayFont: kitIndex,
 				textFont: kitIndex,
 			});
@@ -46,14 +49,14 @@ export const useKitViewSelection = (starterKits: Kit[]) => {
 		const kit = starterKits[kitIndex];
 		let updatedKitView = { ...selectedKitView };
 
-		if (type === "fullKit" || type === "color") {
+		if (type === "fullKit" || type === "colors") {
 			updatedKitView.colors = kit.colors;
 		}
 		if (type === "fullKit" || type === "displayFont") {
-			updatedKitView.displayFont = kit.typography.typefaces.display;
+			updatedKitView.displayFont = kit.displayFont;
 		}
 		if (type === "fullKit" || type === "textFont") {
-			updatedKitView.textFont = kit.typography.typefaces.text;
+			updatedKitView.textFont = kit.textFont;
 		}
 		setSelectedKitView(updatedKitView);
 	};
@@ -63,13 +66,13 @@ export const useKitViewSelection = (starterKits: Kit[]) => {
 			const kit = starterKits[kitIndex];
 			const updatedKitView = { ...selectedKitView };
 			updatedKitView.colors = kit.colors;
-			updatedKitView.displayFont = kit.typography.typefaces.display;
-			updatedKitView.textFont = kit.typography.typefaces.text;
+			updatedKitView.displayFont = kit.displayFont;
+			updatedKitView.textFont = kit.textFont;
 			setSelectedKitView(updatedKitView);
 		}
 		setSelectedIndex({
 			fullKit: isFullKitView ? null : kitIndex,
-			color: isFullKitView ? kitIndex : null,
+			colors: isFullKitView ? kitIndex : null,
 			displayFont: isFullKitView ? kitIndex : null,
 			textFont: isFullKitView ? kitIndex : null,
 		});
@@ -77,7 +80,7 @@ export const useKitViewSelection = (starterKits: Kit[]) => {
 		setIsFullKitView(!isFullKitView);
 	};
 
-	const kitViewSelection = {
+	const kitViewSelectionUtils = {
 		toggleFullKitView,
 		selectedKitView,
 		isFullKitView,
@@ -86,5 +89,5 @@ export const useKitViewSelection = (starterKits: Kit[]) => {
 		isKitView,
 	};
 
-	return kitViewSelection;
+	return kitViewSelectionUtils;
 };

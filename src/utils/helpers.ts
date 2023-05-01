@@ -1,9 +1,5 @@
-import type {
-	ColorsResponse,
-	Typefaces,
-	TypographyResponse,
-} from "../types/Data";
-import { Font } from "../types/Fonts";
+import type { ColorsResponse, Fonts, FontsResponse } from "../types/Data";
+import { GoogleApiFont } from "../types/Fonts";
 
 export const classNames = (...classes: string[]) => {
 	return classes.filter(Boolean).join(" ");
@@ -36,8 +32,8 @@ export const sortColors = (
 };
 
 export const getFontByCategory = (
-	category: Typefaces["category"],
-	typography: TypographyResponse[] | null
+	category: Fonts["category"],
+	typography: FontsResponse[] | null
 ) => {
 	if (!typography) return null;
 
@@ -45,7 +41,7 @@ export const getFontByCategory = (
 	if (!font) return null;
 
 	return {
-		font: font.font,
+		name: font.name,
 		weight: font.weight,
 	};
 };
@@ -60,7 +56,7 @@ export const findClosestWeight = (
 };
 
 export const findClosestAvailableWeight = (
-	font: Font,
+	font: GoogleApiFont,
 	targetWeight: number
 ): string => {
 	const availableWeights = font.variants

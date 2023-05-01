@@ -1,4 +1,4 @@
-import { ColorsResponse, Kits, TypographyResponse } from "../types/Data";
+import { ColorsResponse, Kits, FontsResponse } from "../types/Data";
 import { getFontByCategory, sortColors } from "../utils/helpers";
 import { useEffect, useState } from "react";
 import { CustomKit } from "../types/Kits";
@@ -9,8 +9,8 @@ import {
 } from "@supabase/auth-helpers-react";
 import {
 	getColorsByKitId,
+	getFontsByKitId,
 	getKitsByCategory,
-	getTypographyByKitId,
 } from "../utils/queries";
 
 export const useGetCustomKit = () => {
@@ -23,9 +23,7 @@ export const useGetCustomKit = () => {
 	const [projectId, setProjectId] = useState<Kits["project_id"] | null>(null);
 	const [kitTitle, setKitTitle] = useState<string | null>(null);
 	const [colors, setColors] = useState<ColorsResponse[] | null>(null);
-	const [typography, setTypography] = useState<TypographyResponse[] | null>(
-		null
-	);
+	const [fonts, setFonts] = useState<FontsResponse[] | null>(null);
 
 	useEffect(() => {
 		if (session) {
@@ -44,11 +42,11 @@ export const useGetCustomKit = () => {
 	useEffect(() => {
 		if (kitId) {
 			(async () => {
-				const colorData = await getColorsByKitId(kitId, supabase);
-				setColors(colorData);
+				const colorsData = await getColorsByKitId(kitId, supabase);
+				setColors(colorsData);
 
-				const typographyData = await getTypographyByKitId(kitId, supabase);
-				setTypography(typographyData);
+				const fontsData = await getFontsByKitId(kitId, supabase);
+				setFonts(fontsData);
 				setIsLoadingKit(false);
 			})();
 		}
@@ -59,8 +57,8 @@ export const useGetCustomKit = () => {
 		projectId,
 		title: kitTitle,
 		colors: sortColors(colors),
-		display: getFontByCategory("DISPLAY", typography),
-		text: getFontByCategory("TEXT", typography),
+		displayFont: getFontByCategory("DISPLAY", fonts),
+		textFont: getFontByCategory("TEXT", fonts),
 	};
 
 	return { isLoadingKit, kit };

@@ -3,13 +3,13 @@ import { DisplayText } from "../components/Headings/DisplayText";
 import { useGetCustomKit } from "../hooks/useGetCustomKit";
 import { ColorCard } from "../components/Cards/ColorCard";
 import { mockCustomKit } from "../data/mockData";
-import { ColorsResponse } from "../types/Data";
-import { PresetColor } from "../types/Colors";
 import { useEffect, useState } from "react";
-import { CustomKit } from "../types/Kits";
-import type { NextPage } from "next/types";
 import dynamic from "next/dynamic";
-import { Font } from "../types/Fonts";
+import type { ColorsResponse } from "../types/Data";
+import type { PresetColor } from "../types/Colors";
+import type { CustomKit } from "../types/Kits";
+import type { GoogleApiFont } from "../types/Fonts";
+import type { NextPage } from "next/types";
 
 const FontSelect = dynamic(() => import("../components/Forms/FontSelect"), {
 	ssr: false,
@@ -39,23 +39,23 @@ const KitEditor: NextPage = ({}) => {
 
 	const [presetColors, setPresetColors] = useState<PresetColor[] | undefined>();
 
-	const [displayFonts, setDisplayFonts] = useState<Font[]>([]);
+	const [displayFonts, setDisplayFonts] = useState<GoogleApiFont[]>([]);
 	const [customDisplayFont, setCustomDisplayFont] = useState("");
 	const [customDisplayWeight, setCustomDisplayWeight] = useState("");
 
-	const [textFonts, setTextFonts] = useState<Font[]>([]);
+	const [textFonts, setTextFonts] = useState<GoogleApiFont[]>([]);
 	const [customTextFont, setCustomTextFont] = useState("");
 	const [customTextWeight, setCustomTextWeight] = useState("");
 
 	useEffect(() => {
-		if (customKit && customKit.display && customKit.text) {
+		if (customKit && customKit.displayFont && customKit.textFont) {
 			setCustomColors(customKit.colors);
 
-			setCustomDisplayFont(customKit.display.font);
-			setCustomDisplayWeight(customKit.display.weight || "400");
+			setCustomDisplayFont(customKit.displayFont.name);
+			setCustomDisplayWeight(customKit.displayFont.weight || "400");
 
-			setCustomTextFont(customKit.text.font);
-			setCustomTextWeight(customKit.text.weight || "400");
+			setCustomTextFont(customKit.textFont.name);
+			setCustomTextWeight(customKit.textFont.weight || "400");
 		}
 	}, [customKit]);
 
@@ -85,14 +85,14 @@ const KitEditor: NextPage = ({}) => {
 					<section className="m-auto mt-10 flex max-w-5xl flex-col items-center gap-12 py-6">
 						<DisplayText
 							heading="Edit Kit Fonts"
-							text="You can select any of the fonts below to select and try out different fonts."
+							text="You can select any of the fonts below to browse and try out different fonts."
 							type="DASHBOARD"
 						/>
 
 						{isMounted && (
 							<>
-								<div className="flex w-full justify-between">
-									<div className="flex">
+								<div className="flex w-full justify-between gap-1">
+									<div className="flex gap-[2px]">
 										<FontSelect
 											fonts={displayFonts}
 											setFonts={setDisplayFonts}
@@ -108,7 +108,7 @@ const KitEditor: NextPage = ({}) => {
 											setSelectedWeight={setCustomDisplayWeight}
 										/>
 									</div>
-									<div className="flex">
+									<div className="flex gap-[2px]">
 										<FontSelect
 											fonts={textFonts}
 											setFonts={setTextFonts}

@@ -29,7 +29,7 @@ export const KitProgressCard = ({
 			<div className="flex h-[62px] w-[164px] items-center justify-center rounded-md border-[1px] border-[#e1e4e6]">
 				<div className="flex translate-x-[2px] items-center justify-center gap-[6px]">
 					<div className="flex items-center justify-center gap-1">
-						{starterKits[kitNumber - 1].colors.details.map((color, i) => (
+						{starterKits[kitNumber - 1].colors.map((color, i) => (
 							<div
 								key={i}
 								className="h-6 w-6 rounded"

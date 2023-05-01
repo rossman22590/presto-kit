@@ -1,4 +1,4 @@
-import type { Font, OptionType, ValueType } from "../../types/Fonts";
+import type { GoogleApiFont, OptionType, ValueType } from "../../types/Fonts";
 import Select, { components, ActionMeta } from "react-select";
 import { FixedSizeList as List } from "react-window";
 import { useEffect } from "react";
@@ -9,8 +9,8 @@ import {
 } from "../../utils/helpers";
 
 export type FontSelectProps = {
-	fonts: Font[];
-	setFonts: (fonts: Font[]) => void;
+	fonts: GoogleApiFont[];
+	setFonts: (fonts: GoogleApiFont[]) => void;
 	selectedFont: string;
 	setSelectedFont: (font: string) => void;
 	selectedWeight: string;
@@ -136,7 +136,7 @@ const FontSelect = ({
 
 	return (
 		<Select
-			className="w-[330px]"
+			className="w-[320px]"
 			options={fontOptions}
 			value={{ value: selectedFont, label: selectedFont }}
 			onChange={changeFont}

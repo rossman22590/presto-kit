@@ -1,7 +1,6 @@
-import type { KitViewSelectionProps } from "../../types/Props";
+import type { KitViewSectionProps } from "../../types/Props";
 import { useColorBrightness } from "../../hooks/useColorBrightness";
 import { DisplayText } from "../Headings/DisplayText";
-import { useSelectedKit } from "../../hooks/useKits";
 import {
 	ArrowRightIcon,
 	Bars3Icon,
@@ -10,22 +9,15 @@ import {
 } from "@heroicons/react/24/outline";
 
 export const KitViewSection = ({
-	selectedKitView,
-	brandName,
-	brandDescription,
+	kit,
+	projectName,
+	projectDescription,
 	handleContinue,
-}: KitViewSelectionProps) => {
-	const {
-		baseColor,
-		primaryColor,
-		accentColor,
-		displayFont,
-		displayWeight,
-		textFont,
-		textWeight,
-	} = useSelectedKit(selectedKitView);
-
-	const { isColorBright, accentColorRGB } = useColorBrightness(accentColor);
+}: KitViewSectionProps) => {
+	const baseColorHex = kit.colors[0].hex;
+	const primaryColorHex = kit.colors[1].hex;
+	const accentColorHex = kit.colors[2].hex;
+	const { isColorBright, accentColorRGB } = useColorBrightness(accentColorHex);
 
 	return (
 		<section className="m-auto my-12 flex max-w-5xl flex-col items-center gap-12 py-6">
@@ -54,7 +46,7 @@ export const KitViewSection = ({
 				<div
 					className="flex w-full grow flex-col justify-between rounded-b-lg"
 					style={{
-						backgroundColor: baseColor,
+						backgroundColor: baseColorHex,
 					}}
 				>
 					{/* Navbar */}
@@ -64,27 +56,29 @@ export const KitViewSection = ({
 							<CubeTransparentIcon
 								className="h-7"
 								style={{
-									color: accentColor,
+									color: accentColorHex,
 								}}
 							/>
 							<h3
 								className="text-lg"
 								style={{
-									color: primaryColor,
-									fontFamily: displayFont,
-									fontWeight: displayWeight ? displayWeight : "",
+									color: primaryColorHex,
+									fontFamily: kit.displayFont.name,
+									fontWeight: kit.displayFont.weight
+										? kit.displayFont.weight
+										: "",
 								}}
 							>
-								{brandName}
+								{projectName}
 							</h3>
 						</div>
 						{/* Nav menu */}
 						<div
 							className="absolute left-0 top-0 bottom-0 right-0 m-auto flex items-center justify-center gap-10 text-center text-sm font-light subpixel-antialiased"
 							style={{
-								color: primaryColor,
-								fontFamily: textFont,
-								fontWeight: textWeight ? textWeight : "",
+								color: primaryColorHex,
+								fontFamily: kit.textFont.name,
+								fontWeight: kit.textFont.weight ? kit.textFont.weight : "",
 							}}
 						>
 							<p>Home</p>
@@ -96,13 +90,13 @@ export const KitViewSection = ({
 							<Bars3Icon
 								className="w-7"
 								style={{
-									color: primaryColor,
+									color: primaryColorHex,
 								}}
 							/>
 							<UserCircleIcon
 								className="w-7"
 								style={{
-									color: primaryColor,
+									color: primaryColorHex,
 								}}
 							/>
 						</div>
@@ -113,20 +107,20 @@ export const KitViewSection = ({
 						<div
 							className="flex w-fit items-center justify-center gap-1 rounded-full border-[1px] py-2 px-7"
 							style={{
-								borderColor: `${accentColor}40`,
+								borderColor: `${accentColorHex}40`,
 							}}
 						>
 							<p
 								className="text-sm"
 								style={{
-									color: primaryColor,
+									color: primaryColorHex,
 								}}
 							>
 								Lorem ipsum dolor{" "}
 								<span
 									className="font-bold"
 									style={{
-										color: accentColor,
+										color: accentColorHex,
 									}}
 								>
 									sit amet
@@ -135,7 +129,7 @@ export const KitViewSection = ({
 							<ArrowRightIcon
 								className="w-4"
 								style={{
-									color: accentColor,
+									color: accentColorHex,
 								}}
 							/>
 						</div>
@@ -143,36 +137,38 @@ export const KitViewSection = ({
 						<h4
 							className="text-center text-6xl capitalize"
 							style={{
-								color: primaryColor,
-								fontFamily: displayFont,
-								fontWeight: displayWeight ? displayWeight : "",
+								color: primaryColorHex,
+								fontFamily: kit.displayFont.name,
+								fontWeight: kit.displayFont.weight
+									? kit.displayFont.weight
+									: "",
 							}}
 						>
-							{brandDescription.length < 25
-								? brandDescription
-								: `${displayFont} Heading`}
+							{projectDescription.length < 25
+								? projectDescription
+								: `${kit.displayFont.name} Heading`}
 						</h4>
 						{/* Hero text */}
 						<p
 							className="px-32 text-center text-[19px] leading-[1.6] text-[#393b47]"
 							style={{
-								fontFamily: textFont,
-								fontWeight: textWeight ? textWeight : "",
+								fontFamily: kit.textFont.name,
+								fontWeight: kit.textFont.weight ? kit.textFont.weight : "",
 							}}
 						>
-							{textFont} text lorem ipsum dolor sit amet, consectetur adipiscing
-							elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-							aliqua. Ut enim ad minim.
+							{kit.textFont.weight} text lorem ipsum dolor sit amet, consectetur
+							adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+							dolore magna aliqua. Ut enim ad minim.
 						</p>
 						{/* Hero buttons */}
 						<div className="flex items-center gap-4">
 							<div
 								className="rounded-md border-2 py-[9px] px-[34px] text-lg text-white subpixel-antialiased"
 								style={{
-									backgroundColor: accentColor,
-									borderColor: accentColor,
-									fontFamily: textFont,
-									fontWeight: textWeight ? textWeight : "",
+									backgroundColor: accentColorHex,
+									borderColor: accentColorHex,
+									fontFamily: kit.textFont.name,
+									fontWeight: kit.textFont.weight ? kit.textFont.weight : "",
 									// If button color is bright, use black text, else use white text
 									color: isColorBright(accentColorRGB)
 										? "rgba(0, 0, 0, 1)"
@@ -184,10 +180,10 @@ export const KitViewSection = ({
 							<div
 								className="rounded-md border-2 py-[9px] px-[34px] text-lg text-white subpixel-antialiased"
 								style={{
-									fontFamily: textFont,
-									fontWeight: textWeight ? textWeight : "",
-									color: primaryColor,
-									borderColor: primaryColor,
+									fontFamily: kit.textFont.name,
+									fontWeight: kit.textFont.weight ? kit.textFont.weight : "",
+									color: primaryColorHex,
+									borderColor: primaryColorHex,
 								}}
 							>
 								Learn more
@@ -198,7 +194,7 @@ export const KitViewSection = ({
 					<div
 						className="h-[60px] w-full rounded-b-lg"
 						style={{
-							backgroundColor: accentColor,
+							backgroundColor: accentColorHex,
 						}}
 					></div>
 				</div>

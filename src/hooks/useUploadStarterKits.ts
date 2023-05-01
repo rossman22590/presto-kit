@@ -2,11 +2,11 @@ import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { uploadKit } from "../utils/queries";
 import { useEffect, useState } from "react";
 import type { Kits, Projects } from "../types/Data";
-import type { Kit } from "../types/Kits";
+import type { AiKit } from "../types/Kits";
 
 export const useUploadStarterKits = (
 	projectId: Projects["id"] | null,
-	starterKits: Kit[]
+	starterKits: AiKit[]
 ) => {
 	const supabase = useSupabaseClient();
 	const user = useUser();

@@ -2,7 +2,7 @@ import type { Database } from "./supabase";
 export type Projects = Database["public"]["Tables"]["projects"]["Row"];
 export type Kits = Database["public"]["Tables"]["kits"]["Row"];
 export type Colors = Database["public"]["Tables"]["colors"]["Row"];
-export type Typefaces = Database["public"]["Tables"]["typefaces"]["Row"];
+export type Fonts = Database["public"]["Tables"]["fonts"]["Row"];
 
 export type ProjectsResponse = {
 	id: Projects["id"];
@@ -29,15 +29,15 @@ export type ColorsResponse = {
 	hex: Colors["hex"];
 };
 
-export type TypefacesInsert = {
-	kit_id: Typefaces["kit_id"];
-	category: Typefaces["category"];
-	font: Typefaces["font"];
-	weight: Typefaces["weight"];
+export type FontsInsert = {
+	kit_id: Fonts["kit_id"];
+	category: Fonts["category"];
+	name: Fonts["name"];
+	weight: Fonts["weight"];
 };
 
-export type TypographyResponse = {
-	category: Typefaces["category"];
-	font: Typefaces["font"];
-	weight: Typefaces["weight"];
+export type FontsResponse = {
+	category: Fonts["category"];
+	name: Fonts["name"];
+	weight: Fonts["weight"];
 };

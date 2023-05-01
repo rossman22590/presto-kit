@@ -1,4 +1,4 @@
-import type { StarterKits } from "../types/Kits";
+import type { AiKit } from "../types/Kits";
 import { useState, useEffect, useRef } from "react";
 import { KITS_COUNT } from "../constants/global";
 
@@ -6,13 +6,13 @@ import type { Database } from "../types/supabase";
 type Projects = Database["public"]["Tables"]["projects"]["Row"];
 
 export const useFetchKits = (
-	brandName: Projects["name"] | null,
-	brandDescription: Projects["description"] | null,
+	projectName: Projects["name"] | null,
+	projectDescription: Projects["description"] | null,
 	isLoadingProject: boolean
 ) => {
 	// dataFetchedRef prevents 2x sequential fetches to OpenAI
 	const dataFetchedRef = useRef(false);
-	const [starterKits, setStarterKits] = useState<StarterKits>([]);
+	const [starterKits, setStarterKits] = useState<AiKit[]>([]);
 	const [error, setError] = useState<Error | null>(null);
 	const [isLoadingKits, setIsLoadingKits] = useState<boolean>(true);
 
@@ -22,22 +22,22 @@ export const useFetchKits = (
 
 	const getInitialKits = async () => {
 		try {
-			if (!brandName) throw new Error("No brand name at fetch kits");
-			if (!brandDescription)
-				throw new Error("No brand description at fetch kits");
+			if (!projectName) throw new Error("No project name at fetch kits");
+			if (!projectDescription)
+				throw new Error("No project description at fetch kits");
 
 			if (dataFetchedRef.current) return;
 			dataFetchedRef.current = true;
 
-			let previousKitData: StarterKits | [] = [];
+			let previousKitData: AiKit[] | [] = [];
 
 			for (let i = 0; i < KITS_COUNT; i++) {
 				let response = await fetch("http://localhost:8000/api/kits", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({
-						brandName: brandName,
-						brandDescription: brandDescription,
+						projectName: projectName,
+						projectDescription: projectDescription,
 						previousKitData: previousKitData,
 						id: i + 1,
 					}),

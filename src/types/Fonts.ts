@@ -1,6 +1,6 @@
 export type OptionType = { value: string; label: string };
 export type ValueType = OptionType | null;
-export type Font = {
+export type GoogleApiFont = {
 	family: string;
 	variants: string[];
 	subsets: string[];

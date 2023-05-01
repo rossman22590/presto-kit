@@ -25,7 +25,7 @@ const Home: NextPage = ({}) => {
 				/>
 				<Form
 					type="SIMPLE"
-					placeholder="Enter your brand name here..."
+					placeholder="Enter your project name here..."
 					buttonText="Get Started"
 					formId="name"
 					route="onboarding"

@@ -3,6 +3,8 @@ type UseColorBrightness = (hex: string) => {
 	accentColorRGB: { red: number; green: number; blue: number };
 };
 
+// TODO: convert to util helper (doesn't need to be a hook)
+
 export const useColorBrightness: UseColorBrightness = (hex) => {
 	const convertHexToRGB = (hex: string) => {
 		const red = parseInt(hex.slice(1, 3), 16);

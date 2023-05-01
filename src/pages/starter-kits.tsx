@@ -15,19 +15,18 @@ import { useKitProgress } from "../hooks/useKitProgress";
 import { useFetchKits } from "../hooks/useFetchKits";
 import { KITS_COUNT } from "../constants/global";
 import { useRouter } from "next/router";
-import type { StarterKits } from "../types/Kits";
 import type { NextPage } from "next";
 
 const StarterKits: NextPage = ({}) => {
 	setCurrentPage(primaryNavigation, "Starter Kits");
 	const router = useRouter();
 
-	const { brandName, brandDescription, isLoadingProject, projectId } =
+	const { projectName, projectDescription, isLoadingProject, projectId } =
 		useGetStarterProject();
 
 	const { starterKits, isLoadingKits, error } = useFetchKits(
-		brandDescription,
-		brandName,
+		projectDescription,
+		projectName,
 		isLoadingProject
 	);
 
@@ -38,14 +37,14 @@ const StarterKits: NextPage = ({}) => {
 
 	useUploadStarterKitsContent(kitIds, starterKits);
 
-	const kitViewSelection = useKitViewSelection(starterKits);
-	const { isKitView, selectedKitView } = kitViewSelection;
+	const kitViewSelectionUtils = useKitViewSelection(starterKits);
+	const { isKitView, selectedKitView } = kitViewSelectionUtils;
 
 	useDynamicStylesheets(starterKits);
 
 	const setIsCustomKit = useUploadCustomKit(
 		projectId,
-		brandName,
+		projectName,
 		selectedKitView
 	);
 
@@ -72,7 +71,7 @@ const StarterKits: NextPage = ({}) => {
 					<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
 						<DisplayText
 							heading="Generating Starter Kits"
-							text={`Thank you for your patience while our AI works hard to create a selection of starter kits for your brand. Currently generating kit ${
+							text={`Thank you for your patience while our AI works hard to create a selection of starter kits for your project. Currently generating kit ${
 								starterKits.length + 1
 							} of ${KITS_COUNT}`}
 							type="MAIN"
@@ -101,7 +100,7 @@ const StarterKits: NextPage = ({}) => {
 				<DashboardLayout>
 					<section className="m-auto flex max-w-5xl flex-col items-center gap-12 py-6">
 						<DisplayText
-							heading={`Your ${brandName} starter kits are ready ✨`}
+							heading={`Your ${projectName} starter kits are ready ✨`}
 							text="You can select any of the kits, colors and fonts below to see
 								how they look in the Kit View section."
 							type="DASHBOARD"
@@ -109,19 +108,19 @@ const StarterKits: NextPage = ({}) => {
 						<div className="flex w-full flex-col items-center justify-between gap-12 lg:flex-row lg:items-start lg:gap-0">
 							{starterKits.map((starterKit, i) => (
 								<KitPreviewCard
-									starterKit={starterKit}
-									kitViewSelection={kitViewSelection}
+									kit={starterKit}
+									kitViewSelectionUtils={kitViewSelectionUtils}
 									key={i}
 									i={i}
 								/>
 							))}
 						</div>
 					</section>
-					{isKitView() && brandName && brandDescription && (
+					{isKitView() && projectName && projectDescription && (
 						<KitViewSection
-							selectedKitView={selectedKitView}
-							brandName={brandName}
-							brandDescription={brandDescription}
+							kit={selectedKitView}
+							projectName={projectName}
+							projectDescription={projectDescription}
 							handleContinue={handleContinue}
 						/>
 					)}

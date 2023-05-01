@@ -122,10 +122,10 @@ export interface Database {
 					user_id?: string;
 				};
 			};
-			typefaces: {
+			fonts: {
 				Row: {
 					category: "DISPLAY" | "TEXT";
-					font: string;
+					name: string;
 					id: number;
 					inserted_at: string;
 					kit_id: number | null;
@@ -134,7 +134,7 @@ export interface Database {
 				};
 				Insert: {
 					category: "DISPLAY" | "TEXT";
-					font: string;
+					name: string;
 					id?: number;
 					inserted_at?: string;
 					kit_id?: number | null;
@@ -143,7 +143,7 @@ export interface Database {
 				};
 				Update: {
 					category?: "DISPLAY" | "TEXT";
-					font?: string;
+					name?: string;
 					id?: number;
 					inserted_at?: string;
 					kit_id?: number | null;

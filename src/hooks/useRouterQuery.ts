@@ -11,27 +11,27 @@ export const useRouterQuery = (router: NextRouter) => {
 		name: string | string[] | undefined,
 		description: string | string[] | undefined
 	) => {
-		let brandName: string = "";
-		let brandDescription: string = "";
+		let projectName: string = "";
+		let projectDescription: string = "";
 
 		if (name) {
-			brandName = Array.isArray(name) ? name[0] : name;
-			brandName = capitaliseWords(brandName);
+			projectName = Array.isArray(name) ? name[0] : name;
+			projectName = capitaliseWords(projectName);
 		}
 		if (description) {
-			brandDescription = Array.isArray(description)
+			projectDescription = Array.isArray(description)
 				? description[0]
 				: description;
-			brandDescription = capitaliseWords(brandDescription);
+			projectDescription = capitaliseWords(projectDescription);
 		}
 
-		return { brandName, brandDescription };
+		return { projectName, projectDescription };
 	};
 
-	const { brandName, brandDescription } = extractQueryStrings(
+	const { projectName, projectDescription } = extractQueryStrings(
 		name,
 		description
 	);
 
-	return { brandName, brandDescription };
+	return { projectName, projectDescription };
 };

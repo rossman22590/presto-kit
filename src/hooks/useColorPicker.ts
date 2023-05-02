@@ -1,5 +1,5 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { getColorsByKitsCategory } from "../utils/queries";
+import { getColorsByKitsType } from "../utils/queries";
 import { GetColorName } from "hex-color-to-color-name";
 import { useEffect, useRef, useState } from "react";
 import type { ColorsResponse } from "../types/Data";
@@ -24,7 +24,7 @@ export const useColorPicker = (
 	// Get colors from all starter kits to popular color picker presets
 	useEffect(() => {
 		(async () => {
-			const data = await getColorsByKitsCategory("STARTER", supabase);
+			const data = await getColorsByKitsType("STARTER", supabase);
 
 			const colors = data?.map((color) => ({
 				color: color.hex,

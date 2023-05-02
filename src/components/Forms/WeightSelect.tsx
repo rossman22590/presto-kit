@@ -1,30 +1,25 @@
 import type { WeightSelectProps } from "../../types/Props";
+import { updateWeights } from "../../utils/helpers";
 import Select, { components } from "react-select";
 import { useEffect, useState } from "react";
 
 const WeightSelect = ({
 	fonts,
 	selectedFont,
+	setSelectedFont,
 	selectedWeight,
 	setSelectedWeight,
+	initialFont,
 }: WeightSelectProps) => {
 	const [weights, setWeights] = useState<string[]>([]);
 
 	useEffect(() => {
-		const fontItem = fonts.find((f) => f.family === selectedFont);
-
-		if (fontItem) {
-			const filteredVariants = fontItem.variants.filter(
-				(variant) => !variant.includes("italic")
-			);
-
-			const weightOptions = filteredVariants.map((variant) =>
-				variant === "regular" ? "400" : variant.replace(/\D/g, "")
-			);
-
-			setWeights(weightOptions);
+		if (initialFont && !selectedFont) {
+			setSelectedFont(initialFont);
+			updateWeights(initialFont, fonts, setWeights);
 		}
-	}, [selectedFont]);
+		updateWeights(selectedFont, fonts, setWeights);
+	}, [selectedFont, fonts]);
 
 	const weightOptions = weights.map((weight) => ({
 		value: weight,

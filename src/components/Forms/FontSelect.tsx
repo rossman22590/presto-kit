@@ -83,7 +83,7 @@ const FontSelect = ({
 		const { data, selectedWeight } = props;
 		const font = data.value;
 
-		const text = font.replace(/[^\w\s]/gi, "");
+		const fontNameCharacters = font.replace(/[^\w\s]/gi, "");
 
 		useEffect(() => {
 			const newFont = fonts.find((f) => f.family === font);
@@ -94,11 +94,13 @@ const FontSelect = ({
 			WebFont.load({
 				google: {
 					families: [
-						`${font}:${closestWeight}&text=${encodeURIComponent(text)}`,
+						`${font}:${closestWeight}&text=${encodeURIComponent(
+							fontNameCharacters
+						)}`,
 					],
 				},
 			});
-		}, [font, text, selectedWeight]);
+		}, [font, fontNameCharacters, selectedWeight]);
 
 		return (
 			<components.Option {...props}>
@@ -111,15 +113,12 @@ const FontSelect = ({
 
 	const MenuList = (props: any) => {
 		const { children, maxHeight } = props;
-		const height = 35;
-
-		const getItemSize = () => height;
 
 		return (
 			<List
 				height={maxHeight}
 				itemCount={children.length}
-				itemSize={getItemSize()}
+				itemSize={35}
 				width="100%"
 			>
 				{({ index, style }: { index: number; style: React.CSSProperties }) => (

@@ -5,7 +5,7 @@ export const classNames = (...classes: string[]) => {
 	return classes.filter(Boolean).join(" ");
 };
 
-export const getColorCategory = (index: number) => {
+export const getColorType = (index: number) => {
 	switch (index) {
 		case 0:
 			return "BASE";
@@ -14,7 +14,7 @@ export const getColorCategory = (index: number) => {
 		case 2:
 			return "ACCENT";
 		default:
-			throw new Error("Invalid index for color category");
+			throw new Error("Invalid index for color type");
 	}
 };
 
@@ -28,16 +28,16 @@ export const sortColors = (
 	};
 	if (!colors) return null;
 
-	return colors.sort((a, b) => order[a.category] - order[b.category]);
+	return colors.sort((a, b) => order[a.type] - order[b.type]);
 };
 
-export const getFontByCategory = (
-	category: Fonts["category"],
+export const getFontByType = (
+	type: Fonts["type"],
 	typography: FontsResponse[] | null
 ) => {
 	if (!typography) return null;
 
-	const font = typography.find((item) => item.category === category);
+	const font = typography.find((item) => item.type === type);
 	if (!font) return null;
 
 	return {
@@ -67,4 +67,24 @@ export const findClosestAvailableWeight = (
 		availableWeights.map((weight) => parseInt(weight, 10)),
 		targetWeight
 	).toString();
+};
+
+export const updateWeights = (
+	fontFamily: string,
+	fonts: GoogleApiFont[],
+	setWeights: React.Dispatch<React.SetStateAction<string[]>>
+) => {
+	const fontItem = fonts.find((f) => f.family === fontFamily);
+
+	if (fontItem) {
+		const filteredVariants = fontItem.variants.filter(
+			(variant) => !variant.includes("italic")
+		);
+
+		const weightOptions = filteredVariants.map((variant) =>
+			variant === "regular" ? "400" : variant.replace(/\D/g, "")
+		);
+
+		setWeights(weightOptions);
+	}
 };

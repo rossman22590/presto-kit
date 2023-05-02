@@ -156,7 +156,7 @@ export const KitViewSection = ({
 								fontWeight: kit.textFont.weight ? kit.textFont.weight : "",
 							}}
 						>
-							{kit.textFont.weight} text lorem ipsum dolor sit amet, consectetur
+							{kit.textFont.name} text lorem ipsum dolor sit amet, consectetur
 							adipiscing elit, sed do eiusmod tempor incididunt ut labore et
 							dolore magna aliqua. Ut enim ad minim.
 						</p>

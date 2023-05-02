@@ -18,26 +18,26 @@ export type KitsResponse = {
 
 export type ColorsInsert = {
 	kit_id: Colors["kit_id"];
-	category: Colors["category"];
+	type: Colors["type"];
 	name: Colors["name"];
 	hex: Colors["hex"];
 };
 
 export type ColorsResponse = {
-	category: Colors["category"];
+	type: Colors["type"];
 	name: Colors["name"];
 	hex: Colors["hex"];
 };
 
 export type FontsInsert = {
 	kit_id: Fonts["kit_id"];
-	category: Fonts["category"];
+	type: Fonts["type"];
 	name: Fonts["name"];
 	weight: Fonts["weight"];
 };
 
 export type FontsResponse = {
-	category: Fonts["category"];
+	type: Fonts["type"];
 	name: Fonts["name"];
 	weight: Fonts["weight"];
 };

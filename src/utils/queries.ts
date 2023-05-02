@@ -1,5 +1,5 @@
 import { SupabaseClient, User } from "@supabase/auth-helpers-react";
-import { getColorCategory } from "./helpers";
+import { getColorType } from "./helpers";
 import type { AiKit } from "../types/Kits";
 import type {
 	ColorsInsert,
@@ -34,8 +34,8 @@ export const getProjectsByUser = async (
 	return null;
 };
 
-export const getKitsByCategory = async (
-	category: Kits["category"],
+export const getKitsByType = async (
+	type: Kits["type"],
 	user: User | null,
 	supabase: SupabaseClient
 ): Promise<KitsResponse[] | null> => {
@@ -46,7 +46,7 @@ export const getKitsByCategory = async (
 			.from("kits")
 			.select("id, project_id, title")
 			.eq("user_id", user.id)
-			.eq("category", category);
+			.eq("type", type);
 
 		if (error) throw error;
 
@@ -58,15 +58,15 @@ export const getKitsByCategory = async (
 	return null;
 };
 
-export const getColorsByKitsCategory = async (
-	kitsCategory: Kits["category"],
+export const getColorsByKitsType = async (
+	kitsType: Kits["type"],
 	supabase: SupabaseClient
 ): Promise<ColorsResponse[] | null> => {
 	try {
 		let { data, error } = await supabase
 			.from("kits")
-			.select(`colors(category, name, hex)`)
-			.eq("category", kitsCategory);
+			.select(`colors(type, name, hex)`)
+			.eq("type", kitsType);
 
 		if (error) throw error;
 
@@ -98,7 +98,7 @@ export const getColorsByKitId = async (
 
 		let { data, error } = await supabase
 			.from("colors")
-			.select("category, name, hex")
+			.select("type, name, hex")
 			.eq("kit_id", kitId);
 
 		if (error) throw error;
@@ -120,7 +120,7 @@ export const getFontsByKitId = async (
 
 		let { data, error } = await supabase
 			.from("fonts")
-			.select("category, name, weight")
+			.select("type, name, weight")
 			.eq("kit_id", kitId);
 
 		if (error) throw error;
@@ -134,7 +134,7 @@ export const getFontsByKitId = async (
 };
 
 export const uploadKit = async (
-	category: Kits["category"],
+	type: Kits["type"],
 	projectId: Projects["id"] | null,
 	kitTitle: AiKit["title"],
 	user: User | null,
@@ -148,7 +148,7 @@ export const uploadKit = async (
 			project_id: projectId,
 			user_id: user.id,
 			title: kitTitle,
-			category,
+			type,
 		};
 
 		let { data, error } = await supabase
@@ -204,13 +204,13 @@ export const uploadFonts = async (
 	try {
 		const fontsData: FontsInsert[] = [
 			{
-				category: "DISPLAY",
+				type: "DISPLAY",
 				name: displayFont.name,
 				weight: displayFont.weight,
 				kit_id: kitId,
 			},
 			{
-				category: "TEXT",
+				type: "TEXT",
 				name: textFont.name,
 				weight: textFont.weight,
 				kit_id: kitId,
@@ -234,7 +234,7 @@ export const uploadColors = async (
 	if (!kitId) throw new Error("No kit ID at upload colors");
 	try {
 		const colorData: ColorsInsert[] = colors.map((color, i) => ({
-			category: getColorCategory(i),
+			type: getColorType(i),
 			name: color.name,
 			hex: color.hex,
 			kit_id: kitId,

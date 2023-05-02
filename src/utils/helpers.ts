@@ -5,7 +5,7 @@ export const classNames = (...classes: string[]) => {
 	return classes.filter(Boolean).join(" ");
 };
 
-export const getColorCategory = (index: number) => {
+export const getColorType = (index: number) => {
 	switch (index) {
 		case 0:
 			return "BASE";
@@ -14,7 +14,7 @@ export const getColorCategory = (index: number) => {
 		case 2:
 			return "ACCENT";
 		default:
-			throw new Error("Invalid index for color category");
+			throw new Error("Invalid index for color type");
 	}
 };
 
@@ -28,16 +28,16 @@ export const sortColors = (
 	};
 	if (!colors) return null;
 
-	return colors.sort((a, b) => order[a.category] - order[b.category]);
+	return colors.sort((a, b) => order[a.type] - order[b.type]);
 };
 
-export const getFontByCategory = (
-	category: Fonts["category"],
+export const getFontByType = (
+	type: Fonts["type"],
 	typography: FontsResponse[] | null
 ) => {
 	if (!typography) return null;
 
-	const font = typography.find((item) => item.category === category);
+	const font = typography.find((item) => item.type === type);
 	if (!font) return null;
 
 	return {

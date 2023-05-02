@@ -1,5 +1,5 @@
 import { ColorsResponse, Kits, FontsResponse } from "../types/Data";
-import { getFontByCategory, sortColors } from "../utils/helpers";
+import { getFontByType, sortColors } from "../utils/helpers";
 import { useEffect, useState } from "react";
 import { CustomKit } from "../types/Kits";
 import {
@@ -10,7 +10,7 @@ import {
 import {
 	getColorsByKitId,
 	getFontsByKitId,
-	getKitsByCategory,
+	getKitsByType,
 } from "../utils/queries";
 
 export const useGetCustomKit = () => {
@@ -28,7 +28,7 @@ export const useGetCustomKit = () => {
 	useEffect(() => {
 		if (session) {
 			(async () => {
-				const data = await getKitsByCategory("CUSTOM", user, supabase);
+				const data = await getKitsByType("CUSTOM", user, supabase);
 
 				if (data) {
 					setKitId(data[0].id);
@@ -57,8 +57,8 @@ export const useGetCustomKit = () => {
 		projectId,
 		title: kitTitle,
 		colors: sortColors(colors),
-		displayFont: getFontByCategory("DISPLAY", fonts),
-		textFont: getFontByCategory("TEXT", fonts),
+		displayFont: getFontByType("DISPLAY", fonts),
+		textFont: getFontByType("TEXT", fonts),
 	};
 
 	return { isLoadingKit, kit };

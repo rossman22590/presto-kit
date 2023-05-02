@@ -1,109 +1,94 @@
-import type { CustomKit, StarterKits } from "../types/Kits";
+import type { CustomKit, AiKit } from "../types/Kits";
 
-export const mockStarterKits: StarterKits | [] = [
+export const mockStarterKits: AiKit[] = [
 	{
 		title: "Organic Fields",
 		id: 1,
-		colors: {
-			details: [
-				{
-					id: 1,
-					name: "Farmhouse White",
-					hex: "#F7EAD9",
-				},
-				{
-					id: 2,
-					name: "Harvest Green",
-					hex: "#5F8A3F",
-				},
-				{
-					id: 3,
-					name: "Sun-Kissed Orange",
-					hex: "#F2B33D",
-				},
-			],
-		},
-		typography: {
-			typefaces: {
-				display: {
-					font: "Nunito Sans",
-					weight: "900",
-				},
-				text: {
-					font: "Open Sans",
-					weight: "400",
-				},
+		colors: [
+			{
+				type: "BASE",
+				name: "Farmhouse White",
+				hex: "#F7EAD9",
 			},
+			{
+				type: "PRIMARY",
+				name: "Harvest Green",
+				hex: "#5F8A3F",
+			},
+			{
+				type: "ACCENT",
+				name: "Sun-Kissed Orange",
+				hex: "#F2B33D",
+			},
+		],
+		displayFont: {
+			name: "Nunito Sans",
+			weight: "900",
+		},
+		textFont: {
+			name: "Open Sans",
+			weight: "400",
 		},
 	},
+
 	{
 		title: "Harvest Hues",
 		id: 2,
-		colors: {
-			details: [
-				{
-					id: 1,
-					name: "Farm Fresh",
-					hex: "#F4F1E9",
-				},
-				{
-					id: 2,
-					name: "Carrot Crunch",
-					hex: "#FF8C42",
-				},
-				{
-					id: 3,
-					name: "Sunny Citrus",
-					hex: "#FFD166",
-				},
-			],
-		},
-		typography: {
-			typefaces: {
-				display: {
-					font: "Abril Fatface",
-					weight: null,
-				},
-				text: {
-					font: "Lato",
-					weight: "300",
-				},
+		colors: [
+			{
+				type: "BASE",
+				name: "Farm Fresh",
+				hex: "#F4F1E9",
 			},
+			{
+				type: "PRIMARY",
+				name: "Carrot Crunch",
+				hex: "#FF8C42",
+			},
+			{
+				type: "ACCENT",
+				name: "Sunny Citrus",
+				hex: "#FFD166",
+			},
+		],
+		displayFont: {
+			name: "Abril Fatface",
+			weight: null,
+		},
+		textFont: {
+			name: "Lato",
+			weight: "300",
 		},
 	},
+
 	{
 		title: "Fresh Harvest",
 		id: 3,
-		colors: {
-			details: [
-				{
-					id: 1,
-					name: "Yolkshell Cream",
-					hex: "#FDFBF4",
-				},
-				{
-					id: 2,
-					name: "Plum Harvest",
-					hex: "#8E5572",
-				},
-				{
-					id: 3,
-					name: "Carrot Burst",
-					hex: "#FFC857",
-				},
-			],
-		},
-		typography: {
-			typefaces: {
-				display: {
-					font: "Arvo",
-					weight: "700",
-				},
-				text: {
-					font: "Roboto",
-					weight: "400",
-				},
+		colors: [
+			{
+				type: "BASE",
+				name: "Yolkshell Cream",
+				hex: "#FDFBF4",
 			},
+			{
+				type: "PRIMARY",
+				name: "Plum Harvest",
+				hex: "#8E5572",
+			},
+			{
+				type: "ACCENT",
+				name: "Carrot Burst",
+				hex: "#FFC857",
+			},
+		],
+
+		displayFont: {
+			name: "Arvo",
+			weight: "700",
+		},
+		textFont: {
+			name: "Roboto",
+			weight: "400",
 		},
 	},
 ];
@@ -121,21 +106,21 @@ export const mockCustomKit: CustomKit = {
 	title: "Farm Shop",
 	colors: [
 		{
-			category: "BASE",
+			type: "BASE",
 			name: "Farmhouse White",
 			hex: "#F7EAD9",
 		},
 		{
-			category: "PRIMARY",
+			type: "PRIMARY",
 			name: "Harvest Green",
 			hex: "#5F8A3F",
 		},
 		{
-			category: "ACCENT",
+			type: "ACCENT",
 			name: "Sun-Kissed Orange",
 			hex: "#F2B33D",
 		},
 	],
-	display: { font: "Nunito Sans", weight: "900" },
-	text: { font: "Open Sans", weight: "400" },
+	displayFont: { name: "Nunito Sans", weight: "900" },
+	textFont: { name: "Open Sans", weight: "400" },
 };

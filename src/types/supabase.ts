@@ -11,7 +11,7 @@ export interface Database {
 		Tables: {
 			colors: {
 				Row: {
-					category: "BASE" | "PRIMARY" | "ACCENT";
+					type: "BASE" | "PRIMARY" | "ACCENT";
 					hex: string;
 					id: number;
 					inserted_at: string;
@@ -20,7 +20,7 @@ export interface Database {
 					updated_at: string;
 				};
 				Insert: {
-					category: "BASE" | "PRIMARY" | "ACCENT";
+					type: "BASE" | "PRIMARY" | "ACCENT";
 					hex: string;
 					id?: number;
 					inserted_at?: string;
@@ -29,7 +29,7 @@ export interface Database {
 					updated_at?: string;
 				};
 				Update: {
-					category?: "BASE" | "PRIMARY" | "ACCENT";
+					type?: "BASE" | "PRIMARY" | "ACCENT";
 					hex?: string;
 					id?: number;
 					inserted_at?: string;
@@ -40,7 +40,7 @@ export interface Database {
 			};
 			kits: {
 				Row: {
-					category: "STARTER" | "CUSTOM";
+					type: "STARTER" | "CUSTOM";
 					id: number;
 					inserted_at: string;
 					project_id: number | null;
@@ -49,7 +49,7 @@ export interface Database {
 					user_id: string | null;
 				};
 				Insert: {
-					category: "STARTER" | "CUSTOM";
+					type: "STARTER" | "CUSTOM";
 					id?: number;
 					inserted_at?: string;
 					project_id?: number | null;
@@ -58,7 +58,7 @@ export interface Database {
 					user_id?: string | null;
 				};
 				Update: {
-					category?: "STARTER" | "CUSTOM";
+					type?: "STARTER" | "CUSTOM";
 					id?: number;
 					inserted_at?: string;
 					project_id?: number | null;
@@ -124,7 +124,7 @@ export interface Database {
 			};
 			fonts: {
 				Row: {
-					category: "DISPLAY" | "TEXT";
+					type: "DISPLAY" | "TEXT";
 					name: string;
 					id: number;
 					inserted_at: string;
@@ -133,7 +133,7 @@ export interface Database {
 					weight: string | null;
 				};
 				Insert: {
-					category: "DISPLAY" | "TEXT";
+					type: "DISPLAY" | "TEXT";
 					name: string;
 					id?: number;
 					inserted_at?: string;
@@ -142,7 +142,7 @@ export interface Database {
 					weight?: string | null;
 				};
 				Update: {
-					category?: "DISPLAY" | "TEXT";
+					type?: "DISPLAY" | "TEXT";
 					name?: string;
 					id?: number;
 					inserted_at?: string;

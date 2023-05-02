@@ -68,3 +68,23 @@ export const findClosestAvailableWeight = (
 		targetWeight
 	).toString();
 };
+
+export const updateWeights = (
+	fontFamily: string,
+	fonts: GoogleApiFont[],
+	setWeights: React.Dispatch<React.SetStateAction<string[]>>
+) => {
+	const fontItem = fonts.find((f) => f.family === fontFamily);
+
+	if (fontItem) {
+		const filteredVariants = fontItem.variants.filter(
+			(variant) => !variant.includes("italic")
+		);
+
+		const weightOptions = filteredVariants.map((variant) =>
+			variant === "regular" ? "400" : variant.replace(/\D/g, "")
+		);
+
+		setWeights(weightOptions);
+	}
+};

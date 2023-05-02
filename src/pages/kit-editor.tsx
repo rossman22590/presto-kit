@@ -51,10 +51,10 @@ const KitEditor: NextPage = ({}) => {
 		if (customKit && customKit.displayFont && customKit.textFont) {
 			setCustomColors(customKit.colors);
 
-			setCustomDisplayFont(customKit.displayFont.name);
+			setCustomDisplayFont("");
 			setCustomDisplayWeight(customKit.displayFont.weight || "400");
 
-			setCustomTextFont(customKit.textFont.name);
+			setCustomTextFont("");
 			setCustomTextWeight(customKit.textFont.weight || "400");
 		}
 	}, [customKit]);
@@ -89,62 +89,69 @@ const KitEditor: NextPage = ({}) => {
 							type="DASHBOARD"
 						/>
 
-						{isMounted && (
-							<>
-								<div className="flex w-full justify-between gap-1">
-									<div className="flex gap-[2px]">
-										<FontSelect
-											fonts={displayFonts}
-											setFonts={setDisplayFonts}
-											selectedFont={customDisplayFont}
-											setSelectedFont={setCustomDisplayFont}
-											selectedWeight={customDisplayWeight}
-											setSelectedWeight={setCustomDisplayWeight}
-										/>
-										<WeightSelect
-											fonts={displayFonts}
-											selectedFont={customDisplayFont}
-											selectedWeight={customDisplayWeight}
-											setSelectedWeight={setCustomDisplayWeight}
-										/>
+						{isMounted &&
+							customKit &&
+							customKit.displayFont &&
+							customKit.textFont && (
+								<>
+									<div className="flex w-full justify-between gap-1">
+										<div className="flex gap-[2px]">
+											<FontSelect
+												fonts={displayFonts}
+												setFonts={setDisplayFonts}
+												selectedFont={customDisplayFont}
+												setSelectedFont={setCustomDisplayFont}
+												selectedWeight={customDisplayWeight}
+												setSelectedWeight={setCustomDisplayWeight}
+											/>
+											<WeightSelect
+												fonts={displayFonts}
+												selectedFont={customDisplayFont}
+												setSelectedFont={setCustomDisplayFont}
+												selectedWeight={customDisplayWeight}
+												setSelectedWeight={setCustomDisplayWeight}
+												initialFont={customKit.displayFont.name}
+											/>
+										</div>
+										<div className="flex gap-[2px]">
+											<FontSelect
+												fonts={textFonts}
+												setFonts={setTextFonts}
+												selectedFont={customTextFont}
+												setSelectedFont={setCustomTextFont}
+												selectedWeight={customTextWeight}
+												setSelectedWeight={setCustomTextWeight}
+											/>
+											<WeightSelect
+												fonts={textFonts}
+												selectedFont={customTextFont}
+												setSelectedFont={setCustomTextFont}
+												selectedWeight={customTextWeight}
+												setSelectedWeight={setCustomTextWeight}
+												initialFont={customKit.textFont.name}
+											/>
+										</div>
 									</div>
-									<div className="flex gap-[2px]">
-										<FontSelect
-											fonts={textFonts}
-											setFonts={setTextFonts}
-											selectedFont={customTextFont}
-											setSelectedFont={setCustomTextFont}
-											selectedWeight={customTextWeight}
-											setSelectedWeight={setCustomTextWeight}
-										/>
-										<WeightSelect
-											fonts={textFonts}
-											selectedFont={customTextFont}
-											selectedWeight={customTextWeight}
-											setSelectedWeight={setCustomTextWeight}
-										/>
+									<div
+										style={{
+											fontFamily: customDisplayFont,
+											fontWeight: customDisplayWeight,
+											fontSize: 42,
+										}}
+									>
+										The quick brown fox jumps over the lazy dog
 									</div>
-								</div>
-								<div
-									style={{
-										fontFamily: customDisplayFont,
-										fontWeight: customDisplayWeight,
-										fontSize: 42,
-									}}
-								>
-									The quick brown fox jumps over the lazy dog
-								</div>
-								<div
-									style={{
-										fontFamily: customTextFont,
-										fontWeight: customTextWeight,
-										fontSize: 24,
-									}}
-								>
-									The quick brown fox jumps over the lazy dog
-								</div>
-							</>
-						)}
+									<div
+										style={{
+											fontFamily: customTextFont,
+											fontWeight: customTextWeight,
+											fontSize: 24,
+										}}
+									>
+										The quick brown fox jumps over the lazy dog
+									</div>
+								</>
+							)}
 					</section>
 				</>
 			)}

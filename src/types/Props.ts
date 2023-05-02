@@ -125,6 +125,8 @@ export type ModalContainerProps = React.PropsWithChildren<{
 export type WeightSelectProps = {
 	fonts: GoogleApiFont[];
 	selectedFont: string;
+	setSelectedFont: (font: string) => void;
 	selectedWeight: string;
 	setSelectedWeight: (weight: string) => void;
+	initialFont: string;
 };

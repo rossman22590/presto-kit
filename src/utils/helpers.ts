@@ -1,5 +1,5 @@
 import type { ColorsResponse, Fonts, FontsResponse } from "../types/Data";
-import { GoogleApiFont } from "../types/Fonts";
+import { GoogleApiFont, LoadedFonts } from "../types/Fonts";
 
 export const classNames = (...classes: string[]) => {
 	return classes.filter(Boolean).join(" ");
@@ -50,54 +50,106 @@ export const findClosestNumber = (
 	availableNumbers: number[],
 	targetNumber: number
 ) => {
-	return availableNumbers.reduce((prev, curr) =>
-		Math.abs(curr - targetNumber) < Math.abs(prev - targetNumber) ? curr : prev
-	);
+	if (availableNumbers.length) {
+		const closestNumber = availableNumbers.reduce((prev, curr) =>
+			Math.abs(curr - targetNumber) < Math.abs(prev - targetNumber)
+				? curr
+				: prev
+		);
+		return closestNumber;
+	} else {
+		return 400;
+	}
+};
+
+export const findAvailableWeights = (
+	font: string,
+	fontsList: GoogleApiFont[]
+) => {
+	const fontFamily = fontsList.find((f) => f.family === font);
+
+	if (fontFamily) {
+		const availableWeights = fontFamily.variants
+			.filter((variant) => !variant.includes("italic"))
+			.map((variant) => (variant === "regular" ? "400" : variant));
+
+		return availableWeights;
+	} else {
+		return ["400"];
+	}
 };
 
 export const findClosestWeight = (
-	font: GoogleApiFont | undefined,
-	targetWeight: number
+	font: string,
+	fontsList: GoogleApiFont[],
+	targetWeight: string
 ): string => {
-	if (!font) return "regular";
+	const fontFamily = fontsList.find((f) => f.family === font);
+	if (!fontFamily) return "regular";
 
-	const availableWeights = font.variants
-		.filter((variant) => !variant.includes("italic"))
-		.map((variant) => (variant === "regular" ? "400" : variant))
-		.map((variant) => +variant);
+	const availableWeightNumbers = findAvailableWeights(font, fontsList).map(
+		(weight) => +weight
+	);
+	const closestWeight = findClosestNumber(
+		availableWeightNumbers,
+		+targetWeight
+	).toString();
 
-	return findClosestNumber(availableWeights, targetWeight).toString();
-};
-
-export const updateWeights = (
-	fontFamily: string,
-	fonts: GoogleApiFont[],
-	setWeights: React.Dispatch<React.SetStateAction<string[]>>
-) => {
-	const fontItem = fonts.find((f) => f.family === fontFamily);
-
-	if (fontItem) {
-		const filteredVariants = fontItem.variants.filter(
-			(variant) => !variant.includes("italic")
-		);
-
-		const weightOptions = filteredVariants.map((variant) =>
-			variant === "regular" ? "400" : variant.replace(/\D/g, "")
-		);
-
-		setWeights(weightOptions);
-	}
+	return closestWeight;
 };
 
 export const loadFont = (
 	font: string,
-	weight: string,
+	weight: string | null,
 	previewText?: string
 ) => {
 	const link = document.createElement("link");
-	link.href = `https://fonts.googleapis.com/css2?family=${font}${
-		weight ? `:wght@${weight}` : ""
-	}${previewText ? `&text=${previewText}` : ""}&display=swap`;
+	const baseURL = "https://fonts.googleapis.com/css2";
+	const url = new URL(baseURL);
+
+	url.searchParams.set("family", font);
+
+	if (weight) url.searchParams.set("weights", weight);
+
+	if (previewText) url.searchParams.set("text", previewText);
+
+	url.searchParams.set("display", "swap");
+	link.href = url.toString();
 	link.rel = "stylesheet";
+
 	document.head.appendChild(link);
+};
+
+export const moveLoadedFontToTop = (
+	font: string,
+	fontsList: GoogleApiFont[]
+) => {
+	const selectedIndex = fontsList.findIndex((item) => item.family === font);
+	return [
+		fontsList[selectedIndex],
+		...fontsList.slice(0, selectedIndex),
+		...fontsList.slice(selectedIndex + 1),
+	];
+};
+
+export const updateLoadedFonts = (
+	font: string,
+	selectedWeight: string,
+	loadedFonts: LoadedFonts,
+	isFontLoaded: boolean
+) => {
+	const newLoadedFonts = { ...loadedFonts };
+
+	if (isFontLoaded) {
+		newLoadedFonts[font].weights = [
+			...newLoadedFonts[font].weights,
+			selectedWeight,
+		];
+	} else {
+		newLoadedFonts[font] = {
+			loaded: true,
+			weights: [selectedWeight],
+		};
+	}
+	return newLoadedFonts;
 };

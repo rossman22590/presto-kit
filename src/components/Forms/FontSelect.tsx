@@ -1,9 +1,14 @@
-import { findClosestWeight, loadFont } from "../../utils/helpers";
 import Select, { components, ActionMeta } from "react-select";
 import { FixedSizeList as List } from "react-window";
 import { CSSProperties, useEffect } from "react";
 import type { OptionType, ValueType } from "../../types/Fonts";
 import type { FontSelectProps } from "../../types/Props";
+import {
+	moveLoadedFontToTop,
+	findClosestWeight,
+	updateLoadedFonts,
+	loadFont,
+} from "../../utils/helpers";
 
 export const FontSelect = ({
 	fonts,
@@ -18,6 +23,24 @@ export const FontSelect = ({
 	const isFontLoaded = loadedFonts[selectedFont] !== undefined;
 	const isWeightAvailable =
 		isFontLoaded && loadedFonts[selectedFont].weights.includes(selectedWeight);
+	const shouldLoadFont = !isFontLoaded || !isWeightAvailable;
+
+	useEffect(() => {
+		if (selectedFont && selectedWeight && shouldLoadFont) {
+			loadFont(selectedFont, selectedWeight);
+
+			const newFontsList = moveLoadedFontToTop(selectedFont, fonts);
+			setFonts(newFontsList);
+
+			const newLoadedFonts = updateLoadedFonts(
+				selectedFont,
+				selectedWeight,
+				loadedFonts,
+				isFontLoaded
+			);
+			setLoadedFonts(newLoadedFonts);
+		}
+	}, [selectedFont, selectedWeight]);
 
 	const fontOptions = fonts.map((font) => ({
 		value: font.family,
@@ -29,68 +52,22 @@ export const FontSelect = ({
 		_actionMeta: ActionMeta<OptionType>
 	) => {
 		if (option) {
-			setSelectedFont(option.value);
+			const newFont = option.value;
+			const closestWeight = findClosestWeight(newFont, fonts, selectedWeight);
 
-			const newFont = fonts.find((font) => font.family === option.value);
-
-			const closestWeight = findClosestWeight(newFont, +selectedWeight);
-
+			setSelectedFont(newFont);
 			setSelectedWeight(closestWeight);
 		}
 	};
 
-	useEffect(() => {
-		if (
-			selectedFont &&
-			selectedWeight &&
-			// Only load the selected font/weight combo if it hasn't been loaded yet
-			(!isFontLoaded || !isWeightAvailable)
-		) {
-			loadFont(selectedFont, selectedWeight);
-
-			// Move newly loaded font to the top of the options list
-			const selectedIndex = fonts.findIndex(
-				(item) => item.family === selectedFont
-			);
-			const newFonts = [
-				fonts[selectedIndex],
-				...fonts.slice(0, selectedIndex),
-				...fonts.slice(selectedIndex + 1),
-			];
-			setFonts(newFonts);
-
-			// Update the loadedFonts state
-			const updatedLoadedFonts = { ...loadedFonts };
-
-			if (isFontLoaded) {
-				updatedLoadedFonts[selectedFont].weights = [
-					...updatedLoadedFonts[selectedFont].weights,
-					selectedWeight,
-				];
-			} else {
-				updatedLoadedFonts[selectedFont] = {
-					loaded: true,
-					weights: [selectedWeight],
-				};
-			}
-			setLoadedFonts(updatedLoadedFonts);
-		}
-	}, [selectedFont, selectedWeight]);
-
-	// Option item component
-	const Option = (props: any) => {
+	const FontOption = (props: any) => {
 		const { data, selectedWeight } = props;
 		const font = data.value;
 
-		const fontNameCharacters = font.replace(/[^\w\s]/gi, "");
-
 		useEffect(() => {
-			const newFont = fonts.find((f) => f.family === font);
-
-			const closestWeight = findClosestWeight(newFont, +selectedWeight);
-
-			loadFont(font, closestWeight, fontNameCharacters);
-		}, [font, fontNameCharacters, selectedWeight]);
+			const closestWeight = findClosestWeight(font, fonts, selectedWeight);
+			loadFont(font, closestWeight, font);
+		}, [font, selectedWeight]);
 
 		return (
 			<components.Option {...props}>
@@ -101,10 +78,8 @@ export const FontSelect = ({
 		);
 	};
 
-	// Options list component
-	const MenuList = (props: any) => {
+	const FontsList = (props: any) => {
 		const { children, maxHeight } = props;
-
 		return (
 			<List
 				height={maxHeight}
@@ -114,7 +89,7 @@ export const FontSelect = ({
 			>
 				{({ index, style }: { index: number; style: CSSProperties }) => (
 					<div style={style}>
-						<Option
+						<FontOption
 							{...children[index].props}
 							selectedWeight={selectedWeight}
 						/>
@@ -130,7 +105,7 @@ export const FontSelect = ({
 			options={fontOptions}
 			value={{ value: selectedFont, label: selectedFont }}
 			onChange={changeFont}
-			components={{ Option, MenuList }}
+			components={{ Option: FontOption, MenuList: FontsList }}
 			styles={{
 				singleValue: (base) => ({
 					...base,

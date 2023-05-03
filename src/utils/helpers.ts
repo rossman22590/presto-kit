@@ -46,27 +46,27 @@ export const getFontByType = (
 	};
 };
 
-export const findClosestWeight = (
-	availableWeights: number[],
-	targetWeight: number
+export const findClosestNumber = (
+	availableNumbers: number[],
+	targetNumber: number
 ) => {
-	return availableWeights.reduce((prev, curr) =>
-		Math.abs(curr - targetWeight) < Math.abs(prev - targetWeight) ? curr : prev
+	return availableNumbers.reduce((prev, curr) =>
+		Math.abs(curr - targetNumber) < Math.abs(prev - targetNumber) ? curr : prev
 	);
 };
 
-export const findClosestAvailableWeight = (
-	font: GoogleApiFont,
+export const findClosestWeight = (
+	font: GoogleApiFont | undefined,
 	targetWeight: number
 ): string => {
+	if (!font) return "regular";
+
 	const availableWeights = font.variants
 		.filter((variant) => !variant.includes("italic"))
-		.map((variant) => (variant === "regular" ? "400" : variant));
+		.map((variant) => (variant === "regular" ? "400" : variant))
+		.map((variant) => +variant);
 
-	return findClosestWeight(
-		availableWeights.map((weight) => parseInt(weight, 10)),
-		targetWeight
-	).toString();
+	return findClosestNumber(availableWeights, targetWeight).toString();
 };
 
 export const updateWeights = (
@@ -87,4 +87,17 @@ export const updateWeights = (
 
 		setWeights(weightOptions);
 	}
+};
+
+export const loadFont = (
+	font: string,
+	weight: string,
+	previewText?: string
+) => {
+	const link = document.createElement("link");
+	link.href = `https://fonts.googleapis.com/css2?family=${font}${
+		weight ? `:wght@${weight}` : ""
+	}${previewText ? `&text=${previewText}` : ""}&display=swap`;
+	link.rel = "stylesheet";
+	document.head.appendChild(link);
 };

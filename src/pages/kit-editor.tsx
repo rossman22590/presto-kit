@@ -1,51 +1,38 @@
 import { DashboardLayout } from "../components/DashboardLayout/DashboardLayout";
 import { DisplayText } from "../components/Headings/DisplayText";
+import { WeightSelect } from "../components/Forms/WeightSelect";
+import { FontSelect } from "../components/Forms/FontSelect";
 import { useGetCustomKit } from "../hooks/useGetCustomKit";
 import { ColorCard } from "../components/Cards/ColorCard";
 import { mockCustomKit } from "../data/mockData";
 import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
+import type { GoogleApiFont, LoadedFonts } from "../types/Fonts";
 import type { ColorsResponse } from "../types/Data";
 import type { PresetColor } from "../types/Colors";
 import type { CustomKit } from "../types/Kits";
-import type { GoogleApiFont } from "../types/Fonts";
 import type { NextPage } from "next/types";
 
-const FontSelect = dynamic(() => import("../components/Forms/FontSelect"), {
-	ssr: false,
-});
-const WeightSelect = dynamic(() => import("../components/Forms/WeightSelect"), {
-	ssr: false,
-});
-
 const KitEditor: NextPage = ({}) => {
-	const [isMounted, setIsMounted] = useState(false);
-
-	useEffect(() => {
-		setIsMounted(true);
-	}, []);
-
 	const { isLoadingKit, kit } = useGetCustomKit();
 
 	const [customKit, setCustomKit] = useState<CustomKit | null>(null);
+	const [customColors, setCustomColors] = useState<ColorsResponse[] | null>(
+		null
+	);
+	const [presetColors, setPresetColors] = useState<PresetColor[] | undefined>();
+
+	const [googleFontList, setGoogleFontList] = useState<GoogleApiFont[]>([]);
+	const [loadedFonts, setLoadedFonts] = useState<LoadedFonts>({});
+
+	const [customDisplayFont, setCustomDisplayFont] = useState("");
+	const [customDisplayWeight, setCustomDisplayWeight] = useState("");
+
+	const [customTextFont, setCustomTextFont] = useState("");
+	const [customTextWeight, setCustomTextWeight] = useState("");
 
 	useEffect(() => {
 		setCustomKit(kit);
 	}, [isLoadingKit]);
-
-	const [customColors, setCustomColors] = useState<ColorsResponse[] | null>(
-		null
-	);
-
-	const [presetColors, setPresetColors] = useState<PresetColor[] | undefined>();
-
-	const [displayFonts, setDisplayFonts] = useState<GoogleApiFont[]>([]);
-	const [customDisplayFont, setCustomDisplayFont] = useState("");
-	const [customDisplayWeight, setCustomDisplayWeight] = useState("");
-
-	const [textFonts, setTextFonts] = useState<GoogleApiFont[]>([]);
-	const [customTextFont, setCustomTextFont] = useState("");
-	const [customTextWeight, setCustomTextWeight] = useState("");
 
 	useEffect(() => {
 		if (customKit && customKit.displayFont && customKit.textFont) {
@@ -59,9 +46,24 @@ const KitEditor: NextPage = ({}) => {
 		}
 	}, [customKit]);
 
+	useEffect(() => {
+		const apiKey = process.env.NEXT_PUBLIC_GOOGLE_FONTS_API_KEY || "";
+		(async () => {
+			try {
+				const response = await fetch(
+					`https://www.googleapis.com/webfonts/v1/webfonts?key=${apiKey}&sort=popularity`
+				);
+				const data = await response.json();
+				setGoogleFontList(data.items);
+			} catch (error) {
+				console.error(error);
+			}
+		})();
+	}, []);
+
 	return (
 		<DashboardLayout>
-			{customColors && (
+			{customKit && customColors && (
 				<>
 					<section className="m-auto flex max-w-5xl flex-col items-center gap-12 py-6">
 						<DisplayText
@@ -89,69 +91,70 @@ const KitEditor: NextPage = ({}) => {
 							type="DASHBOARD"
 						/>
 
-						{isMounted &&
-							customKit &&
-							customKit.displayFont &&
-							customKit.textFont && (
-								<>
-									<div className="flex w-full justify-between gap-1">
-										<div className="flex gap-[2px]">
-											<FontSelect
-												fonts={displayFonts}
-												setFonts={setDisplayFonts}
-												selectedFont={customDisplayFont}
-												setSelectedFont={setCustomDisplayFont}
-												selectedWeight={customDisplayWeight}
-												setSelectedWeight={setCustomDisplayWeight}
-											/>
-											<WeightSelect
-												fonts={displayFonts}
-												selectedFont={customDisplayFont}
-												setSelectedFont={setCustomDisplayFont}
-												selectedWeight={customDisplayWeight}
-												setSelectedWeight={setCustomDisplayWeight}
-												initialFont={customKit.displayFont.name}
-											/>
-										</div>
-										<div className="flex gap-[2px]">
-											<FontSelect
-												fonts={textFonts}
-												setFonts={setTextFonts}
-												selectedFont={customTextFont}
-												setSelectedFont={setCustomTextFont}
-												selectedWeight={customTextWeight}
-												setSelectedWeight={setCustomTextWeight}
-											/>
-											<WeightSelect
-												fonts={textFonts}
-												selectedFont={customTextFont}
-												setSelectedFont={setCustomTextFont}
-												selectedWeight={customTextWeight}
-												setSelectedWeight={setCustomTextWeight}
-												initialFont={customKit.textFont.name}
-											/>
-										</div>
+						{customKit.displayFont && customKit.textFont && (
+							<>
+								<div className="flex w-full justify-between gap-1">
+									<div className="flex gap-[2px]">
+										<FontSelect
+											fonts={googleFontList}
+											setFonts={setGoogleFontList}
+											loadedFonts={loadedFonts}
+											setLoadedFonts={setLoadedFonts}
+											selectedFont={customDisplayFont}
+											setSelectedFont={setCustomDisplayFont}
+											selectedWeight={customDisplayWeight}
+											setSelectedWeight={setCustomDisplayWeight}
+										/>
+										<WeightSelect
+											fonts={googleFontList}
+											selectedFont={customDisplayFont}
+											setSelectedFont={setCustomDisplayFont}
+											selectedWeight={customDisplayWeight}
+											setSelectedWeight={setCustomDisplayWeight}
+											initialFont={customKit.displayFont.name}
+										/>
 									</div>
-									<div
-										style={{
-											fontFamily: customDisplayFont,
-											fontWeight: customDisplayWeight,
-											fontSize: 42,
-										}}
-									>
-										The quick brown fox jumps over the lazy dog
+									<div className="flex gap-[2px]">
+										<FontSelect
+											fonts={googleFontList}
+											setFonts={setGoogleFontList}
+											loadedFonts={loadedFonts}
+											setLoadedFonts={setLoadedFonts}
+											selectedFont={customTextFont}
+											setSelectedFont={setCustomTextFont}
+											selectedWeight={customTextWeight}
+											setSelectedWeight={setCustomTextWeight}
+										/>
+										<WeightSelect
+											fonts={googleFontList}
+											selectedFont={customTextFont}
+											setSelectedFont={setCustomTextFont}
+											selectedWeight={customTextWeight}
+											setSelectedWeight={setCustomTextWeight}
+											initialFont={customKit.textFont.name}
+										/>
 									</div>
-									<div
-										style={{
-											fontFamily: customTextFont,
-											fontWeight: customTextWeight,
-											fontSize: 24,
-										}}
-									>
-										The quick brown fox jumps over the lazy dog
-									</div>
-								</>
-							)}
+								</div>
+								<div
+									style={{
+										fontFamily: customDisplayFont,
+										fontWeight: customDisplayWeight,
+										fontSize: 42,
+									}}
+								>
+									The quick brown fox jumps over the lazy dog
+								</div>
+								<div
+									style={{
+										fontFamily: customTextFont,
+										fontWeight: customTextWeight,
+										fontSize: 24,
+									}}
+								>
+									The quick brown fox jumps over the lazy dog
+								</div>
+							</>
+						)}
 					</section>
 				</>
 			)}

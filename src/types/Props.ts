@@ -1,8 +1,8 @@
-import type { Navigation } from "./Navigation";
 import type { KitViewSelectionUtils, AiKit, KitContent } from "./Kits";
-import { ColorsResponse } from "./Data";
-import { PresetColor } from "./Colors";
-import { GoogleApiFont } from "./Fonts";
+import type { GoogleApiFont, LoadedFonts } from "./Fonts";
+import type { Navigation } from "./Navigation";
+import type { ColorsResponse } from "./Data";
+import type { PresetColor } from "./Colors";
 
 export type ColorCardProps = {
 	customColors: ColorsResponse[];
@@ -129,4 +129,15 @@ export type WeightSelectProps = {
 	selectedWeight: string;
 	setSelectedWeight: (weight: string) => void;
 	initialFont: string;
+};
+
+export type FontSelectProps = {
+	fonts: GoogleApiFont[];
+	setFonts: (fonts: GoogleApiFont[]) => void;
+	loadedFonts: LoadedFonts;
+	setLoadedFonts: (loadedFonts: LoadedFonts) => void;
+	selectedFont: string;
+	setSelectedFont: (font: string) => void;
+	selectedWeight: string;
+	setSelectedWeight: (weight: string) => void;
 };

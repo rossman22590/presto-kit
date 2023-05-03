@@ -3,7 +3,7 @@ import { updateWeights } from "../../utils/helpers";
 import Select, { components } from "react-select";
 import { useEffect, useState } from "react";
 
-const WeightSelect = ({
+export const WeightSelect = ({
 	fonts,
 	selectedFont,
 	setSelectedFont,
@@ -89,5 +89,3 @@ const WeightSelect = ({
 		/>
 	);
 };
-
-export default WeightSelect;

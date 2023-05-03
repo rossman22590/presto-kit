@@ -1,53 +1,44 @@
-import type { GoogleApiFont, OptionType, ValueType } from "../../types/Fonts";
 import Select, { components, ActionMeta } from "react-select";
 import { FixedSizeList as List } from "react-window";
-import { useEffect } from "react";
-import WebFont from "webfontloader";
+import { CSSProperties, useEffect } from "react";
+import type { OptionType, ValueType } from "../../types/Fonts";
+import type { FontSelectProps } from "../../types/Props";
 import {
-	findClosestAvailableWeight,
+	moveLoadedFontToTop,
 	findClosestWeight,
+	updateLoadedFonts,
+	loadFont,
 } from "../../utils/helpers";
 
-export type FontSelectProps = {
-	fonts: GoogleApiFont[];
-	setFonts: (fonts: GoogleApiFont[]) => void;
-	selectedFont: string;
-	setSelectedFont: (font: string) => void;
-	selectedWeight: string;
-	setSelectedWeight: (weight: string) => void;
-};
-
-const FontSelect = ({
+export const FontSelect = ({
 	fonts,
 	setFonts,
+	loadedFonts,
+	setLoadedFonts,
 	selectedFont,
 	setSelectedFont,
 	selectedWeight,
 	setSelectedWeight,
 }: FontSelectProps) => {
-	const apiKey = process.env.NEXT_PUBLIC_GOOGLE_FONTS_API_KEY || "";
+	const isFontLoaded = loadedFonts[selectedFont] !== undefined;
+	const isWeightAvailable =
+		isFontLoaded && loadedFonts[selectedFont].weights.includes(selectedWeight);
+	const shouldLoadFont = !isFontLoaded || !isWeightAvailable;
 
 	useEffect(() => {
-		(async () => {
-			try {
-				const response = await fetch(
-					`https://www.googleapis.com/webfonts/v1/webfonts?key=${apiKey}&sort=popularity`
-				);
-				const data = await response.json();
-				setFonts(data.items);
-			} catch (error) {
-				console.error(error);
-			}
-		})();
-	}, []);
+		if (selectedFont && selectedWeight && shouldLoadFont) {
+			loadFont(selectedFont, selectedWeight);
 
-	useEffect(() => {
-		if (selectedFont && selectedWeight) {
-			WebFont.load({
-				google: {
-					families: [`${selectedFont}:${selectedWeight}`],
-				},
-			});
+			const newFontsList = moveLoadedFontToTop(selectedFont, fonts);
+			setFonts(newFontsList);
+
+			const newLoadedFonts = updateLoadedFonts(
+				selectedFont,
+				selectedWeight,
+				loadedFonts,
+				isFontLoaded
+			);
+			setLoadedFonts(newLoadedFonts);
 		}
 	}, [selectedFont, selectedWeight]);
 
@@ -61,46 +52,24 @@ const FontSelect = ({
 		_actionMeta: ActionMeta<OptionType>
 	) => {
 		if (option) {
-			setSelectedFont(option.value);
+			const newFont = option.value;
+			const closestWeight = findClosestWeight(newFont, fonts, selectedWeight);
 
-			const newFont = fonts.find((font) => font.family === option.value);
-			if (newFont) {
-				const availableWeights = newFont.variants
-					.filter((variant) => !variant.includes("italic"))
-					.map((variant) => (variant === "regular" ? "400" : variant))
-					.map((variant) => parseInt(variant, 10));
-
-				const closestWeight = findClosestWeight(
-					availableWeights,
-					parseInt(selectedWeight, 10)
-				);
-				setSelectedWeight(closestWeight.toString());
-			}
+			setSelectedFont(newFont);
+			setSelectedWeight(closestWeight);
 		}
 	};
 
-	const Option = (props: any) => {
+	const FontOption = (props: any) => {
 		const { data, selectedWeight } = props;
 		const font = data.value;
 
-		const fontNameCharacters = font.replace(/[^\w\s]/gi, "");
-
 		useEffect(() => {
-			const newFont = fonts.find((f) => f.family === font);
-			const closestWeight = newFont
-				? findClosestAvailableWeight(newFont, parseInt(selectedWeight, 10))
-				: "regular";
+			const closestWeight = findClosestWeight(font, fonts, selectedWeight);
+			const previewText = font.split(" ").join("");
 
-			WebFont.load({
-				google: {
-					families: [
-						`${font}:${closestWeight}&text=${encodeURIComponent(
-							fontNameCharacters
-						)}`,
-					],
-				},
-			});
-		}, [font, fontNameCharacters, selectedWeight]);
+			loadFont(font, closestWeight, previewText);
+		}, [font, selectedWeight]);
 
 		return (
 			<components.Option {...props}>
@@ -111,9 +80,8 @@ const FontSelect = ({
 		);
 	};
 
-	const MenuList = (props: any) => {
+	const FontsList = (props: any) => {
 		const { children, maxHeight } = props;
-
 		return (
 			<List
 				height={maxHeight}
@@ -121,9 +89,9 @@ const FontSelect = ({
 				itemSize={35}
 				width="100%"
 			>
-				{({ index, style }: { index: number; style: React.CSSProperties }) => (
+				{({ index, style }: { index: number; style: CSSProperties }) => (
 					<div style={style}>
-						<Option
+						<FontOption
 							{...children[index].props}
 							selectedWeight={selectedWeight}
 						/>
@@ -139,7 +107,7 @@ const FontSelect = ({
 			options={fontOptions}
 			value={{ value: selectedFont, label: selectedFont }}
 			onChange={changeFont}
-			components={{ Option, MenuList }}
+			components={{ Option: FontOption, MenuList: FontsList }}
 			styles={{
 				singleValue: (base) => ({
 					...base,
@@ -179,5 +147,3 @@ const FontSelect = ({
 		/>
 	);
 };
-
-export default FontSelect;

@@ -1,9 +1,9 @@
 import type { WeightSelectProps } from "../../types/Props";
-import { updateWeights } from "../../utils/helpers";
+import { findAvailableWeights } from "../../utils/helpers";
 import Select, { components } from "react-select";
 import { useEffect, useState } from "react";
 
-const WeightSelect = ({
+export const WeightSelect = ({
 	fonts,
 	selectedFont,
 	setSelectedFont,
@@ -14,11 +14,13 @@ const WeightSelect = ({
 	const [weights, setWeights] = useState<string[]>([]);
 
 	useEffect(() => {
+		const fontWeights = findAvailableWeights(selectedFont, fonts);
+
 		if (initialFont && !selectedFont) {
 			setSelectedFont(initialFont);
-			updateWeights(initialFont, fonts, setWeights);
+			setWeights(fontWeights);
 		}
-		updateWeights(selectedFont, fonts, setWeights);
+		setWeights(fontWeights);
 	}, [selectedFont, fonts]);
 
 	const weightOptions = weights.map((weight) => ({
@@ -89,5 +91,3 @@ const WeightSelect = ({
 		/>
 	);
 };
-
-export default WeightSelect;

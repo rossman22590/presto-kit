@@ -10,3 +10,9 @@ export type GoogleApiFont = {
 		[variant: string]: string;
 	};
 };
+export type LoadedFonts = {
+	[key: string]: {
+		loaded: boolean;
+		weights: string[];
+	};
+};

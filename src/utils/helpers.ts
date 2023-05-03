@@ -1,5 +1,5 @@
 import type { ColorsResponse, Fonts, FontsResponse } from "../types/Data";
-import { GoogleApiFont } from "../types/Fonts";
+import { GoogleApiFont, LoadedFonts } from "../types/Fonts";
 
 export const classNames = (...classes: string[]) => {
 	return classes.filter(Boolean).join(" ");
@@ -46,45 +46,121 @@ export const getFontByType = (
 	};
 };
 
-export const findClosestWeight = (
-	availableWeights: number[],
-	targetWeight: number
+export const findClosestNumber = (
+	availableNumbers: number[],
+	targetNumber: number
 ) => {
-	return availableWeights.reduce((prev, curr) =>
-		Math.abs(curr - targetWeight) < Math.abs(prev - targetWeight) ? curr : prev
-	);
-};
-
-export const findClosestAvailableWeight = (
-	font: GoogleApiFont,
-	targetWeight: number
-): string => {
-	const availableWeights = font.variants
-		.filter((variant) => !variant.includes("italic"))
-		.map((variant) => (variant === "regular" ? "400" : variant));
-
-	return findClosestWeight(
-		availableWeights.map((weight) => parseInt(weight, 10)),
-		targetWeight
-	).toString();
-};
-
-export const updateWeights = (
-	fontFamily: string,
-	fonts: GoogleApiFont[],
-	setWeights: React.Dispatch<React.SetStateAction<string[]>>
-) => {
-	const fontItem = fonts.find((f) => f.family === fontFamily);
-
-	if (fontItem) {
-		const filteredVariants = fontItem.variants.filter(
-			(variant) => !variant.includes("italic")
+	if (availableNumbers.length) {
+		const closestNumber = availableNumbers.reduce((prev, curr) =>
+			Math.abs(curr - targetNumber) < Math.abs(prev - targetNumber)
+				? curr
+				: prev
 		);
-
-		const weightOptions = filteredVariants.map((variant) =>
-			variant === "regular" ? "400" : variant.replace(/\D/g, "")
-		);
-
-		setWeights(weightOptions);
+		return closestNumber;
+	} else {
+		return 400;
 	}
+};
+
+export const findAvailableWeights = (
+	font: string,
+	fontsList: GoogleApiFont[]
+) => {
+	const fontFamily = fontsList.find((f) => f.family === font);
+
+	if (fontFamily) {
+		const availableWeights = fontFamily.variants
+			.filter((variant) => !variant.includes("italic"))
+			.map((variant) => (variant === "regular" ? "400" : variant));
+
+		return availableWeights;
+	} else {
+		return ["400"];
+	}
+};
+
+export const findClosestWeight = (
+	font: string,
+	fontsList: GoogleApiFont[],
+	targetWeight: string
+): string => {
+	const fontFamily = fontsList.find((f) => f.family === font);
+	if (!fontFamily) return "regular";
+
+	const availableWeightNumbers = findAvailableWeights(font, fontsList).map(
+		(weight) => +weight
+	);
+	const closestWeight = findClosestNumber(
+		availableWeightNumbers,
+		+targetWeight
+	).toString();
+
+	return closestWeight;
+};
+
+export const loadFont = (
+	font: string,
+	weight: string | null,
+	previewText?: string
+) => {
+	const link = document.createElement("link");
+	const baseURL = "https://fonts.googleapis.com/css2?family=";
+
+	let url = baseURL + encodeURIComponent(font);
+	if (weight) url += `:wght@${encodeURIComponent(weight)}`;
+	if (previewText) url += `&text=${encodeURIComponent(previewText)}`;
+	url += "&display=swap";
+
+	link.href = url;
+	link.rel = "stylesheet";
+	document.head.appendChild(link);
+};
+
+export const moveLoadedFontToTop = (
+	font: string,
+	fontsList: GoogleApiFont[]
+) => {
+	const selectedIndex = fontsList.findIndex((item) => item.family === font);
+	return [
+		fontsList[selectedIndex],
+		...fontsList.slice(0, selectedIndex),
+		...fontsList.slice(selectedIndex + 1),
+	];
+};
+
+export const updateLoadedFonts = (
+	font: string,
+	selectedWeight: string,
+	loadedFonts: LoadedFonts,
+	isFontLoaded: boolean
+) => {
+	const newLoadedFonts = { ...loadedFonts };
+
+	if (isFontLoaded) {
+		newLoadedFonts[font].weights = [
+			...newLoadedFonts[font].weights,
+			selectedWeight,
+		];
+	} else {
+		newLoadedFonts[font] = {
+			loaded: true,
+			weights: [selectedWeight],
+		};
+	}
+	return newLoadedFonts;
+};
+
+export const convertHexToRGB = (hex: string) => {
+	const red = parseInt(hex.slice(1, 3), 16);
+	const green = parseInt(hex.slice(3, 5), 16);
+	const blue = parseInt(hex.slice(5, 7), 16);
+	return { red, green, blue };
+};
+
+export const isColorBright = (hex: string) => {
+	const { red, green, blue } = convertHexToRGB(hex);
+	const luminance = red * 0.299 + green * 0.587 + blue * 0.114;
+	const brightPoint = 180;
+	const isBright = luminance > brightPoint;
+	return isBright;
 };

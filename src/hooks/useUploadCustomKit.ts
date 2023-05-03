@@ -2,12 +2,12 @@ import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { uploadColors, uploadKit, uploadFonts } from "../utils/queries";
 import { useEffect, useState } from "react";
 import type { Kits, Projects } from "../types/Data";
-import type { SelectedKitView } from "../types/Kits";
+import type { KitContent } from "../types/Kits";
 
 export const useUploadCustomKit = (
 	projectId: Projects["id"] | null,
 	projectName: Projects["name"] | null,
-	selectedKit: SelectedKitView
+	selectedKit: KitContent
 ) => {
 	const supabase = useSupabaseClient();
 	const user = useUser();

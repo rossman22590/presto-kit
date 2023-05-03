@@ -1,4 +1,5 @@
 import { DashboardLayout } from "../components/DashboardLayout/DashboardLayout";
+import { useGetStarterProject } from "../hooks/useGetStarterProject";
 import { DisplayText } from "../components/Headings/DisplayText";
 import { WeightSelect } from "../components/Forms/WeightSelect";
 import { FontSelect } from "../components/Forms/FontSelect";
@@ -10,9 +11,12 @@ import type { ColorsResponse } from "../types/Data";
 import type { PresetColor } from "../types/Colors";
 import type { CustomKit } from "../types/Kits";
 import type { NextPage } from "next/types";
+import { KitViewSection } from "../components/Sections/KitViewSection";
 
 const KitEditor: NextPage = ({}) => {
 	const { isLoadingKit, kit } = useGetCustomKit();
+
+	const { projectName, projectDescription } = useGetStarterProject();
 
 	const [customKit, setCustomKit] = useState<CustomKit | null>(null);
 	const [customColors, setCustomColors] = useState<ColorsResponse[] | null>(
@@ -134,6 +138,24 @@ const KitEditor: NextPage = ({}) => {
 										/>
 									</div>
 								</div>
+								{projectName && projectDescription && (
+									<KitViewSection
+										kit={{
+											...customKit,
+											colors: customColors,
+											displayFont: {
+												name: customDisplayFont,
+												weight: customDisplayWeight,
+											},
+											textFont: {
+												name: customTextFont,
+												weight: customTextWeight,
+											},
+										}}
+										projectName={projectName}
+										projectDescription={projectDescription}
+									/>
+								)}
 								<div
 									style={{
 										fontFamily: customDisplayFont,

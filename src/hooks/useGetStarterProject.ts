@@ -1,26 +1,26 @@
-import type { Projects } from "../types/Data";
+import { getProjectsByUser } from "../utils/queries";
 import { useEffect, useState } from "react";
+import type { Projects } from "../types/Data";
 import {
 	useSession,
 	useSupabaseClient,
 	useUser,
 } from "@supabase/auth-helpers-react";
-import { getProjectsByUser } from "../utils/queries";
 
 export const useGetStarterProject = () => {
 	const supabase = useSupabaseClient();
 	const session = useSession();
 	const user = useUser();
 
+	const [isLoadingProject, setIsLoadingProject] = useState(true);
+	const [projectId, setProjectId] = useState<Projects["id"] | null>(null);
 	const [projectName, setProjectName] = useState<Projects["name"] | null>(null);
 	const [projectDescription, setProjectDescription] = useState<
 		Projects["description"] | null
 	>(null);
-	const [isLoadingProject, setIsLoadingProject] = useState(true);
-	const [projectId, setProjectId] = useState<Projects["id"] | null>(null);
 
 	useEffect(() => {
-		if (user) {
+		if (session) {
 			(async () => {
 				setIsLoadingProject(true);
 

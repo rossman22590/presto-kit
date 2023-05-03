@@ -112,7 +112,7 @@ export type KitViewSectionProps = {
 	kit: KitContent;
 	projectName: string;
 	projectDescription: string;
-	handleContinue: () => void;
+	handleContinue?: () => void;
 };
 
 export type ModalContainerProps = React.PropsWithChildren<{

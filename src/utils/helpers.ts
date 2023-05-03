@@ -104,19 +104,15 @@ export const loadFont = (
 	previewText?: string
 ) => {
 	const link = document.createElement("link");
-	const baseURL = "https://fonts.googleapis.com/css2";
-	const url = new URL(baseURL);
+	const baseURL = "https://fonts.googleapis.com/css2?family=";
 
-	url.searchParams.set("family", font);
+	let url = baseURL + encodeURIComponent(font);
+	if (weight) url += `:wght@${encodeURIComponent(weight)}`;
+	if (previewText) url += `&text=${encodeURIComponent(previewText)}`;
+	url += "&display=swap";
 
-	if (weight) url.searchParams.set("weights", weight);
-
-	if (previewText) url.searchParams.set("text", previewText);
-
-	url.searchParams.set("display", "swap");
-	link.href = url.toString();
+	link.href = url;
 	link.rel = "stylesheet";
-
 	document.head.appendChild(link);
 };
 

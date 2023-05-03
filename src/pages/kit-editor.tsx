@@ -4,7 +4,6 @@ import { WeightSelect } from "../components/Forms/WeightSelect";
 import { FontSelect } from "../components/Forms/FontSelect";
 import { useGetCustomKit } from "../hooks/useGetCustomKit";
 import { ColorCard } from "../components/Cards/ColorCard";
-import { mockCustomKit } from "../data/mockData";
 import { useEffect, useState } from "react";
 import type { GoogleApiFont, LoadedFonts } from "../types/Fonts";
 import type { ColorsResponse } from "../types/Data";

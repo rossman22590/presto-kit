@@ -66,7 +66,9 @@ export const FontSelect = ({
 
 		useEffect(() => {
 			const closestWeight = findClosestWeight(font, fonts, selectedWeight);
-			loadFont(font, closestWeight, font);
+			const previewText = font.split(" ").join("");
+
+			loadFont(font, closestWeight, previewText);
 		}, [font, selectedWeight]);
 
 		return (

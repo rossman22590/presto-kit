@@ -1,5 +1,5 @@
 import type { KitViewSectionProps } from "../../types/Props";
-import { useColorBrightness } from "../../hooks/useColorBrightness";
+import { isColorBright } from "../../utils/helpers";
 import { DisplayText } from "../Headings/DisplayText";
 import {
 	ArrowRightIcon,
@@ -17,7 +17,6 @@ export const KitViewSection = ({
 	const baseColorHex = kit.colors[0].hex;
 	const primaryColorHex = kit.colors[1].hex;
 	const accentColorHex = kit.colors[2].hex;
-	const { isColorBright, accentColorRGB } = useColorBrightness(accentColorHex);
 
 	return (
 		<section className="m-auto my-12 flex max-w-5xl flex-col items-center gap-12 py-6">
@@ -170,7 +169,7 @@ export const KitViewSection = ({
 									fontFamily: kit.textFont.name,
 									fontWeight: kit.textFont.weight ? kit.textFont.weight : "",
 									// If button color is bright, use black text, else use white text
-									color: isColorBright(accentColorRGB)
+									color: isColorBright(accentColorHex)
 										? "rgba(0, 0, 0, 1)"
 										: "rgba(255, 255, 255, 1)",
 								}}

@@ -156,24 +156,6 @@ const KitEditor: NextPage = ({}) => {
 										projectDescription={projectDescription}
 									/>
 								)}
-								<div
-									style={{
-										fontFamily: customDisplayFont,
-										fontWeight: customDisplayWeight,
-										fontSize: 42,
-									}}
-								>
-									The quick brown fox jumps over the lazy dog
-								</div>
-								<div
-									style={{
-										fontFamily: customTextFont,
-										fontWeight: customTextWeight,
-										fontSize: 24,
-									}}
-								>
-									The quick brown fox jumps over the lazy dog
-								</div>
 							</>
 						)}
 					</section>

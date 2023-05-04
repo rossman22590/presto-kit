@@ -9,9 +9,9 @@ import { useUploadStarterKits } from "../hooks/useUploadStarterKits";
 import { KitPreviewCard } from "../components/Cards/KitPreviewCard";
 import { useKitViewSelection } from "../hooks/useKitViewSelection";
 import { DisplayText } from "../components/Headings/DisplayText";
-import { useUploadCustomKit } from "../hooks/useUploadCustomKit";
 import { Layout } from "../components/LandingLayout/Layout";
 import { useKitProgress } from "../hooks/useKitProgress";
+import { useUploadKit } from "../hooks/useUploadKit";
 import { useFetchKits } from "../hooks/useFetchKits";
 import { KITS_COUNT } from "../constants/global";
 import { useRouter } from "next/router";
@@ -42,14 +42,17 @@ const StarterKits: NextPage = ({}) => {
 
 	useDynamicStylesheets(starterKits);
 
-	const setIsCustomKit = useUploadCustomKit(
+	const customKitTitle = `${projectName} Custom Kit`;
+
+	const setIsKitReady = useUploadKit(
+		"CUSTOM",
 		projectId,
-		projectName,
+		customKitTitle,
 		selectedKitView
 	);
 
 	const handleContinue = () => {
-		setIsCustomKit(true);
+		setIsKitReady(true);
 		router.push("/kit-editor");
 	};
 

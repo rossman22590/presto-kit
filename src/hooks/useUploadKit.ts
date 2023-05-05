@@ -4,24 +4,24 @@ import { useEffect, useState } from "react";
 import type { Kits, Projects } from "../types/Data";
 import type { KitContent } from "../types/Kits";
 
-export const useUploadCustomKit = (
+export const useUploadKit = (
+	kitType: Kits["type"],
 	projectId: Projects["id"] | null,
-	projectName: Projects["name"] | null,
+	kitTitle: string,
 	selectedKit: KitContent
 ) => {
 	const supabase = useSupabaseClient();
 	const user = useUser();
-	const kitTitle = projectName + " Custom Kit";
 	const { colors, displayFont, textFont } = selectedKit;
 
-	const [isCustomKit, setIsCustomKit] = useState(false);
+	const [isKitReady, setIsKitReady] = useState(false);
 	const [kitId, setKitId] = useState<Kits["id"] | null>(null);
 
 	useEffect(() => {
-		if (isCustomKit) {
+		if (isKitReady) {
 			(async () => {
 				const data = await uploadKit(
-					"CUSTOM",
+					kitType,
 					projectId,
 					kitTitle,
 					user,
@@ -32,7 +32,7 @@ export const useUploadCustomKit = (
 				}
 			})();
 		}
-	}, [projectId, isCustomKit]);
+	}, [projectId, isKitReady]);
 
 	useEffect(() => {
 		if (kitId) {
@@ -41,5 +41,5 @@ export const useUploadCustomKit = (
 		}
 	}, [kitId]);
 
-	return setIsCustomKit;
+	return setIsKitReady;
 };

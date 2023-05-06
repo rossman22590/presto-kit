@@ -1,4 +1,4 @@
-import type { ModalContainerProps } from "../../types/Props";
+import type { ModalContainerProps } from "@types";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";

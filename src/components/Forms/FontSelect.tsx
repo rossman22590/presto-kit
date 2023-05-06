@@ -1,14 +1,13 @@
+import type { FontSelectProps, OptionType, ValueType } from "@types";
 import Select, { components, ActionMeta } from "react-select";
 import { FixedSizeList as List } from "react-window";
 import { CSSProperties, useEffect } from "react";
-import type { OptionType, ValueType } from "../../types/Fonts";
-import type { FontSelectProps } from "../../types/Props";
 import {
 	moveLoadedFontToTop,
 	findClosestWeight,
 	updateLoadedFonts,
 	loadFont,
-} from "../../utils/helpers";
+} from "@utils";
 
 export const FontSelect = ({
 	fonts,

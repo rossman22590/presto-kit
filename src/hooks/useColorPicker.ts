@@ -1,9 +1,8 @@
+import type { ColorsResponse, PresetColor } from "@types";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { getColorsByKitsType } from "../utils/queries";
 import { GetColorName } from "hex-color-to-color-name";
 import { useEffect, useRef, useState } from "react";
-import type { ColorsResponse } from "../types/Data";
-import type { PresetColor } from "../types/Colors";
+import { getColorsByKitsType } from "@utils";
 
 export const useColorPicker = (
 	customColors: ColorsResponse[],

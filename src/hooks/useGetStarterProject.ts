@@ -1,6 +1,6 @@
-import { getProjectsByUser } from "../utils/queries";
+import type { Projects } from "@types";
 import { useEffect, useState } from "react";
-import type { Projects } from "../types/Data";
+import { getProjectsByUser } from "@utils";
 import {
 	useSession,
 	useSupabaseClient,

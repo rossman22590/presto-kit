@@ -1,6 +1,6 @@
 import { LockClosedIcon, LockOpenIcon } from "@heroicons/react/24/outline";
-import { KitPreviewCardProps } from "../../types/Props";
-import { classNames } from "../../utils/helpers";
+import { KitPreviewCardProps } from "@types";
+import { classNames } from "@utils";
 
 export function KitPreviewCard({
 	kitViewSelectionUtils,

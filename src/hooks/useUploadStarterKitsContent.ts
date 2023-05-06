@@ -1,9 +1,8 @@
-import { uploadColors, uploadFonts } from "../utils/queries";
+import type { Kits, AiKit } from "@types";
+import { uploadColors, uploadFonts } from "@utils";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { KITS_COUNT } from "../constants/global";
 import { useEffect } from "react";
-import type { Kits } from "../types/Data";
-import type { AiKit } from "../types/Kits";
 
 export const useUploadStarterKitsContent = (
 	kitIds: Kits["id"][] | [],

@@ -18,7 +18,6 @@ export const WeightSelect = ({
 
 		if (initialFont && !selectedFont) {
 			setSelectedFont(initialFont);
-			setWeights(fontWeights);
 		}
 		setWeights(fontWeights);
 	}, [selectedFont, fonts]);

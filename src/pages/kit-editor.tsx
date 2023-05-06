@@ -1,17 +1,21 @@
-import { DashboardLayout } from "../components/DashboardLayout/DashboardLayout";
-import { useGetStarterProject } from "../hooks/useGetStarterProject";
-import { DisplayText } from "../components/Headings/DisplayText";
-import { WeightSelect } from "../components/Forms/WeightSelect";
-import { FontSelect } from "../components/Forms/FontSelect";
-import { useGetCustomKit } from "../hooks/useGetCustomKit";
-import { ColorCard } from "../components/Cards/ColorCard";
+import { useGetCustomKit, useGetStarterProject } from "@hooks";
 import { useEffect, useState } from "react";
-import type { GoogleApiFont, LoadedFonts } from "../types/Fonts";
-import type { ColorsResponse } from "../types/Data";
-import type { PresetColor } from "../types/Colors";
-import type { CustomKit } from "../types/Kits";
+import {
+	DashboardLayout,
+	KitViewSection,
+	WeightSelect,
+	DisplayText,
+	FontSelect,
+	ColorCard,
+} from "@components";
 import type { NextPage } from "next/types";
-import { KitViewSection } from "../components/Sections/KitViewSection";
+import type {
+	ColorsResponse,
+	GoogleApiFont,
+	LoadedFonts,
+	PresetColor,
+	CustomKit,
+} from "@types";
 
 const KitEditor: NextPage = ({}) => {
 	const { isLoadingKit, kit } = useGetCustomKit();

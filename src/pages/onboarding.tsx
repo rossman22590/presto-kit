@@ -1,9 +1,7 @@
-import { useUploadStarterProject } from "../hooks/useUploadStarterProject";
-import { ModalContainer } from "../components/Modals/ModalContainer";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { Layout } from "../components/LandingLayout/Layout";
+import { ModalContainer, Form, Layout } from "@components";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { Form } from "../components/Forms/Form";
+import { useUploadStarterProject } from "@hooks";
 import { Auth } from "@supabase/auth-ui-react";
 import { useRouter } from "next/router";
 import { useState } from "react";

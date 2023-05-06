@@ -1,11 +1,11 @@
-import type { KitViewSectionProps } from "../../types/Props";
-import { isColorBright } from "../../utils/helpers";
+import type { KitViewSectionProps } from "@types";
 import { DisplayText } from "../Headings/DisplayText";
+import { isColorBright } from "@utils";
 import {
-	ArrowRightIcon,
-	Bars3Icon,
 	CubeTransparentIcon,
+	ArrowRightIcon,
 	UserCircleIcon,
+	Bars3Icon,
 } from "@heroicons/react/24/outline";
 
 export const KitViewSection = ({

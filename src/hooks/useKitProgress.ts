@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { AiKit } from "../types/Kits";
 import { KITS_COUNT } from "../constants/global";
+import { useState, useEffect } from "react";
+import type { AiKit } from "@types";
 
 export const useKitProgress = (starterKits: AiKit[], prevProgress: number) => {
 	const [progress, setprogress] = useState<number | undefined>(prevProgress);

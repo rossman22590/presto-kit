@@ -1,9 +1,8 @@
+import type { MobileSidebarProps } from "@types";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import type { MobileSidebarProps } from "../../types/Props";
-import { handleNavClick } from "../../utils/navigation";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Dialog, Transition } from "@headlessui/react";
-import { classNames } from "../../utils/helpers";
+import { handleNavClick, classNames } from "@utils";
 import { useRouter } from "next/router";
 import { Fragment } from "react";
 

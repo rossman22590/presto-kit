@@ -1,4 +1,4 @@
-import type { FormProps } from "../../types/Props";
+import type { FormProps } from "@types";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import { useState } from "react";

@@ -1,8 +1,7 @@
+import type { Kits, Projects, KitContent } from "@types";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { uploadColors, uploadKit, uploadFonts } from "../utils/queries";
+import { uploadColors, uploadKit, uploadFonts } from "@utils";
 import { useEffect, useState } from "react";
-import type { Kits, Projects } from "../types/Data";
-import type { KitContent } from "../types/Kits";
 
 export const useUploadKit = (
 	kitType: Kits["type"],

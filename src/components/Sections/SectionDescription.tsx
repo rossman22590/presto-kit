@@ -1,4 +1,4 @@
-import type { SectionDescriptionProps } from "../../types/Props";
+import type { SectionDescriptionProps } from "@types";
 
 export const SectionDescription = ({ text }: SectionDescriptionProps) => {
 	return (

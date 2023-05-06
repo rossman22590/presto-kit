@@ -1,6 +1,5 @@
 import { NextPage } from "next/types";
-import { DashboardLayout } from "../components/DashboardLayout/DashboardLayout";
-import { AccountSection } from "../components/Sections/AccountSection";
+import { DashboardLayout, AccountSection } from "@components";
 import { useSession } from "@supabase/auth-helpers-react";
 
 const StarterKits: NextPage = ({}) => {

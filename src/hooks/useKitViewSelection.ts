@@ -1,11 +1,11 @@
 import { useState } from "react";
 import type {
-	KitSelectionTypes,
-	KitContent,
-	SelectedIndex,
-	AiKit,
 	KitViewSelectionUtils,
-} from "../types/Kits";
+	KitSelectionTypes,
+	SelectedIndex,
+	KitContent,
+	AiKit,
+} from "@types";
 
 export const useKitViewSelection = (
 	starterKits: AiKit[]

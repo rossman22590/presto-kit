@@ -1,6 +1,6 @@
-import { useColorPicker } from "../../hooks/useColorPicker";
-import type { ColorCardProps } from "../../types/Props";
+import type { ColorCardProps } from "@types";
 import { SketchPicker } from "react-color";
+import { useColorPicker } from "@hooks";
 import reactCSS from "reactcss";
 
 export const ColorCard = ({

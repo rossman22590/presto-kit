@@ -1,4 +1,5 @@
 import type { Database } from "./supabase";
+export type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
 export type Projects = Database["public"]["Tables"]["projects"]["Row"];
 export type Kits = Database["public"]["Tables"]["kits"]["Row"];
 export type Colors = Database["public"]["Tables"]["colors"]["Row"];

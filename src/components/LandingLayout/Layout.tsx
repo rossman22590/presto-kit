@@ -1,4 +1,4 @@
-import type { LayoutProps } from "../../types/Props";
+import type { LayoutProps } from "@types";
 import { Navbar } from "./Navbar";
 import Head from "next/head";
 

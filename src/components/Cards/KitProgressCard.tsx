@@ -1,5 +1,5 @@
-import type { KitProgressCardProps } from "../../types/Props";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import type { KitProgressCardProps } from "@types";
 
 export const KitProgressCard = ({
 	starterKits,

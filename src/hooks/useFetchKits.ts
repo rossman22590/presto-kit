@@ -1,9 +1,6 @@
-import type { AiKit } from "../types/Kits";
+import type { AiKit, Projects } from "@types";
 import { useState, useEffect, useRef } from "react";
-import { KITS_COUNT } from "../constants/global";
-
-import type { Database } from "../types/supabase";
-type Projects = Database["public"]["Tables"]["projects"]["Row"];
+import { KITS_COUNT } from "@constants";
 
 export const useFetchKits = (
 	projectName: Projects["name"] | null,

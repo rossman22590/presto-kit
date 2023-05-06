@@ -1,17 +1,17 @@
-import { ColorsResponse, Kits, FontsResponse } from "../types/Data";
-import { getFontByType, sortColors } from "../utils/helpers";
+import type { ColorsResponse, Kits, FontsResponse, CustomKit } from "@types";
 import { useEffect, useState } from "react";
-import { CustomKit } from "../types/Kits";
 import {
-	useSession,
 	useSupabaseClient,
+	useSession,
 	useUser,
 } from "@supabase/auth-helpers-react";
 import {
 	getColorsByKitId,
 	getFontsByKitId,
 	getKitsByType,
-} from "../utils/queries";
+	getFontByType,
+	sortColors,
+} from "@utils";
 
 export const useGetCustomKit = () => {
 	const supabase = useSupabaseClient();

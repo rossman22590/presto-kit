@@ -1,5 +1,5 @@
+import type { DisplayTextProps } from "@types";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import type { DisplayTextProps } from "../../types/Props";
 import Balancer from "react-wrap-balancer";
 import { useRouter } from "next/router";
 

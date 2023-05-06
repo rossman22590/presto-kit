@@ -1,7 +1,6 @@
-import type { DesktopSidebarProps } from "../../types/Props";
+import type { DesktopSidebarProps } from "@types";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { handleNavClick } from "../../utils/navigation";
-import { classNames } from "../../utils/helpers";
+import { handleNavClick, classNames } from "@utils";
 import { useRouter } from "next/router";
 
 export const DesktopSidebar = ({

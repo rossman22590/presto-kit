@@ -1,7 +1,7 @@
-import type { AiKit } from "../types/Kits";
-import { KITS_COUNT } from "../constants/global";
-import { loadFont } from "../utils/helpers";
+import type { AiKit } from "@types";
+import { KITS_COUNT } from "@constants";
 import { useEffect } from "react";
+import { loadFont } from "@utils";
 
 export const useDynamicStylesheets = (starterKits: AiKit[]) => {
 	useEffect(() => {

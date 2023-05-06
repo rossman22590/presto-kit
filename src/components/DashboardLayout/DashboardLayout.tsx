@@ -1,4 +1,4 @@
-import { primaryNavigation, secondaryNavigation } from "../../utils/navigation";
+import { primaryNavigation, secondaryNavigation } from "@utils";
 import { DesktopSidebar } from "./DesktopSidebar";
 import { DesktopNavbar } from "./DesktopNavbar";
 import { MobileSidebar } from "./MobileSidebar";

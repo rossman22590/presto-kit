@@ -1,4 +1,4 @@
-import type { CustomKit, AiKit } from "../types/Kits";
+import type { CustomKit, AiKit } from "@types";
 
 export const mockStarterKits: AiKit[] = [
 	{

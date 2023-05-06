@@ -1,7 +1,5 @@
-import { DisplayText } from "../components/Headings/DisplayText";
+import { DisplayText, Form, Layout } from "@components";
 import { useSession } from "@supabase/auth-helpers-react";
-import { Layout } from "../components/LandingLayout/Layout";
-import { Form } from "../components/Forms/Form";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import type { NextPage } from "next";

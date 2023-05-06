@@ -1,6 +1,6 @@
 import { useRouterQuery } from "./useRouterQuery";
-import { uploadProject } from "../utils/queries";
 import { useRouter } from "next/router";
+import { uploadProject } from "@utils";
 import { useEffect } from "react";
 import {
 	useSupabaseClient,

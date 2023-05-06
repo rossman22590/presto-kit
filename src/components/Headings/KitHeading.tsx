@@ -1,4 +1,4 @@
-import type { KitHeadingProps } from "../../types/Props";
+import type { KitHeadingProps } from "@types";
 
 export const KitHeading = ({ id, title }: KitHeadingProps) => {
 	return (

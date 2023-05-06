@@ -1,21 +1,25 @@
-import { useUploadStarterKitsContent } from "../hooks/useUploadStarterKitsContent";
-import { DashboardLayout } from "../components/DashboardLayout/DashboardLayout";
-import { KitViewSection } from "./../components/Sections/KitViewSection";
-import { primaryNavigation, setCurrentPage } from "../utils/navigation";
-import { useDynamicStylesheets } from "../hooks/useDynamicStylesheets";
-import { KitProgressCard } from "../components/Cards/KitProgressCard";
-import { useGetStarterProject } from "../hooks/useGetStarterProject";
-import { useUploadStarterKits } from "../hooks/useUploadStarterKits";
-import { KitPreviewCard } from "../components/Cards/KitPreviewCard";
-import { useKitViewSelection } from "../hooks/useKitViewSelection";
-import { DisplayText } from "../components/Headings/DisplayText";
-import { Layout } from "../components/LandingLayout/Layout";
-import { useKitProgress } from "../hooks/useKitProgress";
-import { useUploadKit } from "../hooks/useUploadKit";
-import { useFetchKits } from "../hooks/useFetchKits";
-import { KITS_COUNT } from "../constants/global";
+import { primaryNavigation, setCurrentPage } from "@utils";
+import { KITS_COUNT } from "@constants";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
+import {
+	useUploadStarterKitsContent,
+	useDynamicStylesheets,
+	useUploadStarterKits,
+	useGetStarterProject,
+	useKitViewSelection,
+	useKitProgress,
+	useFetchKits,
+	useUploadKit,
+} from "@hooks";
+import {
+	KitProgressCard,
+	DashboardLayout,
+	KitViewSection,
+	KitPreviewCard,
+	DisplayText,
+	Layout,
+} from "@components";
 
 const StarterKits: NextPage = ({}) => {
 	setCurrentPage(primaryNavigation, "Starter Kits");

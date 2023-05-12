@@ -29,6 +29,5 @@ export * from "./Modals/ModalContainer";
 
 // Sections
 export * from "./Sections/AccountSection";
-export * from "./Sections/ColorSection";
 export * from "./Sections/KitViewSection";
 export * from "./Sections/SectionDescription";

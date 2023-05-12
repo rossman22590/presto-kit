@@ -1,14 +1,14 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { ModalContainer, Form, Layout } from "@components";
+import { useRouterQuery, useSupabase } from "@hooks";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { useUploadStarterProject } from "@hooks";
+import { useAddProjectMutation } from "@features";
 import { Auth } from "@supabase/auth-ui-react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import type { NextPage } from "next";
 
 const Onboarding: NextPage = ({}) => {
-	const supabase = useSupabaseClient();
+	const { supabase, session, user } = useSupabase();
 	const router = useRouter();
 
 	const prevProgress = 0;
@@ -22,7 +22,26 @@ const Onboarding: NextPage = ({}) => {
 		setIsAuthOpen(true);
 	};
 
-	useUploadStarterProject();
+	const [addProject, { status }] = useAddProjectMutation();
+
+	useEffect(() => {
+		if (session) {
+			const { projectName, projectDescription } = useRouterQuery(router);
+
+			addProject({
+				name: projectName,
+				description: projectDescription,
+				user,
+				supabase,
+			});
+		}
+	}, [session]);
+
+	useEffect(() => {
+		if (status === "fulfilled") {
+			router.push("/starter-kits");
+		}
+	}, [status]);
 
 	return (
 		<Layout prevProgress={prevProgress} progress={progress}>

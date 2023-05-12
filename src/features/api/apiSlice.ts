@@ -3,6 +3,7 @@ import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 export const apiSlice = createApi({
 	reducerPath: "api",
 	baseQuery: fakeBaseQuery(),
+	tagTypes: ["Project"],
 	endpoints: (builder) => ({
 		addProject: builder.mutation({
 			queryFn: async ({ name, description, user, supabase }) => {
@@ -15,6 +16,7 @@ export const apiSlice = createApi({
 
 				return { data };
 			},
+			invalidatesTags: ["Project"],
 		}),
 	}),
 });

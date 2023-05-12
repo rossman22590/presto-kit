@@ -1,11 +1,11 @@
 import { SessionContextProvider, Session } from "@supabase/auth-helpers-react";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { Provider } from "react-redux";
 import { AppProps } from "next/app";
+import store from "src/store/store";
 import { useState } from "react";
 import type { Database } from "@types";
 import "../styles/globals.css";
-import { Provider } from "react-redux";
-import store from "src/store/store";
 
 function MyApp({
 	Component,

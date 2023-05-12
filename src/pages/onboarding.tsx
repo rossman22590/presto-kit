@@ -1,22 +1,15 @@
 import { ModalContainer, Form, Layout } from "@components";
+import { useRouterQuery, useSupabase } from "@hooks";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useAddProjectMutation } from "@features";
 import { Auth } from "@supabase/auth-ui-react";
 import { useEffect, useState } from "react";
-import { useRouterQuery } from "@hooks";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
-import {
-	useSession,
-	useSupabaseClient,
-	useUser,
-} from "@supabase/auth-helpers-react";
 
 const Onboarding: NextPage = ({}) => {
-	const supabase = useSupabaseClient();
-	const session = useSession();
+	const { supabase, session, user } = useSupabase();
 	const router = useRouter();
-	const user = useUser();
 
 	const prevProgress = 0;
 	const authProgress = 66;

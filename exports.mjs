@@ -8,6 +8,7 @@ const dirsToExport = [
 	"./src/hooks",
 	"./src/types",
 	"./src/utils",
+	"./src/features",
 ];
 
 const getDirectories = (source) => {

@@ -4,6 +4,8 @@ import { AppProps } from "next/app";
 import { useState } from "react";
 import type { Database } from "@types";
 import "../styles/globals.css";
+import { Provider } from "react-redux";
+import store from "src/store/store";
 
 function MyApp({
 	Component,
@@ -18,7 +20,9 @@ function MyApp({
 			supabaseClient={supabase}
 			initialSession={pageProps.initialSession}
 		>
-			<Component {...pageProps} />
+			<Provider store={store}>
+				<Component {...pageProps} />
+			</Provider>
 		</SessionContextProvider>
 	);
 }

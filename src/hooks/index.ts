@@ -10,4 +10,3 @@ export * from "./useRouterQuery";
 export * from "./useUploadKit";
 export * from "./useUploadStarterKits";
 export * from "./useUploadStarterKitsContent";
-export * from "./useUploadStarterProject";

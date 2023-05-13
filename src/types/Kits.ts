@@ -1,4 +1,4 @@
-import type { ColorsResponse, Kits } from "./Data";
+import type { ColorsResponse, Kits, Projects } from "./Data";
 
 export type AiKit = {
 	title: string;
@@ -47,10 +47,12 @@ export type KitViewSelectionUtils = {
 };
 
 export type CustomKit = {
-	id: Kits["id"] | null;
+	id: Kits["id"];
 	projectId: Kits["project_id"];
-	title: Kits["title"] | null;
-	colors: ColorsResponse[] | null;
-	displayFont: AiKit["displayFont"] | null;
-	textFont: AiKit["textFont"] | null;
+	projectName: Projects["name"];
+	projectDescription: Projects["description"];
+	title: Kits["title"];
+	colors: ColorsResponse[];
+	displayFont: AiKit["displayFont"];
+	textFont: AiKit["textFont"];
 };

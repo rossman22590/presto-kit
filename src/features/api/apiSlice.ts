@@ -6,10 +6,9 @@ import {
 import type {
 	AiKit,
 	Color,
-	Colors,
+	CustomKit,
 	Database,
 	Font,
-	Fonts,
 	FontsInsert,
 	Kits,
 	Projects,
@@ -192,6 +191,63 @@ export const apiSlice = createApi({
 			},
 			invalidatesTags: ["Kit"],
 		}),
+		getLatestFullKitByType: builder.query({
+			queryFn: async ({ type }: { type: Kits["type"] }) => {
+				let { data, error } = await supabase
+					.from("kits")
+					.select(
+						`
+        		id, 
+        		project_id,
+        		title,
+        		project: projects(name, description),
+        		colors: colors(type, name, hex),
+        		fonts: fonts(type, name, weight)
+        	`
+					)
+					.eq("type", type)
+					.order("inserted_at", { ascending: false })
+					.limit(1)
+					.single();
+
+				if (error) throw error;
+				if (!data) throw new Error("No kit found.");
+
+				const kit = data;
+
+				if (!kit.fonts || !Array.isArray(kit.fonts)) {
+					throw new Error("Invalid kit: fonts are missing or not an array");
+				}
+
+				const displayFont = kit.fonts.find((font) => font.type === "DISPLAY");
+				if (!displayFont) throw new Error();
+
+				const textFont = kit.fonts.find((font) => font.type === "TEXT");
+				if (!textFont) throw new Error();
+
+				if (!kit.project || Array.isArray(kit.project)) {
+					throw new Error();
+				}
+
+				if (!Array.isArray(kit.colors)) {
+					throw new Error();
+				}
+
+				const customKit: CustomKit = {
+					id: kit.id,
+					projectId: kit.project_id,
+					projectName: kit.project.name,
+					projectDescription: kit.project.description,
+					title: kit.title,
+					colors: kit.colors,
+					displayFont: displayFont,
+					textFont: textFont,
+				};
+
+				return { data: customKit };
+			},
+			providesTags: ["Project", "Kit", "Color", "Font"],
+		}),
 	}),
 });
 
@@ -202,4 +258,5 @@ export const {
 	useAddColorsMutation,
 	useAddFontsMutation,
 	useAddAiKitsMutation,
+	useGetLatestFullKitByTypeQuery,
 } = apiSlice;

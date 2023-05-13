@@ -1,4 +1,5 @@
-import { useGetCustomKit, useGetStarterProject } from "@hooks";
+import { GOOGLE_FONTS_API_KEY as apiKey } from "@constants";
+import { useGetLatestFullKitByTypeQuery } from "@features";
 import { useEffect, useState } from "react";
 import {
 	DashboardLayout,
@@ -18,11 +19,25 @@ import type {
 } from "@types";
 
 const KitEditor: NextPage = ({}) => {
-	const { isLoadingKit, kit } = useGetCustomKit();
+	const {
+		data: kit,
+		error,
+		isSuccess: isKitLoaded,
+	} = useGetLatestFullKitByTypeQuery({ type: "CUSTOM" });
 
-	const { projectName, projectDescription } = useGetStarterProject();
+	const { projectName, projectDescription } = kit || {};
 
-	const [customKit, setCustomKit] = useState<CustomKit | null>(null);
+	useEffect(() => {
+		if (kit) {
+			console.log("kit", kit);
+		}
+
+		if (error) {
+			console.error("error", error);
+		}
+	}, [kit, error]);
+
+	const [customKit, setCustomKit] = useState<CustomKit | undefined>();
 	const [customColors, setCustomColors] = useState<ColorsResponse[] | null>(
 		null
 	);
@@ -38,8 +53,10 @@ const KitEditor: NextPage = ({}) => {
 	const [customTextWeight, setCustomTextWeight] = useState("");
 
 	useEffect(() => {
-		setCustomKit(kit);
-	}, [isLoadingKit]);
+		if (isKitLoaded) {
+			setCustomKit(kit);
+		}
+	}, [isKitLoaded]);
 
 	useEffect(() => {
 		if (customKit && customKit.displayFont && customKit.textFont) {
@@ -54,7 +71,6 @@ const KitEditor: NextPage = ({}) => {
 	}, [customKit]);
 
 	useEffect(() => {
-		const apiKey = process.env.NEXT_PUBLIC_GOOGLE_FONTS_API_KEY || "";
 		(async () => {
 			try {
 				const response = await fetch(
@@ -165,7 +181,7 @@ const KitEditor: NextPage = ({}) => {
 					</section>
 				</>
 			)}
-			{isLoadingKit && (
+			{!isKitLoaded && (
 				<section className="m-auto flex max-w-[720px] flex-grow flex-col items-center gap-4 pt-28 md:gap-8 md:pt-40 md:pb-20">
 					<img
 						src="/loading-icon.png"

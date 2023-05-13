@@ -1,12 +1,15 @@
 import { primaryNavigation, setCurrentPage } from "@utils";
 import { KITS_COUNT } from "@constants";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import {
 	useAddAiColorsMutation,
 	useAddAiFontsMutation,
 	useAddAiKitsMutation,
+	useAddColorsMutation,
+	useAddFontsMutation,
+	useAddKitMutation,
 	useGetLatestProjectQuery,
 } from "@features";
 import {
@@ -14,7 +17,6 @@ import {
 	useKitViewSelection,
 	useKitProgress,
 	useFetchKits,
-	useUploadKit,
 	useSupabase,
 } from "@hooks";
 import {
@@ -54,20 +56,24 @@ const StarterKits: NextPage = ({}) => {
 
 	// Step 4: When all starter kits have been generated, add kits and content to DB
 	const [addAiKits, { data: kitsData }] = useAddAiKitsMutation();
-	const { kitIds } = kitsData || {};
 	const [addAiColors] = useAddAiColorsMutation();
 	const [addAiFonts] = useAddAiFontsMutation();
+	const { kitIds } = kitsData || {};
 
 	useEffect(() => {
-		if (starterKits.length === KITS_COUNT) {
-			addAiKits({ projectId, user, aiKits: starterKits }).then(() =>
-				kitIds?.forEach((kitId, i) => {
-					addAiColors({ kitId, aiKit: starterKits[i] });
-					addAiFonts({ kitId, aiKit: starterKits[i] });
-				})
-			);
+		if (starterKits.length === KITS_COUNT && projectId) {
+			addAiKits({ projectId, user, aiKits: starterKits });
 		}
 	}, [starterKits]);
+
+	useEffect(() => {
+		if (kitIds) {
+			kitIds.forEach((kitId, i) => {
+				addAiColors({ kitId, aiKit: starterKits[i] });
+				addAiFonts({ kitId, aiKit: starterKits[i] });
+			});
+		}
+	}, [kitIds]);
 
 	// Step 6: Add starter kit fonts to stylesheets
 	useDynamicStylesheets(starterKits);
@@ -76,20 +82,40 @@ const StarterKits: NextPage = ({}) => {
 	const kitViewSelectionUtils = useKitViewSelection(starterKits);
 	const { isKitView, selectedKitView } = kitViewSelectionUtils;
 
-	// TODO: Refactor to redux
 	// Step 8: When user has chosen their preferred kit combination, add it to DB and continue to kit editor page
-	const customKitTitle = `${projectName} Custom Kit`;
+	const [isKitChosen, setIsKitChosen] = useState(false);
 
-	const setIsKitReady = useUploadKit(
-		"CUSTOM",
-		projectId,
-		customKitTitle,
-		selectedKitView
-	);
+	const [addKit, { data: customKitData }] = useAddKitMutation();
+	const [addColors] = useAddColorsMutation();
+	const [addFonts] = useAddFontsMutation();
+
+	useEffect(() => {
+		if (isKitChosen && projectId) {
+			addKit({
+				type: "CUSTOM",
+				title: `${projectName} Custom Kit`,
+				projectId,
+				user,
+			});
+		}
+	}, [isKitChosen]);
+
+	useEffect(() => {
+		if (customKitData) {
+			const kitId = customKitData.id;
+			const colors = selectedKitView.colors;
+			const fonts = {
+				displayFont: selectedKitView.displayFont,
+				textFont: selectedKitView.textFont,
+			};
+			addColors({ kitId, colors });
+			addFonts({ kitId, fonts });
+			router.push("/kit-editor");
+		}
+	}, [customKitData]);
 
 	const handleContinue = () => {
-		setIsKitReady(true);
-		router.push("/kit-editor");
+		setIsKitChosen(true);
 	};
 
 	if (!isProjectLoaded) {

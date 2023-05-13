@@ -5,6 +5,7 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import type {
 	AiKit,
+	Color,
 	Colors,
 	Database,
 	Fonts,
@@ -25,7 +26,13 @@ export const apiSlice = createApi({
 				name,
 				description,
 				user,
+			}: {
+				name: string;
+				description: string;
+				user: User | null;
 			}): Promise<{ data: Projects[] }> => {
+				if (!user) throw new Error();
+
 				const { error, data } = await supabase
 					.from("projects")
 					.insert({ user_id: user.id, name, description })
@@ -39,7 +46,13 @@ export const apiSlice = createApi({
 			invalidatesTags: ["Project"],
 		}),
 		getLatestProject: builder.query({
-			queryFn: async ({ user }): Promise<{ data: Projects }> => {
+			queryFn: async ({
+				user,
+			}: {
+				user: User | null;
+			}): Promise<{ data: Projects }> => {
+				if (!user) throw new Error();
+
 				const { error, data } = await supabase
 					.from("projects")
 					.select()
@@ -55,12 +68,25 @@ export const apiSlice = createApi({
 			providesTags: ["Project"],
 		}),
 		addKit: builder.mutation({
-			queryFn: async ({ projectId, user, title, type }) => {
+			queryFn: async ({
+				projectId,
+				user,
+				title,
+				type,
+			}: {
+				projectId: number;
+				user: User | null;
+				title: string;
+				type: Kits["type"];
+			}): Promise<{ data: Kits }> => {
+				if (!user) throw new Error();
+
 				const { error, data } = await supabase
 					.from("kits")
 					.insert({ project_id: projectId, user_id: user.id, title, type })
 					.eq("user_id", user.id)
-					.select();
+					.select()
+					.single();
 
 				if (error) throw { error };
 
@@ -68,17 +94,73 @@ export const apiSlice = createApi({
 			},
 			invalidatesTags: ["Kit"],
 		}),
+		addColors: builder.mutation({
+			queryFn: async ({
+				kitId,
+				colors,
+			}: {
+				kitId: number;
+				colors: Color[];
+			}) => {
+				const colorsInsert = colors.map((color) => ({
+					kit_id: kitId,
+					type: color.type,
+					name: color.name,
+					hex: color.hex,
+				}));
+
+				const { error, data } = await supabase
+					.from("colors")
+					.insert(colorsInsert)
+					.eq("kit_id", kitId)
+					.select();
+
+				if (error) throw { error };
+
+				return { data };
+			},
+			invalidatesTags: ["Color"],
+		}),
+		addFonts: builder.mutation({
+			queryFn: async ({ kitId, fonts }) => {
+				const fontsInsert: FontsInsert[] = [
+					{
+						kit_id: kitId,
+						type: "DISPLAY",
+						name: fonts.displayFont.name,
+						weight: fonts.displayFont.weight,
+					},
+					{
+						kit_id: kitId,
+						type: "TEXT",
+						name: fonts.textFont.name,
+						weight: fonts.textFont.weight,
+					},
+				];
+
+				const { error, data } = await supabase
+					.from("fonts")
+					.insert(fontsInsert)
+					.eq("kit_id", kitId)
+					.select();
+
+				if (error) throw { error };
+
+				return { data };
+			},
+			invalidatesTags: ["Font"],
+		}),
 		addAiKits: builder.mutation({
 			queryFn: async ({
 				projectId,
 				user,
 				aiKits,
 			}: {
-				projectId: number | undefined;
+				projectId: number;
 				user: User | null;
 				aiKits: AiKit[];
 			}) => {
-				if (!user) throw new Error("No user at upload kit");
+				if (!user) throw new Error();
 
 				const kitsInsert = aiKits.map((kit) => ({
 					project_id: projectId,
@@ -172,6 +254,8 @@ export const {
 	useAddProjectMutation,
 	useGetLatestProjectQuery,
 	useAddKitMutation,
+	useAddColorsMutation,
+	useAddFontsMutation,
 	useAddAiKitsMutation,
 	useAddAiColorsMutation,
 	useAddAiFontsMutation,

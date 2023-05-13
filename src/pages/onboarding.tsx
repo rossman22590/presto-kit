@@ -1,9 +1,10 @@
 import { ModalContainer, Form, Layout } from "@components";
-import { useRouterQuery, useSupabase } from "@hooks";
+import { useSupabase } from "@hooks";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useAddProjectMutation } from "@features";
 import { Auth } from "@supabase/auth-ui-react";
 import { useEffect, useState } from "react";
+import { getProjectQueries } from "@utils";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
 
@@ -22,26 +23,17 @@ const Onboarding: NextPage = ({}) => {
 		setIsAuthOpen(true);
 	};
 
-	const [addProject, { status }] = useAddProjectMutation();
+	const [addProject] = useAddProjectMutation();
 
 	useEffect(() => {
-		if (session) {
-			const { projectName, projectDescription } = useRouterQuery(router);
+		const { name, description } = getProjectQueries(router);
 
-			addProject({
-				name: projectName,
-				description: projectDescription,
-				user,
-				supabase,
-			});
+		if (session) {
+			addProject({ name, description, user }).then(() =>
+				router.push("/starter-kits")
+			);
 		}
 	}, [session]);
-
-	useEffect(() => {
-		if (status === "fulfilled") {
-			router.push("/starter-kits");
-		}
-	}, [status]);
 
 	return (
 		<Layout prevProgress={prevProgress} progress={progress}>

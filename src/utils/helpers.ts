@@ -1,5 +1,11 @@
-import type { ColorsResponse, Fonts, FontsResponse } from "../types/Data";
-import { GoogleApiFont, LoadedFonts } from "../types/Fonts";
+import {
+	ColorsResponse,
+	Fonts,
+	FontsResponse,
+	GoogleApiFont,
+	LoadedFonts,
+} from "@types";
+import type { NextRouter } from "next/router";
 
 export const classNames = (...classes: string[]) => {
 	return classes.filter(Boolean).join(" ");
@@ -163,4 +169,29 @@ export const isColorBright = (hex: string) => {
 	const brightPoint = 180;
 	const isBright = luminance > brightPoint;
 	return isBright;
+};
+
+export const capitaliseWords = (str: string) => {
+	return str?.replace(/\b[a-z]/gi, (char) => char.toUpperCase());
+};
+
+export const getProjectQueries = (router: NextRouter) => {
+	let { name, description } = router.query;
+
+	let nameStr: string = "";
+	let descriptionStr: string = "";
+
+	if (name) {
+		nameStr = Array.isArray(name) ? name[0] : name;
+		nameStr = capitaliseWords(nameStr);
+	}
+	if (description) {
+		descriptionStr = Array.isArray(description) ? description[0] : description;
+		descriptionStr = capitaliseWords(descriptionStr);
+	}
+
+	name = nameStr;
+	description = descriptionStr;
+
+	return { name, description };
 };

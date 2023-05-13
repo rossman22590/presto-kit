@@ -135,7 +135,7 @@ export const getFontsByKitId = async (
 
 export const uploadKit = async (
 	type: Kits["type"],
-	projectId: Projects["id"] | null,
+	projectId: Projects["id"] | undefined,
 	kitTitle: AiKit["title"],
 	user: User | null,
 	supabase: SupabaseClient

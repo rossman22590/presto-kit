@@ -6,7 +6,6 @@ export * from "./useGetCustomKit";
 export * from "./useGetStarterProject";
 export * from "./useKitProgress";
 export * from "./useKitViewSelection";
-export * from "./useRouterQuery";
 export * from "./useSupabase";
 export * from "./useUploadKit";
 export * from "./useUploadStarterKits";

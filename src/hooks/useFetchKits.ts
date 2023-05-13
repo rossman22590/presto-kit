@@ -3,9 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import { KITS_COUNT } from "@constants";
 
 export const useFetchKits = (
-	projectName: Projects["name"] | null,
-	projectDescription: Projects["description"] | null,
-	isLoadingProject: boolean
+	projectName: Projects["name"] | undefined,
+	projectDescription: Projects["description"] | undefined,
+	isProjectLoaded: boolean
 ) => {
 	// dataFetchedRef prevents 2x sequential fetches to OpenAI
 	const dataFetchedRef = useRef(false);
@@ -14,8 +14,8 @@ export const useFetchKits = (
 	const [isLoadingKits, setIsLoadingKits] = useState<boolean>(true);
 
 	useEffect(() => {
-		if (!isLoadingProject) getInitialKits();
-	}, [isLoadingProject]);
+		if (isProjectLoaded) getInitialKits();
+	}, [isProjectLoaded]);
 
 	const getInitialKits = async () => {
 		try {

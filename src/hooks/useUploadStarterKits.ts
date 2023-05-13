@@ -4,7 +4,7 @@ import { uploadKit } from "../utils/queries";
 import { useEffect, useState } from "react";
 
 export const useUploadStarterKits = (
-	projectId: Projects["id"] | null,
+	projectId: Projects["id"] | undefined,
 	starterKits: AiKit[]
 ) => {
 	const supabase = useSupabaseClient();

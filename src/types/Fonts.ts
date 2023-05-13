@@ -16,3 +16,8 @@ export type LoadedFonts = {
 		weights: string[];
 	};
 };
+
+export type Font = {
+	name: string;
+	weight: string | null;
+};

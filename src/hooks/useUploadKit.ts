@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 export const useUploadKit = (
 	kitType: Kits["type"],
-	projectId: Projects["id"] | null,
+	projectId: Projects["id"] | undefined,
 	kitTitle: string,
 	selectedKit: KitContent
 ) => {

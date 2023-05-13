@@ -4,8 +4,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import {
-	useAddAiColorsMutation,
-	useAddAiFontsMutation,
 	useAddAiKitsMutation,
 	useAddColorsMutation,
 	useAddFontsMutation,
@@ -56,8 +54,8 @@ const StarterKits: NextPage = ({}) => {
 
 	// Step 4: When all starter kits have been generated, add kits and content to DB
 	const [addAiKits, { data: kitsData }] = useAddAiKitsMutation();
-	const [addAiColors] = useAddAiColorsMutation();
-	const [addAiFonts] = useAddAiFontsMutation();
+	const [addColors] = useAddColorsMutation();
+	const [addFonts] = useAddFontsMutation();
 	const { kitIds } = kitsData || {};
 
 	useEffect(() => {
@@ -69,8 +67,13 @@ const StarterKits: NextPage = ({}) => {
 	useEffect(() => {
 		if (kitIds) {
 			kitIds.forEach((kitId, i) => {
-				addAiColors({ kitId, aiKit: starterKits[i] });
-				addAiFonts({ kitId, aiKit: starterKits[i] });
+				const colors = starterKits[i].colors;
+				const fonts = {
+					displayFont: starterKits[i].displayFont,
+					textFont: starterKits[i].textFont,
+				};
+				addColors({ kitId, colors });
+				addFonts({ kitId, fonts });
 			});
 		}
 	}, [kitIds]);
@@ -86,8 +89,6 @@ const StarterKits: NextPage = ({}) => {
 	const [isKitChosen, setIsKitChosen] = useState(false);
 
 	const [addKit, { data: customKitData }] = useAddKitMutation();
-	const [addColors] = useAddColorsMutation();
-	const [addFonts] = useAddFontsMutation();
 
 	useEffect(() => {
 		if (isKitChosen && projectId) {

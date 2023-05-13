@@ -8,6 +8,7 @@ import type {
 	Color,
 	Colors,
 	Database,
+	Font,
 	Fonts,
 	FontsInsert,
 	Kits,
@@ -122,7 +123,13 @@ export const apiSlice = createApi({
 			invalidatesTags: ["Color"],
 		}),
 		addFonts: builder.mutation({
-			queryFn: async ({ kitId, fonts }) => {
+			queryFn: async ({
+				kitId,
+				fonts,
+			}: {
+				kitId: number;
+				fonts: { displayFont: Font; textFont: Font };
+			}) => {
 				const fontsInsert: FontsInsert[] = [
 					{
 						kit_id: kitId,
@@ -185,68 +192,6 @@ export const apiSlice = createApi({
 			},
 			invalidatesTags: ["Kit"],
 		}),
-		addAiColors: builder.mutation({
-			queryFn: async ({
-				kitId,
-				aiKit,
-			}: {
-				kitId: number;
-				aiKit: AiKit;
-			}): Promise<{ data: Colors[] }> => {
-				const colors = aiKit.colors.map((color) => ({
-					kit_id: kitId,
-					type: color.type,
-					name: color.name,
-					hex: color.hex,
-				}));
-
-				const { error, data } = await supabase
-					.from("colors")
-					.insert(colors)
-					.eq("kit_id", kitId)
-					.select();
-
-				if (error) throw { error };
-
-				return { data };
-			},
-			invalidatesTags: ["Color"],
-		}),
-		addAiFonts: builder.mutation({
-			queryFn: async ({
-				kitId,
-				aiKit,
-			}: {
-				kitId: number;
-				aiKit: AiKit;
-			}): Promise<{ data: Fonts[] }> => {
-				const fonts: FontsInsert[] = [
-					{
-						kit_id: kitId,
-						type: "DISPLAY",
-						name: aiKit.displayFont.name,
-						weight: aiKit.displayFont.weight,
-					},
-					{
-						kit_id: kitId,
-						type: "TEXT",
-						name: aiKit.textFont.name,
-						weight: aiKit.textFont.weight,
-					},
-				];
-
-				const { error, data } = await supabase
-					.from("fonts")
-					.insert(fonts)
-					.eq("kit_id", kitId)
-					.select();
-
-				if (error) throw { error };
-
-				return { data };
-			},
-			invalidatesTags: ["Font"],
-		}),
 	}),
 });
 
@@ -257,6 +202,4 @@ export const {
 	useAddColorsMutation,
 	useAddFontsMutation,
 	useAddAiKitsMutation,
-	useAddAiColorsMutation,
-	useAddAiFontsMutation,
 } = apiSlice;

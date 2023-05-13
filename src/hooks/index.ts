@@ -8,5 +8,4 @@ export * from "./useKitProgress";
 export * from "./useKitViewSelection";
 export * from "./useSupabase";
 export * from "./useUploadKit";
-export * from "./useUploadStarterKits";
 export * from "./useUploadStarterKitsContent";

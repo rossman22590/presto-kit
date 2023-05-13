@@ -1,12 +1,13 @@
+import { useAddAiKitsMutation, useGetLatestProjectQuery } from "@features";
 import { primaryNavigation, setCurrentPage } from "@utils";
-import { useGetLatestProjectQuery } from "@features";
 import { KITS_COUNT } from "@constants";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import type { NextPage } from "next";
+import type { Kits } from "@types";
 import {
 	useUploadStarterKitsContent,
 	useDynamicStylesheets,
-	useUploadStarterKits,
 	useKitViewSelection,
 	useKitProgress,
 	useFetchKits,
@@ -27,6 +28,7 @@ const StarterKits: NextPage = ({}) => {
 	const { user } = useSupabase();
 	const router = useRouter();
 
+	// Step 1: Get latest project details from onboarding
 	const { data: project, isSuccess: isProjectLoaded } =
 		useGetLatestProjectQuery({ user }, { skip: !user });
 
@@ -36,24 +38,40 @@ const StarterKits: NextPage = ({}) => {
 		description: projectDescription,
 	} = project || {};
 
+	// Step 2: Get AI generated starter kits from express API using project details
 	const { starterKits, isLoadingKits, error } = useFetchKits(
 		projectDescription,
 		projectName,
 		isProjectLoaded
 	);
 
+	// Step 3: Update progress bar as each starter kit is generated
 	const prevProgress = 66;
 	const progress = useKitProgress(starterKits, prevProgress);
 
-	const kitIds = useUploadStarterKits(projectId, starterKits);
+	// Step 4: When all starter kits have been generated, add them to DB
+	const [addAiKits, { data: kits }] = useAddAiKitsMutation();
 
+	let kitIds: Kits["id"][] | undefined;
+	useEffect(() => {
+		if (starterKits.length === KITS_COUNT) {
+			addAiKits({ projectId, user, aiKits: starterKits }).then(() => {
+				kitIds = kits?.map((kit) => kit.id);
+			});
+		}
+	}, [starterKits]);
+
+	// Step 5: Add starter kits fonts and colors to DB, referencing their kit IDs
 	useUploadStarterKitsContent(kitIds, starterKits);
 
+	// Step 6: Add starter kit fonts to stylesheets
+	useDynamicStylesheets(starterKits);
+
+	// Step 7: Handle user kit view selection process
 	const kitViewSelectionUtils = useKitViewSelection(starterKits);
 	const { isKitView, selectedKitView } = kitViewSelectionUtils;
 
-	useDynamicStylesheets(starterKits);
-
+	// Step 8: When user has chosen their preferred kit combination, add it to DB and continue to kit editor page
 	const customKitTitle = `${projectName} Custom Kit`;
 
 	const setIsKitReady = useUploadKit(

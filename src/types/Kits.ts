@@ -1,13 +1,10 @@
-import { ColorsResponse, Kits } from "./Data";
+import type { ColorsResponse, Kits } from "./Data";
+import type { AiColor } from "./Colors";
 
 export type AiKit = {
 	title: string;
 	id: number;
-	colors: {
-		type: "BASE" | "PRIMARY" | "ACCENT";
-		name: string;
-		hex: string;
-	}[];
+	colors: AiColor[];
 	displayFont: {
 		name: string;
 		weight: string | null;

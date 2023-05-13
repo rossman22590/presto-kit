@@ -1,12 +1,15 @@
-import { useAddAiKitsMutation, useGetLatestProjectQuery } from "@features";
 import { primaryNavigation, setCurrentPage } from "@utils";
 import { KITS_COUNT } from "@constants";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import type { NextPage } from "next";
-import type { Kits } from "@types";
 import {
-	useUploadStarterKitsContent,
+	useAddAiColorsMutation,
+	useAddAiFontsMutation,
+	useAddAiKitsMutation,
+	useGetLatestProjectQuery,
+} from "@features";
+import {
 	useDynamicStylesheets,
 	useKitViewSelection,
 	useKitProgress,
@@ -29,14 +32,14 @@ const StarterKits: NextPage = ({}) => {
 	const router = useRouter();
 
 	// Step 1: Get latest project details from onboarding
-	const { data: project, isSuccess: isProjectLoaded } =
+	const { data: projectData, isSuccess: isProjectLoaded } =
 		useGetLatestProjectQuery({ user }, { skip: !user });
 
 	const {
 		id: projectId,
 		name: projectName,
 		description: projectDescription,
-	} = project || {};
+	} = projectData || {};
 
 	// Step 2: Get AI generated starter kits from express API using project details
 	const { starterKits, isLoadingKits, error } = useFetchKits(
@@ -49,20 +52,22 @@ const StarterKits: NextPage = ({}) => {
 	const prevProgress = 66;
 	const progress = useKitProgress(starterKits, prevProgress);
 
-	// Step 4: When all starter kits have been generated, add them to DB
-	const [addAiKits, { data: kits }] = useAddAiKitsMutation();
+	// Step 4: When all starter kits have been generated, add kits and content to DB
+	const [addAiKits, { data: kitsData }] = useAddAiKitsMutation();
+	const { kitIds } = kitsData || {};
+	const [addAiColors] = useAddAiColorsMutation();
+	const [addAiFonts] = useAddAiFontsMutation();
 
-	let kitIds: Kits["id"][] | undefined;
 	useEffect(() => {
 		if (starterKits.length === KITS_COUNT) {
-			addAiKits({ projectId, user, aiKits: starterKits }).then(() => {
-				kitIds = kits?.map((kit) => kit.id);
-			});
+			addAiKits({ projectId, user, aiKits: starterKits }).then(() =>
+				kitIds?.forEach((kitId, i) => {
+					addAiColors({ kitId, aiKit: starterKits[i] });
+					addAiFonts({ kitId, aiKit: starterKits[i] });
+				})
+			);
 		}
 	}, [starterKits]);
-
-	// Step 5: Add starter kits fonts and colors to DB, referencing their kit IDs
-	useUploadStarterKitsContent(kitIds, starterKits);
 
 	// Step 6: Add starter kit fonts to stylesheets
 	useDynamicStylesheets(starterKits);
@@ -71,6 +76,7 @@ const StarterKits: NextPage = ({}) => {
 	const kitViewSelectionUtils = useKitViewSelection(starterKits);
 	const { isKitView, selectedKitView } = kitViewSelectionUtils;
 
+	// TODO: Refactor to redux
 	// Step 8: When user has chosen their preferred kit combination, add it to DB and continue to kit editor page
 	const customKitTitle = `${projectName} Custom Kit`;
 

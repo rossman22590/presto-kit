@@ -31,7 +31,7 @@ export const apiSlice = createApi({
 				description: string;
 				user: User | null;
 			}): Promise<{ data: Projects[] }> => {
-				if (!user) throw new Error();
+				if (!user) throw new Error("No user at add project");
 
 				const { error, data } = await supabase
 					.from("projects")
@@ -51,7 +51,7 @@ export const apiSlice = createApi({
 			}: {
 				user: User | null;
 			}): Promise<{ data: Projects }> => {
-				if (!user) throw new Error();
+				if (!user) throw new Error("No user at get latest project");
 
 				const { error, data } = await supabase
 					.from("projects")
@@ -79,7 +79,7 @@ export const apiSlice = createApi({
 				title: string;
 				type: Kits["type"];
 			}): Promise<{ data: Kits }> => {
-				if (!user) throw new Error();
+				if (!user) throw new Error("No user at add kit");
 
 				const { error, data } = await supabase
 					.from("kits")
@@ -166,7 +166,7 @@ export const apiSlice = createApi({
 				user: User | null;
 				aiKits: AiKit[];
 			}) => {
-				if (!user) throw new Error();
+				if (!user) throw new Error("No user at add AI kits");
 
 				const kitsInsert = aiKits.map((kit) => ({
 					project_id: projectId,
@@ -211,7 +211,7 @@ export const apiSlice = createApi({
 					.single();
 
 				if (error) throw error;
-				if (!data) throw new Error("No kit found.");
+				if (!data) throw new Error("No kit found");
 
 				const kit = data;
 
@@ -220,17 +220,17 @@ export const apiSlice = createApi({
 				}
 
 				const displayFont = kit.fonts.find((font) => font.type === "DISPLAY");
-				if (!displayFont) throw new Error();
+				if (!displayFont) throw new Error("Display font not found.");
 
 				const textFont = kit.fonts.find((font) => font.type === "TEXT");
-				if (!textFont) throw new Error();
+				if (!textFont) throw new Error("Text font not found");
 
 				if (!kit.project || Array.isArray(kit.project)) {
-					throw new Error();
+					throw new Error("Invalid kit: project is missing or not an object");
 				}
 
 				if (!Array.isArray(kit.colors)) {
-					throw new Error();
+					throw new Error("Invalid kit: colors are missing or not an array");
 				}
 
 				const customKit: CustomKit = {

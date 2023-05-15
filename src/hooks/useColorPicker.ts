@@ -46,8 +46,11 @@ export const useColorPicker = (
 
 			const colorName = isPresetColor?.title || GetColorName(color.hex);
 
-			newColors[i].hex = colorHex;
-			newColors[i].name = colorName;
+			newColors[i] = {
+				...newColors[i],
+				hex: colorHex,
+				name: colorName,
+			};
 
 			return newColors;
 		});

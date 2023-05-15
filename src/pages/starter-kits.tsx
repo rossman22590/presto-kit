@@ -86,20 +86,17 @@ const StarterKits: NextPage = ({}) => {
 	const { isKitView, selectedKitView } = kitViewSelectionUtils;
 
 	// Step 8: When user has chosen their preferred kit combination, add it to DB and continue to kit editor page
-	const [onKitChosen, setOnKitChosen] = useState(false);
-
 	const [addKit, { data: customKitData }] = useAddKitMutation();
 
-	useEffect(() => {
-		if (onKitChosen && projectId) {
-			addKit({
-				type: "CUSTOM",
-				title: `${projectName} Custom Kit`,
-				projectId,
-				user,
-			});
-		}
-	}, [onKitChosen]);
+	const handleSaveKit = async () => {
+		if (!projectId) return;
+		await addKit({
+			type: "CUSTOM",
+			title: `${projectName} Custom Kit`,
+			projectId,
+			user,
+		});
+	};
 
 	useEffect(() => {
 		if (customKitData) {
@@ -114,10 +111,6 @@ const StarterKits: NextPage = ({}) => {
 			router.push("/kit-editor");
 		}
 	}, [customKitData]);
-
-	const handleContinue = () => {
-		setOnKitChosen(true);
-	};
 
 	if (!isProjectLoaded) {
 		return (
@@ -193,7 +186,7 @@ const StarterKits: NextPage = ({}) => {
 						kit={selectedKitView}
 						projectName={projectName}
 						projectDescription={projectDescription}
-						handleContinue={handleContinue}
+						handleContinue={handleSaveKit}
 					/>
 				)}
 

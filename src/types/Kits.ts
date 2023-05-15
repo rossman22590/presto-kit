@@ -46,7 +46,7 @@ export type KitViewSelectionUtils = {
 	isKitView: () => boolean;
 };
 
-export type CustomKit = {
+export type FullKit = {
 	id: Kits["id"];
 	projectId: Kits["project_id"];
 	projectName: Projects["name"];

@@ -6,10 +6,10 @@ import {
 import type {
 	AiKit,
 	Color,
-	CustomKit,
 	Database,
 	Font,
 	FontsInsert,
+	FullKit,
 	Kits,
 	Projects,
 } from "@types";
@@ -192,7 +192,11 @@ export const apiSlice = createApi({
 			invalidatesTags: ["Kit"],
 		}),
 		getLatestFullKitByType: builder.query({
-			queryFn: async ({ type }: { type: Kits["type"] }) => {
+			queryFn: async ({
+				type,
+			}: {
+				type: Kits["type"];
+			}): Promise<{ data: FullKit }> => {
 				let { data, error } = await supabase
 					.from("kits")
 					.select(
@@ -233,7 +237,7 @@ export const apiSlice = createApi({
 					throw new Error("Invalid kit: colors are missing or not an array");
 				}
 
-				const customKit: CustomKit = {
+				const fullKit = {
 					id: kit.id,
 					projectId: kit.project_id,
 					projectName: kit.project.name,
@@ -244,7 +248,7 @@ export const apiSlice = createApi({
 					textFont: textFont,
 				};
 
-				return { data: customKit };
+				return { data: fullKit };
 			},
 			providesTags: ["Project", "Kit", "Color", "Font"],
 		}),

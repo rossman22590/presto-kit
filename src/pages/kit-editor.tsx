@@ -8,6 +8,7 @@ import {
 	DisplayText,
 	FontSelect,
 	ColorCard,
+	ModalContainer,
 } from "@components";
 import type { NextPage } from "next/types";
 import type {
@@ -15,29 +16,18 @@ import type {
 	GoogleApiFont,
 	LoadedFonts,
 	PresetColor,
-	CustomKit,
+	FullKit,
 } from "@types";
+import { SaveKitForm } from "src/components/Forms/SaveKitForm";
 
 const KitEditor: NextPage = ({}) => {
-	const {
-		data: kit,
-		error,
-		isSuccess: isKitLoaded,
-	} = useGetLatestFullKitByTypeQuery({ type: "CUSTOM" });
+	const { data: kit, isSuccess: isKitLoaded } = useGetLatestFullKitByTypeQuery({
+		type: "CUSTOM",
+	});
 
 	const { projectName, projectDescription } = kit || {};
 
-	useEffect(() => {
-		if (kit) {
-			console.log("kit", kit);
-		}
-
-		if (error) {
-			console.error("error", error);
-		}
-	}, [kit, error]);
-
-	const [customKit, setCustomKit] = useState<CustomKit | undefined>();
+	const [customKit, setCustomKit] = useState<FullKit | undefined>();
 	const [customColors, setCustomColors] = useState<ColorsResponse[] | null>(
 		null
 	);
@@ -51,6 +41,8 @@ const KitEditor: NextPage = ({}) => {
 
 	const [customTextFont, setCustomTextFont] = useState("");
 	const [customTextWeight, setCustomTextWeight] = useState("");
+
+	const [onSaveKit, setOnSaveKit] = useState(false);
 
 	useEffect(() => {
 		if (isKitLoaded) {
@@ -84,6 +76,10 @@ const KitEditor: NextPage = ({}) => {
 		})();
 	}, []);
 
+	const handleSaveKit = () => {
+		setOnSaveKit(true);
+	};
+
 	return (
 		<DashboardLayout>
 			{customKit && customColors && (
@@ -114,7 +110,7 @@ const KitEditor: NextPage = ({}) => {
 							type="DASHBOARD"
 						/>
 
-						{customKit.displayFont && customKit.textFont && (
+						{customKit.displayFont && customKit.textFont && googleFontList && (
 							<>
 								<div className="flex w-full justify-between gap-1">
 									<div className="flex gap-[2px]">
@@ -174,6 +170,7 @@ const KitEditor: NextPage = ({}) => {
 										}}
 										projectName={projectName}
 										projectDescription={projectDescription}
+										handleContinue={handleSaveKit}
 									/>
 								)}
 							</>

@@ -86,20 +86,17 @@ const StarterKits: NextPage = ({}) => {
 	const { isKitView, selectedKitView } = kitViewSelectionUtils;
 
 	// Step 8: When user has chosen their preferred kit combination, add it to DB and continue to kit editor page
-	const [isKitChosen, setIsKitChosen] = useState(false);
-
 	const [addKit, { data: customKitData }] = useAddKitMutation();
 
-	useEffect(() => {
-		if (isKitChosen && projectId) {
-			addKit({
-				type: "CUSTOM",
-				title: `${projectName} Custom Kit`,
-				projectId,
-				user,
-			});
-		}
-	}, [isKitChosen]);
+	const handleSaveKit = async () => {
+		if (!projectId) return;
+		await addKit({
+			type: "CUSTOM",
+			title: `${projectName} Custom Kit`,
+			projectId,
+			user,
+		});
+	};
 
 	useEffect(() => {
 		if (customKitData) {
@@ -114,10 +111,6 @@ const StarterKits: NextPage = ({}) => {
 			router.push("/kit-editor");
 		}
 	}, [customKitData]);
-
-	const handleContinue = () => {
-		setIsKitChosen(true);
-	};
 
 	if (!isProjectLoaded) {
 		return (
@@ -193,7 +186,7 @@ const StarterKits: NextPage = ({}) => {
 						kit={selectedKitView}
 						projectName={projectName}
 						projectDescription={projectDescription}
-						handleContinue={handleContinue}
+						handleContinue={handleSaveKit}
 					/>
 				)}
 
@@ -212,7 +205,6 @@ const StarterKits: NextPage = ({}) => {
 						type="MAIN"
 					/>
 					<button
-						type="submit"
 						onClick={() => router.push("/")}
 						className="font-regular cursor-pointer rounded-md bg-presto-green pl-8 pr-8 pt-4 pb-4 font-Inter text-lg text-white hover:opacity-90"
 					>

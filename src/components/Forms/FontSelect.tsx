@@ -41,10 +41,22 @@ export const FontSelect = ({
 		}
 	}, [selectedFont, selectedWeight]);
 
-	const fontOptions = fonts.map((font) => ({
-		value: font.family,
-		label: font.family,
-	}));
+	const fontOptions = fonts.map((font, i) => {
+		try {
+			return {
+				value: font.family,
+				label: font.family,
+			};
+		} catch (error) {
+			console.error(error);
+			console.log("Font:", font);
+			console.log("Index:", i);
+			return {
+				value: "Error",
+				label: "Error",
+			};
+		}
+	});
 
 	const changeFont = (
 		option: ValueType,

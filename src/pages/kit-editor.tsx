@@ -181,9 +181,19 @@ const KitEditor: NextPage = ({}) => {
 												title="Save UI Kit"
 											>
 												<SaveKitForm
-													projectName={projectName}
-													projectDescription={projectDescription}
+													name={projectName}
+													description={projectDescription}
 													customColors={customColors}
+													displayFont={{
+														type: "DISPLAY",
+														name: customDisplayFont,
+														weight: customDisplayWeight,
+													}}
+													textFont={{
+														type: "TEXT",
+														name: customTextFont,
+														weight: customTextWeight,
+													}}
 												/>
 											</ModalContainer>
 										)}

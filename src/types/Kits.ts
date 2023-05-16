@@ -48,11 +48,22 @@ export type KitViewSelectionUtils = {
 
 export type FullKit = {
 	id: Kits["id"];
-	projectId: Kits["project_id"];
-	projectName: Projects["name"];
-	projectDescription: Projects["description"];
+	projectId: number | undefined;
 	title: Kits["title"];
 	colors: ColorsResponse[];
 	displayFont: AiKit["displayFont"];
 	textFont: AiKit["textFont"];
 };
+
+export type FullKitWithProject = {
+	id: Kits["id"];
+	projectId: number | undefined;
+	projectName: string | undefined;
+	projectDescription: string | undefined;
+	title: Kits["title"];
+	colors: ColorsResponse[];
+	displayFont: AiKit["displayFont"];
+	textFont: AiKit["textFont"];
+};
+
+export type FullKitWithoutId = Omit<FullKit, "id">;

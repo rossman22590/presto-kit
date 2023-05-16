@@ -4,9 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import type { NextPage } from "next";
 import {
-	useAddAiKitsMutation,
-	useAddColorsMutation,
-	useAddFontsMutation,
+	useAddFullAiKitsMutation,
 	useAddFullKitMutation,
 	useGetLatestProjectQuery,
 } from "@features";
@@ -31,63 +29,37 @@ const StarterKits: NextPage = ({}) => {
 	const { user } = useSupabase();
 	const router = useRouter();
 
-	// Step 1: Get latest project details from onboarding
 	const { data: projectData, isSuccess: isProjectLoaded } =
 		useGetLatestProjectQuery({ user }, { skip: !user });
-
 	const {
 		id: projectId,
 		name: projectName,
 		description: projectDescription,
 	} = projectData || {};
 
-	// Step 2: Get AI generated starter kits from express API using project details
 	const { starterKits, isLoadingKits, error } = useFetchKits(
 		projectDescription,
 		projectName,
 		isProjectLoaded
 	);
 
-	// Step 3: Update progress bar as each starter kit is generated
 	const prevProgress = 66;
 	const progress = useKitProgress(starterKits, prevProgress);
 
-	// Step 4: When all starter kits have been generated, add kits and content to DB
-	const [addAiKits, { data: kitsData }] = useAddAiKitsMutation();
-	const [addColors] = useAddColorsMutation();
-	const [addFonts] = useAddFontsMutation();
-	const { kitIds } = kitsData || {};
+	const [addAiFullKits] = useAddFullAiKitsMutation();
 
 	useEffect(() => {
 		if (starterKits.length === KITS_COUNT && projectId) {
-			addAiKits({ projectId, user, aiKits: starterKits });
+			addAiFullKits({ projectId, user, aiKits: starterKits });
 		}
 	}, [starterKits]);
 
-	useEffect(() => {
-		if (kitIds) {
-			kitIds.forEach((kitId, i) => {
-				const colors = starterKits[i].colors;
-				const fonts = {
-					displayFont: starterKits[i].displayFont,
-					textFont: starterKits[i].textFont,
-				};
-				addColors({ kitId, colors });
-				addFonts({ kitId, fonts });
-			});
-		}
-	}, [kitIds]);
-
-	// Step 6: Add starter kit fonts to stylesheets
 	useDynamicStylesheets(starterKits);
 
-	// Step 7: Handle user kit view selection process
 	const kitViewSelectionUtils = useKitViewSelection(starterKits);
 	const { isKitView, selectedKitView } = kitViewSelectionUtils;
 
-	// Step 8: When user has chosen their preferred kit combination, add it to DB and continue to kit editor page
 	const [addFullKit] = useAddFullKitMutation();
-
 	const handleSaveKit = () => {
 		const kit = {
 			projectId,
@@ -96,7 +68,6 @@ const StarterKits: NextPage = ({}) => {
 			displayFont: selectedKitView.displayFont,
 			textFont: selectedKitView.textFont,
 		};
-
 		addFullKit({ kit, user, type: "CUSTOM" }).then(() => {
 			router.push("/kit-editor");
 		});

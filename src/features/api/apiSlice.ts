@@ -7,10 +7,10 @@ import {
 import type {
 	AiKit,
 	Color,
+	ColorsInsert,
 	Database,
 	Font,
 	FontsInsert,
-	FullKit,
 	FullKitWithProject,
 	FullKitWithoutId,
 	Kits,
@@ -168,7 +168,7 @@ export const apiSlice = createApi({
 				kit: FullKitWithoutId;
 				user: User | null;
 				type: Kits["type"];
-			}): Promise<{ data: FullKit }> => {
+			}) => {
 				if (!user) throw new Error("No user at add kit");
 
 				const kitInsert = {
@@ -224,26 +224,18 @@ export const apiSlice = createApi({
 					.select();
 
 				if (fontsError) throw { fontsError };
-				const displayFont = getFontByType("DISPLAY", fontsData);
-				if (!displayFont) throw new Error("Display font not found");
 
-				const textFont = getFontByType("TEXT", fontsData);
-				if (!textFont) throw new Error("Text font not found");
-
-				const data: FullKit = {
-					id: kitData.id,
-					title: kit.title,
-					projectId: kit.projectId,
+				const data = {
+					kits: kitData,
 					colors: colorsData,
-					displayFont,
-					textFont,
+					fonts: fontsData,
 				};
 
 				return { data };
 			},
 			invalidatesTags: ["Kit"],
 		}),
-		addAiKits: builder.mutation({
+		addFullAiKits: builder.mutation({
 			queryFn: async ({
 				projectId,
 				user,
@@ -262,19 +254,65 @@ export const apiSlice = createApi({
 					type: "STARTER" as Kits["type"],
 				}));
 
-				const { error, data } = await supabase
+				const { data: kitsData, error: kitsError } = await supabase
 					.from("kits")
 					.insert(kitsInsert)
 					.eq("user_id", user.id)
 					.select()
 					.order("id", { ascending: true });
 
-				if (error) throw { error };
+				if (kitsError) throw { kitsError };
 
-				const kits = data;
-				const kitIds = data?.map((kit) => kit.id);
+				const kitIds = kitsData?.map((kit) => kit.id);
 
-				return { data: { kits, kitIds } };
+				let colorsInsert: ColorsInsert[] = [];
+				let fontsInsert: FontsInsert[] = [];
+				kitIds.forEach((kitId, i) => {
+					colorsInsert.push(
+						...aiKits[i].colors.map((color) => ({
+							kit_id: kitId,
+							type: color.type,
+							name: color.name,
+							hex: color.hex,
+						}))
+					);
+					fontsInsert.push(
+						{
+							kit_id: kitId,
+							type: "DISPLAY",
+							name: aiKits[i].displayFont.name,
+							weight: aiKits[i].displayFont.weight,
+						},
+						{
+							kit_id: kitId,
+							type: "TEXT",
+							name: aiKits[i].textFont.name,
+							weight: aiKits[i].textFont.weight,
+						}
+					);
+				});
+
+				const { data: colorsData, error: colorsError } = await supabase
+					.from("colors")
+					.insert(colorsInsert)
+					.select();
+
+				if (colorsError) throw { colorsError };
+
+				const { data: fontsData, error: fontsError } = await supabase
+					.from("fonts")
+					.insert(fontsInsert)
+					.select();
+
+				if (fontsError) throw { fontsError };
+
+				const data = {
+					kits: kitsData,
+					colors: colorsData,
+					fonts: fontsData,
+				};
+
+				return { data };
 			},
 			invalidatesTags: ["Kit"],
 		}),
@@ -352,6 +390,6 @@ export const {
 	useAddColorsMutation,
 	useAddFontsMutation,
 	useAddFullKitMutation,
-	useAddAiKitsMutation,
+	useAddFullAiKitsMutation,
 	useGetLatestFullKitByTypeQuery,
 } = apiSlice;

@@ -1,13 +1,4 @@
-import { useRouter } from "next/router";
-
-export type InputProps = {
-	name: string;
-	value: string;
-	labelText?: string;
-	colorView?: string;
-	placeholder?: string;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
+import type { InputProps } from "@types";
 
 export const Input = ({
 	name,
@@ -20,16 +11,16 @@ export const Input = ({
 	return (
 		<div>
 			{labelText && (
-				<label htmlFor={name} className="block leading-6 text-presto-grey">
+				<label htmlFor={name} className="mb-3 block leading-6 text-presto-grey">
 					{labelText}
 				</label>
 			)}
-			<div className="flex gap-4">
+			<div className="flex gap-3">
 				{colorView && (
 					<div
-						className="aspect-square h-full"
-						style={{ backgroundColor: "#000" }}
-					></div>
+						className="aspect-square h-12 rounded-md"
+						style={{ backgroundColor: colorView }}
+					/>
 				)}
 				<input
 					type="text"
@@ -38,7 +29,7 @@ export const Input = ({
 					value={value}
 					placeholder={placeholder}
 					onChange={onChange}
-					className="mt-3 block w-full rounded-md border-0 bg-presto-light-grey py-3 px-6 text-presto-grey focus:outline focus:outline-2 focus:outline-indigo-400 md:text-lg"
+					className="block h-12 w-full rounded-md border-0 bg-presto-light-grey px-5 text-black focus:outline focus:outline-2 focus:outline-indigo-400 md:text-lg"
 				/>
 			</div>
 		</div>

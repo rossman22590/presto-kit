@@ -10,16 +10,16 @@ import {
 	FontSelect,
 	ColorCard,
 	ModalContainer,
+	SaveKitForm,
 } from "@components";
 import type { NextPage } from "next/types";
 import type {
-	ColorsResponse,
 	GoogleApiFont,
 	LoadedFonts,
 	PresetColor,
 	FullKit,
+	Color,
 } from "@types";
-import { SaveKitForm } from "src/components/Forms/SaveKitForm";
 
 const KitEditor: NextPage = ({}) => {
 	setCurrentPage(primaryNavigation, "Kit Editor");
@@ -31,9 +31,7 @@ const KitEditor: NextPage = ({}) => {
 	const { projectName, projectDescription } = kit || {};
 
 	const [customKit, setCustomKit] = useState<FullKit | undefined>();
-	const [customColors, setCustomColors] = useState<ColorsResponse[] | null>(
-		null
-	);
+	const [customColors, setCustomColors] = useState<Color[] | null>(null);
 	const [presetColors, setPresetColors] = useState<PresetColor[] | undefined>();
 
 	const [googleFontList, setGoogleFontList] = useState<GoogleApiFont[]>([]);
@@ -158,36 +156,42 @@ const KitEditor: NextPage = ({}) => {
 									</div>
 								</div>
 								{projectName && projectDescription && (
-									<KitViewSection
-										kit={{
-											...customKit,
-											colors: customColors,
-											displayFont: {
-												name: customDisplayFont,
-												weight: customDisplayWeight,
-											},
-											textFont: {
-												name: customTextFont,
-												weight: customTextWeight,
-											},
-										}}
-										projectName={projectName}
-										projectDescription={projectDescription}
-										handleContinue={handleSaveKit}
-									/>
+									<>
+										<KitViewSection
+											kit={{
+												...customKit,
+												colors: customColors,
+												displayFont: {
+													name: customDisplayFont,
+													weight: customDisplayWeight,
+												},
+												textFont: {
+													name: customTextFont,
+													weight: customTextWeight,
+												},
+											}}
+											projectName={projectName}
+											projectDescription={projectDescription}
+											handleContinue={handleSaveKit}
+										/>
+										{onSaveKit && (
+											<ModalContainer
+												open={onSaveKit}
+												setOpen={setOnSaveKit}
+												title="Save UI Kit"
+											>
+												<SaveKitForm
+													projectName={projectName}
+													projectDescription={projectDescription}
+													customColors={customColors}
+												/>
+											</ModalContainer>
+										)}
+									</>
 								)}
 							</>
 						)}
 					</section>
-					{onSaveKit && (
-						<ModalContainer
-							open={onSaveKit}
-							setOpen={setOnSaveKit}
-							title="Save UI Kit"
-						>
-							<SaveKitForm />
-						</ModalContainer>
-					)}
 				</>
 			)}
 			{!isKitLoaded && (

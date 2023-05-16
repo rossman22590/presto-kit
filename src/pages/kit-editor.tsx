@@ -1,4 +1,5 @@
 import { GOOGLE_FONTS_API_KEY as apiKey } from "@constants";
+import { primaryNavigation, setCurrentPage } from "@utils";
 import { useGetLatestFullKitByTypeQuery } from "@features";
 import { useEffect, useState } from "react";
 import {
@@ -21,6 +22,8 @@ import type {
 import { SaveKitForm } from "src/components/Forms/SaveKitForm";
 
 const KitEditor: NextPage = ({}) => {
+	setCurrentPage(primaryNavigation, "Kit Editor");
+
 	const { data: kit, isSuccess: isKitLoaded } = useGetLatestFullKitByTypeQuery({
 		type: "CUSTOM",
 	});

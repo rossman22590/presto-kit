@@ -1,4 +1,5 @@
 import { GOOGLE_FONTS_API_KEY as apiKey } from "@constants";
+import { primaryNavigation, setCurrentPage } from "@utils";
 import { useGetLatestFullKitByTypeQuery } from "@features";
 import { useEffect, useState } from "react";
 import {
@@ -9,18 +10,20 @@ import {
 	FontSelect,
 	ColorCard,
 	ModalContainer,
+	SaveKitForm,
 } from "@components";
 import type { NextPage } from "next/types";
 import type {
-	ColorsResponse,
 	GoogleApiFont,
 	LoadedFonts,
 	PresetColor,
 	FullKit,
+	Color,
 } from "@types";
-import { SaveKitForm } from "src/components/Forms/SaveKitForm";
 
 const KitEditor: NextPage = ({}) => {
+	setCurrentPage(primaryNavigation, "Kit Editor");
+
 	const { data: kit, isSuccess: isKitLoaded } = useGetLatestFullKitByTypeQuery({
 		type: "CUSTOM",
 	});
@@ -28,9 +31,7 @@ const KitEditor: NextPage = ({}) => {
 	const { projectName, projectDescription } = kit || {};
 
 	const [customKit, setCustomKit] = useState<FullKit | undefined>();
-	const [customColors, setCustomColors] = useState<ColorsResponse[] | null>(
-		null
-	);
+	const [customColors, setCustomColors] = useState<Color[] | null>(null);
 	const [presetColors, setPresetColors] = useState<PresetColor[] | undefined>();
 
 	const [googleFontList, setGoogleFontList] = useState<GoogleApiFont[]>([]);
@@ -155,36 +156,52 @@ const KitEditor: NextPage = ({}) => {
 									</div>
 								</div>
 								{projectName && projectDescription && (
-									<KitViewSection
-										kit={{
-											...customKit,
-											colors: customColors,
-											displayFont: {
-												name: customDisplayFont,
-												weight: customDisplayWeight,
-											},
-											textFont: {
-												name: customTextFont,
-												weight: customTextWeight,
-											},
-										}}
-										projectName={projectName}
-										projectDescription={projectDescription}
-										handleContinue={handleSaveKit}
-									/>
+									<>
+										<KitViewSection
+											kit={{
+												...customKit,
+												colors: customColors,
+												displayFont: {
+													name: customDisplayFont,
+													weight: customDisplayWeight,
+												},
+												textFont: {
+													name: customTextFont,
+													weight: customTextWeight,
+												},
+											}}
+											projectName={projectName}
+											projectDescription={projectDescription}
+											handleContinue={handleSaveKit}
+										/>
+										{onSaveKit && (
+											<ModalContainer
+												open={onSaveKit}
+												setOpen={setOnSaveKit}
+												title="Save UI Kit"
+											>
+												<SaveKitForm
+													name={projectName}
+													description={projectDescription}
+													customColors={customColors}
+													displayFont={{
+														type: "DISPLAY",
+														name: customDisplayFont,
+														weight: customDisplayWeight,
+													}}
+													textFont={{
+														type: "TEXT",
+														name: customTextFont,
+														weight: customTextWeight,
+													}}
+												/>
+											</ModalContainer>
+										)}
+									</>
 								)}
 							</>
 						)}
 					</section>
-					{onSaveKit && (
-						<ModalContainer
-							open={onSaveKit}
-							setOpen={setOnSaveKit}
-							title="Save UI Kit"
-						>
-							<SaveKitForm />
-						</ModalContainer>
-					)}
 				</>
 			)}
 			{!isKitLoaded && (

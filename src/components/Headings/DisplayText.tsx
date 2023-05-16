@@ -13,11 +13,11 @@ export const DisplayText = ({
 	if (type === "MAIN") {
 		return (
 			<>
-				<h1 className="text-center font-Inter text-2xl font-semibold text-black md:text-3xl">
+				<h1 className="text-center text-2xl font-semibold text-black md:text-3xl">
 					<Balancer>{heading}</Balancer>
 				</h1>
 				{/* additional lg breakpoint on text resolved a visual bug with Balancer on screen resize */}
-				<p className="text-center font-Inter text-base font-light text-presto-grey md:text-lg lg:text-xl">
+				<p className="text-center text-base font-light text-presto-grey md:text-lg lg:text-xl">
 					<Balancer>{text}</Balancer>
 				</p>
 			</>

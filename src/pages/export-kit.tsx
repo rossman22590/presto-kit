@@ -1,8 +1,11 @@
 import { DashboardLayout, KitViewSection } from "@components";
 import { useGetLatestFullKitByTypeQuery } from "@features";
+import { primaryNavigation, setCurrentPage } from "@utils";
 import type { NextPage } from "next/types";
 
-const KitEditor: NextPage = ({}) => {
+const ExportKit: NextPage = ({}) => {
+	setCurrentPage(primaryNavigation, "Export Kit");
+
 	const { data: kit, isSuccess: isKitLoaded } = useGetLatestFullKitByTypeQuery({
 		type: "CUSTOM",
 	});
@@ -32,4 +35,4 @@ const KitEditor: NextPage = ({}) => {
 	);
 };
 
-export default KitEditor;
+export default ExportKit;

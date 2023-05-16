@@ -141,3 +141,12 @@ export type FontSelectProps = {
 	selectedWeight: string;
 	setSelectedWeight: (weight: string) => void;
 };
+
+export type InputProps = {
+	name: string;
+	value: string;
+	labelText?: string;
+	colorView?: string;
+	placeholder?: string;
+	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};

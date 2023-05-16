@@ -1,13 +1,13 @@
 import { primaryNavigation, setCurrentPage } from "@utils";
 import { KITS_COUNT } from "@constants";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import type { NextPage } from "next";
 import {
 	useAddAiKitsMutation,
 	useAddColorsMutation,
 	useAddFontsMutation,
-	useAddKitMutation,
+	useAddFullKitMutation,
 	useGetLatestProjectQuery,
 } from "@features";
 import {
@@ -86,31 +86,21 @@ const StarterKits: NextPage = ({}) => {
 	const { isKitView, selectedKitView } = kitViewSelectionUtils;
 
 	// Step 8: When user has chosen their preferred kit combination, add it to DB and continue to kit editor page
-	const [addKit, { data: customKitData }] = useAddKitMutation();
+	const [addFullKit] = useAddFullKitMutation();
 
-	const handleSaveKit = async () => {
-		if (!projectId) return;
-		await addKit({
-			type: "CUSTOM",
-			title: `${projectName} Custom Kit`,
+	const handleSaveKit = () => {
+		const kit = {
 			projectId,
-			user,
+			title: `${projectName} Custom Kit`,
+			colors: selectedKitView.colors,
+			displayFont: selectedKitView.displayFont,
+			textFont: selectedKitView.textFont,
+		};
+
+		addFullKit({ kit, user, type: "CUSTOM" }).then(() => {
+			router.push("/kit-editor");
 		});
 	};
-
-	useEffect(() => {
-		if (customKitData) {
-			const kitId = customKitData.id;
-			const colors = selectedKitView.colors;
-			const fonts = {
-				displayFont: selectedKitView.displayFont,
-				textFont: selectedKitView.textFont,
-			};
-			addColors({ kitId, colors });
-			addFonts({ kitId, fonts });
-			router.push("/kit-editor");
-		}
-	}, [customKitData]);
 
 	if (!isProjectLoaded) {
 		return (

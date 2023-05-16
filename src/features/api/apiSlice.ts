@@ -1,4 +1,5 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getFontByType } from "@utils";
 import {
 	createBrowserSupabaseClient,
 	User,
@@ -10,6 +11,8 @@ import type {
 	Font,
 	FontsInsert,
 	FullKit,
+	FullKitWithProject,
+	FullKitWithoutId,
 	Kits,
 	Projects,
 } from "@types";
@@ -156,6 +159,90 @@ export const apiSlice = createApi({
 			},
 			invalidatesTags: ["Font"],
 		}),
+		addFullKit: builder.mutation({
+			queryFn: async ({
+				kit,
+				user,
+				type,
+			}: {
+				kit: FullKitWithoutId;
+				user: User | null;
+				type: Kits["type"];
+			}): Promise<{ data: FullKit }> => {
+				if (!user) throw new Error("No user at add kit");
+
+				const kitInsert = {
+					project_id: kit.projectId,
+					user_id: user.id,
+					title: kit.title,
+					type,
+				};
+
+				const { data: kitData, error: kitError } = await supabase
+					.from("kits")
+					.insert(kitInsert)
+					.eq("user_id", user.id)
+					.select()
+					.single();
+
+				if (kitError) throw { kitError };
+
+				const colorsInsert = kit.colors.map((color) => ({
+					kit_id: kitData.id,
+					type: color.type,
+					name: color.name,
+					hex: color.hex,
+				}));
+
+				const { data: colorsData, error: colorsError } = await supabase
+					.from("colors")
+					.insert(colorsInsert)
+					.eq("kit_id", kitData.id)
+					.select();
+
+				if (colorsError) throw { colorsError };
+
+				const fontsInsert: FontsInsert[] = [
+					{
+						kit_id: kitData.id,
+						type: "DISPLAY",
+						name: kit.displayFont.name,
+						weight: kit.displayFont.weight,
+					},
+					{
+						kit_id: kitData.id,
+						type: "TEXT",
+						name: kit.textFont.name,
+						weight: kit.textFont.weight,
+					},
+				];
+
+				const { data: fontsData, error: fontsError } = await supabase
+					.from("fonts")
+					.insert(fontsInsert)
+					.eq("kit_id", kitData.id)
+					.select();
+
+				if (fontsError) throw { fontsError };
+				const displayFont = getFontByType("DISPLAY", fontsData);
+				if (!displayFont) throw new Error("Display font not found");
+
+				const textFont = getFontByType("TEXT", fontsData);
+				if (!textFont) throw new Error("Text font not found");
+
+				const data: FullKit = {
+					id: kitData.id,
+					title: kit.title,
+					projectId: kit.projectId,
+					colors: colorsData,
+					displayFont,
+					textFont,
+				};
+
+				return { data };
+			},
+			invalidatesTags: ["Kit"],
+		}),
 		addAiKits: builder.mutation({
 			queryFn: async ({
 				projectId,
@@ -196,7 +283,7 @@ export const apiSlice = createApi({
 				type,
 			}: {
 				type: Kits["type"];
-			}): Promise<{ data: FullKit }> => {
+			}): Promise<{ data: FullKitWithProject }> => {
 				let { data, error } = await supabase
 					.from("kits")
 					.select(
@@ -218,23 +305,26 @@ export const apiSlice = createApi({
 				if (!data) throw new Error("No kit found");
 
 				const kit = data;
-
-				if (!kit.fonts || !Array.isArray(kit.fonts)) {
-					throw new Error("Invalid kit: fonts are missing or not an array");
+				if (!kit.project_id) {
+					throw new Error("Project ID not found");
 				}
 
-				const displayFont = kit.fonts.find((font) => font.type === "DISPLAY");
-				if (!displayFont) throw new Error("Display font not found.");
+				if (!kit.fonts || !Array.isArray(kit.fonts)) {
+					throw new Error("Fonts are missing or not an array");
+				}
 
-				const textFont = kit.fonts.find((font) => font.type === "TEXT");
+				const displayFont = getFontByType("DISPLAY", kit.fonts);
+				if (!displayFont) throw new Error("Display font not found");
+
+				const textFont = getFontByType("TEXT", kit.fonts);
 				if (!textFont) throw new Error("Text font not found");
 
 				if (!kit.project || Array.isArray(kit.project)) {
-					throw new Error("Invalid kit: project is missing or not an object");
+					throw new Error("Project is missing or not an object");
 				}
 
 				if (!Array.isArray(kit.colors)) {
-					throw new Error("Invalid kit: colors are missing or not an array");
+					throw new Error("Colors are missing or not an array");
 				}
 
 				const fullKit = {
@@ -244,8 +334,8 @@ export const apiSlice = createApi({
 					projectDescription: kit.project.description,
 					title: kit.title,
 					colors: kit.colors,
-					displayFont: displayFont,
-					textFont: textFont,
+					displayFont,
+					textFont,
 				};
 
 				return { data: fullKit };
@@ -261,6 +351,7 @@ export const {
 	useAddKitMutation,
 	useAddColorsMutation,
 	useAddFontsMutation,
+	useAddFullKitMutation,
 	useAddAiKitsMutation,
 	useGetLatestFullKitByTypeQuery,
 } = apiSlice;

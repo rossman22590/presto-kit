@@ -60,6 +60,7 @@ const StarterKits: NextPage = ({}) => {
 	const { isKitView, selectedKitView } = kitViewSelectionUtils;
 
 	const [addFullKit] = useAddFullKitMutation();
+
 	const handleSaveKit = () => {
 		const kit = {
 			projectId,

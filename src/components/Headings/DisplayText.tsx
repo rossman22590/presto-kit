@@ -1,7 +1,6 @@
 import type { DisplayTextProps } from "@types";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import Balancer from "react-wrap-balancer";
-import { useRouter } from "next/router";
+import { Button } from "../Buttons/Button";
 
 export const DisplayText = ({
 	heading,
@@ -11,8 +10,6 @@ export const DisplayText = ({
 	handleClick,
 	route,
 }: DisplayTextProps) => {
-	const router = useRouter();
-
 	if (type === "MAIN") {
 		return (
 			<>
@@ -39,15 +36,12 @@ export const DisplayText = ({
 					</p>
 				</div>
 				{buttonText && (
-					<button
-						onClick={() =>
-							handleClick ? handleClick() : route ? router.push(route) : null
-						}
-						className="flex h-fit cursor-pointer items-center gap-2 rounded-md bg-presto-green px-7 py-3 font-Inter text-lg font-medium text-white hover:opacity-90"
-					>
-						{buttonText}
-						<ArrowRightIcon className="w-5" />
-					</button>
+					<Button
+						text={buttonText}
+						handleClick={handleClick}
+						route={route}
+						withArrow
+					/>
 				)}
 			</div>
 		);

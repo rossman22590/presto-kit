@@ -233,7 +233,7 @@ export const apiSlice = createApi({
 
 				return { data };
 			},
-			invalidatesTags: ["Kit"],
+			invalidatesTags: ["Kit", "Color", "Font"],
 		}),
 		addFullAiKits: builder.mutation({
 			queryFn: async ({
@@ -314,7 +314,7 @@ export const apiSlice = createApi({
 
 				return { data };
 			},
-			invalidatesTags: ["Kit"],
+			invalidatesTags: ["Kit", "Color", "Font"],
 		}),
 		getLatestFullKitByType: builder.query({
 			queryFn: async ({

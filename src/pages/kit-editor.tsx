@@ -176,6 +176,15 @@ const KitEditor: NextPage = ({}) => {
 							</>
 						)}
 					</section>
+					{onSaveKit && (
+						<ModalContainer
+							open={onSaveKit}
+							setOpen={setOnSaveKit}
+							title="Save UI Kit"
+						>
+							<SaveKitForm />
+						</ModalContainer>
+					)}
 				</>
 			)}
 			{!isKitLoaded && (

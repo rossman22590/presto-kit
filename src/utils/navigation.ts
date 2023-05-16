@@ -13,7 +13,7 @@ import { SupabaseClient } from "@supabase/supabase-js";
 export const primaryNavigation: Navigation[] = [
 	{
 		name: "Starter Kits",
-		href: "#",
+		href: "/starter-kits",
 		icon: SparklesIcon,
 		current: false,
 	},
@@ -25,13 +25,13 @@ export const primaryNavigation: Navigation[] = [
 	},
 	{
 		name: "Kit Editor",
-		href: "#",
+		href: "/kit-editor",
 		icon: PencilSquareIcon,
 		current: false,
 	},
 	{
 		name: "Export Kit",
-		href: "#",
+		href: "export-kit",
 		icon: ArrowUpTrayIcon,
 		current: false,
 	},
@@ -60,10 +60,10 @@ export const handleNavClick = (
 			router.push("#");
 			break;
 		case "Kit Editor":
-			router.push("#");
+			router.push("/kit-editor");
 			break;
 		case "Export Kit":
-			router.push("#");
+			router.push("/export-kit");
 			break;
 		case "Settings":
 			router.push("/account");

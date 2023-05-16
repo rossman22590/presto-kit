@@ -1,6 +1,12 @@
 import { Button } from "../Buttons/Button";
-import { useState } from "react";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { Input } from "./Input";
+import type { Color } from "@types";
+
+export type SaveKitFormProps = {
+	colors: Color[];
+};
 
 export const SaveKitForm = ({}) => {
 	const router = useRouter();
@@ -13,17 +19,26 @@ export const SaveKitForm = ({}) => {
 		router.push("/export-kit");
 	};
 
+	type InputProps = {
+		name: string;
+		value: string;
+		labelText?: string;
+		colorView?: string;
+		placeholder?: string;
+		onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	};
+
 	return (
 		<form
 			className="flex w-full flex-col gap-5 lg:gap-10"
 			onSubmit={handleSubmit}
 		>
-			<input
-				type="text"
+			<Input
+				name="project-name"
 				value={input}
-				placeholder="placeholder"
+				labelText="Project Name"
+				placeholder="Enter your project's name"
 				onChange={(e) => setInput(e.target.value)}
-				className="rounded-md bg-presto-light-grey py-4 px-6 font-Inter text-base text-presto-grey focus:outline focus:outline-2 focus:outline-indigo-400 md:text-lg"
 			/>
 			<Button text="Save Kit" withArrow />
 		</form>

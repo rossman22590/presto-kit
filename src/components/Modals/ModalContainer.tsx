@@ -50,7 +50,6 @@ export const ModalContainer = ({
 										/>
 									</button>
 								</div>
-
 								<div className="text-center sm:text-left">
 									<Dialog.Title
 										as="h3"
@@ -58,13 +57,10 @@ export const ModalContainer = ({
 									>
 										{title}
 									</Dialog.Title>
-									<div className="mt-6">
-										<p className="text-xl tracking-wide text-presto-text-grey">
-											{text}
-										</p>
-									</div>
+									<p className="mt-6 text-xl tracking-wide text-presto-text-grey">
+										{text}
+									</p>
 								</div>
-
 								<div className="mt-5 sm:mt-4">{children}</div>
 							</Dialog.Panel>
 						</Transition.Child>

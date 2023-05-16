@@ -168,7 +168,7 @@ const StarterKits: NextPage = ({}) => {
 					/>
 					<button
 						onClick={() => router.push("/")}
-						className="font-regular cursor-pointer rounded-md bg-presto-green pl-8 pr-8 pt-4 pb-4 font-Inter text-lg text-white hover:opacity-90"
+						className="font-regular cursor-pointer rounded-md bg-presto-green pl-8 pr-8 pt-4 pb-4 text-lg text-white hover:opacity-90"
 					>
 						Please try again
 					</button>

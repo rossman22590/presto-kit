@@ -21,7 +21,7 @@ export const Button = ({
 			onClick={() =>
 				handleClick ? handleClick() : route ? router.push(route) : null
 			}
-			className="flex h-fit w-fit cursor-pointer items-center gap-2 rounded-md bg-presto-green px-7 py-3 font-Inter text-lg font-medium text-white hover:opacity-90"
+			className="flex h-fit w-fit cursor-pointer items-center gap-2 rounded-md bg-presto-green px-7 py-3 text-lg font-medium text-white hover:opacity-90"
 		>
 			{text}
 			{withArrow && <ArrowRightIcon className="w-5" />}

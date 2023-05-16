@@ -92,7 +92,7 @@ export const MobileSidebar = ({
 													item.current
 														? "bg-presto-light-grey text-black"
 														: "bg-white text-presto-grey hover:bg-presto-light-grey",
-													"group flex w-full items-center rounded-xl px-6 py-3 font-Inter subpixel-antialiased"
+													"group flex w-full items-center rounded-xl px-6 py-3 subpixel-antialiased"
 												)}
 											>
 												<item.icon
@@ -123,7 +123,7 @@ export const MobileSidebar = ({
 												item.current
 													? "bg-presto-light-grey text-black"
 													: "bg-white text-presto-grey hover:bg-presto-light-grey",
-												"group flex w-full items-center rounded-xl px-6 py-3 font-Inter subpixel-antialiased"
+												"group flex w-full items-center rounded-xl px-6 py-3 subpixel-antialiased"
 											)}
 										>
 											<item.icon

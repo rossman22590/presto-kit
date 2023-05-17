@@ -1,4 +1,4 @@
-import type { ColorsResponse, Kits, Projects } from "./Data";
+import type { ColorsResponse, Kits } from "./Data";
 
 export type AiKit = {
 	title: string;
@@ -64,6 +64,29 @@ export type FullKitWithProject = {
 	colors: ColorsResponse[];
 	displayFont: AiKit["displayFont"];
 	textFont: AiKit["textFont"];
+};
+
+export type FullKitWithProjectMutation = {
+	id: number;
+	projectId: number;
+	projectName: string;
+	projectDescription: string;
+	title: string;
+	colors: {
+		type: "BASE" | "PRIMARY" | "ACCENT";
+		name: string;
+		hex: string;
+	}[];
+	displayFont: {
+		type: "DISPLAY" | "TEXT";
+		name: string;
+		weight: string | null;
+	};
+	textFont: {
+		type: "DISPLAY" | "TEXT";
+		name: string;
+		weight: string | null;
+	};
 };
 
 export type FullKitWithoutId = Omit<FullKit, "id">;

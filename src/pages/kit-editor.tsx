@@ -40,7 +40,9 @@ const KitEditor: NextPage = ({}) => {
 	const [customColors, setCustomColors] = useState<Color[] | undefined>();
 	const [presetColors, setPresetColors] = useState<PresetColor[] | undefined>();
 
-	const [googleFontList, setGoogleFontList] = useState<GoogleApiFont[]>([]);
+	const [googleFontList, setGoogleFontList] = useState<
+		GoogleApiFont[] | undefined
+	>();
 	const [loadedFonts, setLoadedFonts] = useState<LoadedFonts>({});
 
 	const [customDisplayFont, setCustomDisplayFont] = useState("");

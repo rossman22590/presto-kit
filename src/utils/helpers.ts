@@ -1,4 +1,6 @@
 import {
+	Color,
+	Colors,
 	ColorsResponse,
 	Fonts,
 	FontsResponse,
@@ -39,17 +41,26 @@ export const sortColors = (
 
 export const getFontByType = (
 	type: Fonts["type"],
-	typography: FontsResponse[] | null
+	fonts: FontsResponse[] | null
 ) => {
-	if (!typography) return null;
+	if (!fonts) return null;
 
-	const font = typography.find((item) => item.type === type);
+	const font = fonts.find((item) => item.type === type);
 	if (!font) return null;
 
-	return {
-		name: font.name,
-		weight: font.weight,
-	};
+	return font;
+};
+
+export const getColorByType = (
+	type: Colors["type"],
+	colors: Color[] | null
+) => {
+	if (!colors) return null;
+
+	const color = colors.find((item) => item.type === type);
+	if (!color) return null;
+
+	return color;
 };
 
 export const findClosestNumber = (

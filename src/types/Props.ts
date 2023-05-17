@@ -7,7 +7,7 @@ import type { PresetColor } from "./Colors";
 export type ColorCardProps = {
 	customColors: ColorsResponse[];
 	setCustomColors: React.Dispatch<
-		React.SetStateAction<ColorsResponse[] | null>
+		React.SetStateAction<ColorsResponse[] | undefined>
 	>;
 	presetColors: PresetColor[] | undefined;
 	setPresetColors: React.Dispatch<

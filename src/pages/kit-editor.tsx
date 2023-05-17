@@ -28,13 +28,21 @@ const KitEditor: NextPage = ({}) => {
 		type: "CUSTOM",
 	});
 
-	const { projectName, projectDescription } = kit || {};
+	const {
+		id: kitId,
+		title: kitTitle,
+		projectId,
+		projectName,
+		projectDescription,
+	} = kit || {};
 
 	const [customKit, setCustomKit] = useState<FullKit | undefined>();
-	const [customColors, setCustomColors] = useState<Color[] | null>(null);
+	const [customColors, setCustomColors] = useState<Color[] | undefined>();
 	const [presetColors, setPresetColors] = useState<PresetColor[] | undefined>();
 
-	const [googleFontList, setGoogleFontList] = useState<GoogleApiFont[]>([]);
+	const [googleFontList, setGoogleFontList] = useState<
+		GoogleApiFont[] | undefined
+	>();
 	const [loadedFonts, setLoadedFonts] = useState<LoadedFonts>({});
 
 	const [customDisplayFont, setCustomDisplayFont] = useState("");
@@ -174,13 +182,16 @@ const KitEditor: NextPage = ({}) => {
 											projectDescription={projectDescription}
 											handleContinue={handleSaveKit}
 										/>
-										{onSaveKit && (
+										{onSaveKit && kitId && projectId && kitTitle && (
 											<ModalContainer
 												open={onSaveKit}
 												setOpen={setOnSaveKit}
 												title="Save UI Kit"
 											>
 												<SaveKitForm
+													kitId={kitId}
+													title={kitTitle}
+													projectId={projectId}
 													name={projectName}
 													description={projectDescription}
 													customColors={customColors}

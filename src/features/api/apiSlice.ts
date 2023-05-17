@@ -1,5 +1,5 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getFontByType } from "@utils";
+import { getColorByType, getFontByType } from "@utils";
 import {
 	createBrowserSupabaseClient,
 	User,
@@ -12,6 +12,7 @@ import type {
 	Font,
 	FontsInsert,
 	FullKitWithProject,
+	FullKitWithProjectMutation,
 	FullKitWithoutId,
 	Kits,
 	Projects,
@@ -380,6 +381,119 @@ export const apiSlice = createApi({
 			},
 			providesTags: ["Project", "Kit", "Color", "Font"],
 		}),
+		updateProjectAndFullKit: builder.mutation({
+			queryFn: async ({
+				kit,
+			}: {
+				kit: FullKitWithProjectMutation;
+			}): Promise<{ data: FullKitWithProjectMutation }> => {
+				const projectUpdate = {
+					name: kit.projectName,
+					description: kit.projectDescription,
+				};
+
+				const { data: projectData, error: projectError } = await supabase
+					.from("projects")
+					.update(projectUpdate)
+					.eq("id", kit.projectId)
+					.select("name, description")
+					.single();
+
+				if (projectError) throw { projectError };
+
+				const kitUpdate = {
+					title: kit.title,
+				};
+
+				const { data: kitData, error: kitError } = await supabase
+					.from("kits")
+					.update(kitUpdate)
+					.eq("id", kit.id)
+					.select("id, title")
+					.single();
+
+				if (kitError) throw { kitError };
+
+				const baseColorUpdate = getColorByType("BASE", kit.colors) as Color;
+
+				const { data: baseColorData, error: baseColorError } = await supabase
+					.from("colors")
+					.update(baseColorUpdate)
+					.eq("kit_id", kitData.id)
+					.eq("type", "BASE")
+					.select("type, name, hex")
+					.single();
+
+				if (baseColorError) throw { baseColorError };
+
+				const primaryColorUpdate = getColorByType(
+					"PRIMARY",
+					kit.colors
+				) as Color;
+
+				const { data: primaryColorData, error: primaryColorError } =
+					await supabase
+						.from("colors")
+						.update(primaryColorUpdate)
+						.eq("kit_id", kitData.id)
+						.eq("type", "PRIMARY")
+						.select("type, name, hex")
+						.single();
+
+				if (primaryColorError) throw { primaryColorError };
+
+				const accentColorUpdate = getColorByType("ACCENT", kit.colors) as Color;
+
+				const { data: accentColorData, error: accentColorError } =
+					await supabase
+						.from("colors")
+						.update(accentColorUpdate)
+						.eq("kit_id", kitData.id)
+						.eq("type", "ACCENT")
+						.select("type, name, hex")
+						.single();
+
+				if (accentColorError) throw { accentColorError };
+
+				const displayFontUpdate = kit.displayFont;
+
+				const { data: displayFontData, error: displayFontError } =
+					await supabase
+						.from("fonts")
+						.update(displayFontUpdate)
+						.eq("kit_id", kitData.id)
+						.eq("type", "DISPLAY")
+						.select("type, name, weight")
+						.single();
+
+				if (displayFontError) throw { displayFontError };
+
+				const textFontUpdate = kit.textFont;
+
+				const { data: textFontData, error: textFontError } = await supabase
+					.from("fonts")
+					.update(textFontUpdate)
+					.eq("kit_id", kitData.id)
+					.eq("type", "TEXT")
+					.select("type, name, weight")
+					.single();
+
+				if (textFontError) throw { textFontError };
+
+				const data = {
+					...kitData,
+					projectId: kit.projectId,
+					projectName: projectData.name,
+					projectDescription: projectData.description,
+					colors: [baseColorData, primaryColorData, accentColorData],
+					displayFont: displayFontData,
+					textFont: textFontData,
+				};
+
+				return { data };
+			},
+			invalidatesTags: ["Project", "Kit", "Color", "Font"],
+		}),
 	}),
 });
 
@@ -392,4 +506,5 @@ export const {
 	useAddFullKitMutation,
 	useAddFullAiKitsMutation,
 	useGetLatestFullKitByTypeQuery,
+	useUpdateProjectAndFullKitMutation,
 } = apiSlice;
